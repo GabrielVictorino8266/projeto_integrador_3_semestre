@@ -1,7 +1,11 @@
+import { CustomText, TestComponent } from "./style";
+
 const HomePage = () => {
   return (
     <>
-      <h1>HomePage</h1>
+      <TestComponent>
+        <CustomText>udshfjsd</CustomText>
+      </TestComponent>
     </>
   );
 };
