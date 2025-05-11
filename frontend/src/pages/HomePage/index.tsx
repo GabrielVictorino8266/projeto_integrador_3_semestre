@@ -3,7 +3,7 @@ import { CustomText, TestComponent } from "./style";
 const HomePage = () => {
   return (
     <>
-      <TestComponent>
+      <TestComponent primary={false}>
         <CustomText>udshfjsd</CustomText>
       </TestComponent>
     </>

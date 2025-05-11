@@ -10,8 +10,8 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@linaria/core": "^6.3.0",
-    "@linaria/react": "^6.3.0",
+    "@emotion/react": "^11.14.0",
+    "@emotion/styled": "^11.14.0",
     "axios": "^1.9.0",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
@@ -20,15 +20,11 @@
     "react-toastify": "^11.0.5"
   },
   "devDependencies": {
-    "@babel/preset-react": "^7.27.1",
-    "@babel/preset-typescript": "^7.27.1",
-    "@linaria/babel-preset": "^5.0.4",
     "@eslint/js": "^9.25.0",
     "@types/react": "^19.1.2",
     "@types/react-dom": "^19.1.2",
     "@types/react-router-dom": "^5.3.3",
     "@vitejs/plugin-react": "^4.4.1",
-    "@wyw-in-js/babel-preset": "^0.6.0",
     "@wyw-in-js/vite": "^0.6.0",
     "eslint": "^9.25.0",
     "eslint-plugin-react-hooks": "^5.2.0",

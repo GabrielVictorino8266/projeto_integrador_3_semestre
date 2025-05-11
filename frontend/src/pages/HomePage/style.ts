@@ -1,11 +1,16 @@
-import { styled } from "@linaria/react";
+import styled from "@emotion/styled";
 
-export const TestComponent = styled.div`
+interface ButtonProps {
+  primary?: boolean;
+}
+
+export const TestComponent = styled.div<ButtonProps>`
   font-size: 48;
-  background-color: red;
+  background-color: ${(props) => (props.primary ? '#0070f3' : '#ccc' )};
   border: 1px solid;
 `;
 
 export const CustomText = styled.p`
   color: blue;
 `;
+
