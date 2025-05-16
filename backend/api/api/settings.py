@@ -37,7 +37,30 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'rest_framework',
+    'corsheaders',
+    'drf_yasg'
 ]
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework.authentication.SessionAuthentication',
+        'rest_framework.authentication.BasicAuthentication',
+    ),
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.IsAuthenticated',
+    ],
+}
+
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:3000", #frontend url
+    "http://127.0.0.1:3000",
+]
+
+# Configurações de sessão
+SESSION_COOKIE_HTTPONLY = True  # Previne acesso via JavaScript
+SESSION_COOKIE_SECURE = False   # Definir como True em produção (requer HTTPS)
+SESSION_COOKIE_SAMESITE = 'Lax'  # Previne CSRF em navegadores modernos
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
