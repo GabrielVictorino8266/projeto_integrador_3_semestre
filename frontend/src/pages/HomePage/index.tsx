@@ -1,16 +1,9 @@
-import { useContext } from "react";
-import { TestComponent } from "./style";
-import { ModalContext } from "../../contexts/modal.context";
-import { Modal } from "../../components/Modal/ModalGeneric";
+import { InputComponent } from "../../components/Input";
 
 const HomePage = () => {
-  const { isOpen, handleOpenModal } = useContext(ModalContext);
   return (
     <>
-      {isOpen ? <Modal /> : null}
-      <TestComponent primary={false}>
-        <button onClick={() => handleOpenModal()}>Abrir Modal</button>
-      </TestComponent>
+      <InputComponent type="password" text="Digite seu CPF" LabelText="CPF" />
     </>
   );
 };
