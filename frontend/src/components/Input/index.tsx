@@ -1,4 +1,3 @@
-import { useState } from "react"
 import { ContainerInput } from "./styles"
 import { FactoryMask } from "../../Utils/Mask/FactoryMask"
 
@@ -8,22 +7,33 @@ type TypesProps = {
     cadeado?: boolean,
     type: string,
     mask?: 'cpf' | 'telefone'
+    value?: string,
+    onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+    name?: string;
+    inputRef: React.Ref<HTMLInputElement>
 }
 
 export function InputComponent(props: TypesProps){
-
-    const [value, setValue] = useState("")
 
     function getChange(e:React.ChangeEvent<HTMLInputElement>) {
 
         if(props.mask != null){
             const instance = FactoryMask(props.mask)
-
             const formated = instance.mask(e.target.value)
-            console.log(formated)
-            setValue(formated)
+
+            const customEvnt ={
+                ...e,
+                target:{
+                    ...e.target,
+                    value: formated,
+                    name: props.name || ''
+                }
+            }
+
+            props.onChange(customEvnt as React.ChangeEvent<HTMLInputElement>)
+
         }else {
-            setValue(e.target.value)
+            props.onChange?.(e)
         }
     }
 
@@ -34,8 +44,10 @@ export function InputComponent(props: TypesProps){
 
                 <input  type={props.type}
                         placeholder={props.text}
-                        value={value}
+                        value={props.value || ""}
                         onChange={getChange}
+                        name={props.name}
+                        ref={props.inputRef}
                         maxLength={14}
                     />            
             </ContainerInput>

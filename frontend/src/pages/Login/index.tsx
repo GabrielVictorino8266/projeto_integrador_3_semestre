@@ -9,12 +9,12 @@ import {
   TitleDiv,
   Links,
   BotaoEntrar,
-  ContainerInput
+  ConainerLift
 } from "./Styles";
-import { toast, ToastContainer } from "react-toastify";
+import { toast } from "react-toastify";
 // import { api } from "../../services/api";
 import Logo from '../../assets/Logo.png';
-import { formatCPF } from "../../Utils/FormatterCPF";
+import { InputComponent } from "../../components/Input";
 
 const schema = yup.object({
   cpf: yup.string().required("Digite o seu CPF").min(14, "CPF inválido"),
@@ -26,19 +26,17 @@ type FormData = {
   password: string;
 };
 
-export function Login() {
-    
+export function Login() {    
     const navigate = useNavigate();
 
     const {
         control,
-        register,
         handleSubmit,
         formState: { errors },
     } = useForm<FormData>({
         resolver: yupResolver(schema),
     });
-
+    
     const onSubmit = (data: FormData) => {
         console.log("Dadus enviados:", data);
         toast.success("Login enviado com sucesso!")
@@ -49,52 +47,59 @@ export function Login() {
 
     return (
         <Container>
-        <LeftContainer>
-            <TitleDiv>
-                <img src={Logo} alt="Logo-Viação-União" />
-                <h1>Viação <br /><span>UNIÃO</span></h1>
-            </TitleDiv>
+            <LeftContainer>
+                <ConainerLift>
+                    <TitleDiv>
+                        <img src={Logo} alt="Logo-Viação-União" />
+                        <h1>Viação <br /><span>UNIÃO</span></h1>
+                    </TitleDiv>
 
-            <form onSubmit={handleSubmit(onSubmit)}>
-            <ContainerInput cadeado={false}>
-                <label>CPF</label>
-                <Controller
-                name="cpf"
-                control={control}
-                defaultValue=""
-                render={({ field }) => (
-                    <input
-                    type="text"
-                    placeholder="Digite seu CPF"
-                    value={field.value}
-                    onChange={(e) => field.onChange(formatCPF(e.target.value))}
-                    maxLength={14}
-                    />
-                )}
-                />
-                <p>{errors.cpf?.message}</p>
-            </ContainerInput>
+                    <form onSubmit={handleSubmit(onSubmit)}>
+                        
+                        <Controller 
+                            name="cpf"
+                            control={control}
+                            render={({ field }) => (
+                                <InputComponent 
+                                    LabelText="CPF" 
+                                    text="Digite seu CPF" 
+                                    type="text" 
+                                    mask="cpf"
+                                    {...field}
+                                    inputRef={field.ref}
+                                />
+                            )}
+                        />
+                        <p>{errors?.cpf?.message}</p>
 
-            <ContainerInput cadeado={true}>
-                <label>Senha</label>
-                <input
-                type="password"
-                placeholder="Digite sua senha"
-                {...register("password")}
-                />
-                <p>{errors.password?.message}</p>
-            </ContainerInput>
+                        <br />
 
-            <Links>
-                <a href="">Esqueci minha senha</a>
-                <a href="">Cadastre-se</a>
-            </Links>
+                        <Controller 
+                            name="password"
+                            control={control}
+                            render={({ field }) => (
+                            <InputComponent 
+                                LabelText="SENHA" 
+                                text="Digite sua senha" 
+                                type="password"
+                                cadeado={true}
+                                {...field}
+                                inputRef={field.ref} 
+                            />    
+                            )}
+                        />
+                        <p>{errors?.password?.message}</p>
 
-            <BotaoEntrar type="submit">ENTRAR</BotaoEntrar>
-            </form>
-        </LeftContainer>
-        <RightContainer />
-        <ToastContainer />
+                        <Links>
+                            <a href="">Esqueci minha senha</a>
+                            <a href="">Cadastre-se</a>
+                        </Links>
+
+                        <BotaoEntrar type="submit">ENTRAR</BotaoEntrar>
+                    </form>
+                </ConainerLift>
+            </LeftContainer>
+            <RightContainer />
         </Container>
     );
 }

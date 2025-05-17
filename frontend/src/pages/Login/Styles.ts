@@ -1,7 +1,5 @@
 import styled from "@emotion/styled";
 import VanFundo from '../../assets/VanFundo.png';
-import Pessoa from '../../assets/Pessoa.png';
-import Cadeado from '../../assets/Cadeado.png';
 
 interface ImageProps {
     cadeado?: boolean;
@@ -74,46 +72,6 @@ export const TitleDiv = styled.div`
     }
 `;
 
-export const ContainerInput = styled.div<ImageProps>`
-    display: flex;
-    flex-direction: column;
-    gap: 5px;
-    width: 100%;
-    margin-bottom: 2%;
-
-    label {
-        font-size: 20px;
-        color: #E0E0E0;
-        font-weight: 400;
-
-        @media (max-width: 768px) {
-            font-size: 16px;
-        }
-    }
-
-    input {
-        background-image: url(${(props) => (props.cadeado ? Cadeado : Pessoa)});
-        background-repeat: no-repeat;
-        background-position: 10px center;
-        background-size: 20px 20px;
-        height: 49px;
-        font-size: 20px;
-        border-radius: 10px;
-        color: black;
-        padding-left: 40px;
-
-        @media (max-width: 768px) {
-            font-size: 16px;
-        }
-    }
-
-    p {
-        font-size: 14px;
-        line-height: 80%;
-        color: rgb(209, 100, 100);
-    }
-`;
-
 export const Links = styled.div`
     display: flex;
     width: 100%;
@@ -133,18 +91,19 @@ export const Links = styled.div`
 `;
 
 export const BotaoEntrar = styled.button`
-    background-color: #1189FF;
+    background-color: #72B5F8;
     border-radius: 10px;
     width: 410px;
     height: 70px;
     font-size: 24px;
     font-weight: 700;
-    color: white;
+    color: black;
     border: none;
     transition: all 0.3s ease;
+    margin-top: 5%;
 
     &:hover {
-        background-color: rgb(53, 148, 243);
+        background-color:rgb(88, 153, 218);
         transform: scale(1.05);
     }
 
@@ -154,3 +113,18 @@ export const BotaoEntrar = styled.button`
         height: 60px;
     }
 `;
+
+export const ConainerLift = styled.div`
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    height:70%;
+
+    p {
+        font-size: 14px;
+        line-height: 80%;
+        color: rgb(209, 100, 100);
+    }
+
+`

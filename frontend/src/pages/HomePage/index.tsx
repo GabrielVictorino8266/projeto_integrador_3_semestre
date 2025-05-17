@@ -1,13 +1,12 @@
-import { CustomText, TestComponent } from "./style";
+import { InputComponent } from "../../components/Input";
+
 
 const HomePage = () => {
-  return (
-    <>
-      <TestComponent primary={false}>
-        <CustomText>udshfjsd</CustomText>
-      </TestComponent>
-    </>
-  );
+    return (
+      <>
+        <InputComponent type="password" text="Digite seu CPF" LabelText="CPF"/>
+      </>
+    );
 };
 
 export default HomePage;
