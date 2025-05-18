@@ -9,6 +9,7 @@ dnspython==2.4.2
 
 # JWT Authentication
 djangorestframework-simplejwt==5.3.1
+python-jose
 
 # Environment
 python-dotenv==1.0.1

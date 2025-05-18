@@ -73,11 +73,15 @@ REST_FRAMEWORK = {
 }
 
 SIMPLE_JWT = {
-    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=int(os.getenv('JWT_ACCESS_TOKEN_LIFETIME', 30))),
-    'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
+    'ACCESS_TOKEN_LIFETIME': timedelta(hours=1),  # Token de acesso dura 1 hora
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=1),  # Token de refresh dura 1 dia
     'ROTATE_REFRESH_TOKENS': False,
-    'BLACKLIST_AFTER_ROTATION': True,
-    'SIGNING_KEY': os.getenv('JWT_SECRET_KEY', SECRET_KEY),
+    'BLACKLIST_AFTER_ROTATION': False,
+    'ALGORITHM': 'HS256',  # Algoritmo de assinatura
+    'SIGNING_KEY': SECRET_KEY,  # Usa a mesma chave secreta do Django
+    'AUTH_HEADER_TYPES': ('Bearer',),  # Prefixo do cabeçalho Authorization
+    'USER_ID_FIELD': '_id',  # Campo do ID do usuário no MongoDB
+    'USER_ID_CLAIM': 'user_id',  # Nome da claim no token JWT
 }
 
 CORS_ALLOWED_ORIGINS = [
