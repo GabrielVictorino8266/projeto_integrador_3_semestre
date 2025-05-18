@@ -8,7 +8,7 @@ pymongo==4.6.1
 dnspython==2.4.2
 
 # JWT Authentication
-#djangorestframework-simplejwt==5.3.1
+djangorestframework-simplejwt==5.3.1
 
 # Environment
 python-dotenv==1.0.1

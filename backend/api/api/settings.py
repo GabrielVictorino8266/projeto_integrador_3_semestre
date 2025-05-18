@@ -11,6 +11,26 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 """
 
 from pathlib import Path
+from pymongo import MongoClient
+from dotenv import load_dotenv
+from datetime import timedelta
+import os
+
+
+load_dotenv()
+
+MONGO_URI = os.environ.get('MONGO_URI')
+if not MONGO_URI:
+    raise Exception("MONGO_URI não configurada nas variáveis de ambiente")
+
+MONGO_DB_NAME = os.environ.get('MONGO_DB_NAME', 'projeto_teste')
+if not MONGO_DB_NAME:
+    raise Exception("MONGO_DB_NAME não configurada nas variáveis de ambiente")
+
+# Conexão MongoDB
+mongo_client = MongoClient(MONGO_URI)
+mongodb = mongo_client[MONGO_DB_NAME]
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -25,7 +45,8 @@ SECRET_KEY = 'django-insecure-f5o#ebnrpse8%ylekv7n7&mo*6j*8e3$3u9s(8@1@t*&0kki+(
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['localhost', '127.0.0.1'] # Development
+# ALLOWED_HOSTS = []
 
 
 # Application definition
@@ -38,18 +59,25 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
+    'rest_framework_simplejwt',
     'corsheaders',
-    'drf_yasg'
+    'drf_yasg',
+    'users',
+    'core'
 ]
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
-        'rest_framework.authentication.SessionAuthentication',
-        'rest_framework.authentication.BasicAuthentication',
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
     ),
-    'DEFAULT_PERMISSION_CLASSES': [
-        'rest_framework.permissions.IsAuthenticated',
-    ],
+}
+
+SIMPLE_JWT = {
+    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=int(os.getenv('JWT_ACCESS_TOKEN_LIFETIME', 30))),
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
+    'ROTATE_REFRESH_TOKENS': False,
+    'BLACKLIST_AFTER_ROTATION': True,
+    'SIGNING_KEY': os.getenv('JWT_SECRET_KEY', SECRET_KEY),
 }
 
 CORS_ALLOWED_ORIGINS = [
