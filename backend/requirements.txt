@@ -15,6 +15,7 @@ python-jose
 python-dotenv==1.0.1
 
 # Outras dependências úteis
+passlib
 pillow==10.2.0
 gunicorn==21.2.0
 drf-yasg==1.21.7  # Swagger para documentação de API
