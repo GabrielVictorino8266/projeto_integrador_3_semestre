@@ -7,7 +7,7 @@ const ModalBody = ({ children }: IDefaultProviderProps) => {
   const { handleCloseModal } = useContext(ModalContext);
   return (
     <>
-      <ModalBodyStyled>
+      <ModalBodyStyled className="modal__body">
         <h2>ModalBody</h2>
         <button
           onClick={() => {
