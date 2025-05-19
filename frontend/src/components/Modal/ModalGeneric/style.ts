@@ -3,6 +3,7 @@ import styled from "@emotion/styled";
 const ModalStyledContainer = styled.section`
   min-width: 100%;
   min-height: 100%;
+  margin: 0 auto;
   position: fixed;
   background-color: rgba(0, 0, 0, 0.5);
   backdrop-filter: blur(2px);
@@ -10,6 +11,10 @@ const ModalStyledContainer = styled.section`
   align-items: center;
   justify-content: center;
   z-index: 100; // don´t change
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
 `;
 
 export { ModalStyledContainer };
