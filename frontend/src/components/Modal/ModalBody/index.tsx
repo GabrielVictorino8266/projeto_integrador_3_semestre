@@ -1,20 +1,23 @@
 import { useContext } from "react";
 import type { IDefaultProviderProps } from "../../../interfaces";
 import { ModalContext } from "../../../contexts/modal.context";
+import { ModalBodyStyled } from "./style";
 
 const ModalBody = ({ children }: IDefaultProviderProps) => {
   const { handleCloseModal } = useContext(ModalContext);
   return (
     <>
-      <h2>ModalBody</h2>
-      <button
-        onClick={() => {
-          handleCloseModal();
-        }}
-      >
-        Fechar
-      </button>
-      {children}
+      <ModalBodyStyled>
+        <h2>ModalBody</h2>
+        <button
+          onClick={() => {
+            handleCloseModal();
+          }}
+        >
+          Fechar
+        </button>
+        {children}
+      </ModalBodyStyled>
     </>
   );
 };
