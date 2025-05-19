@@ -10,11 +10,11 @@ export const GlobalStyles = () => (
         --color-white: #ffffff;
 
         --color-success: #15670a;
-        --color-attention: ##ff6f00;
+        --color-attention: #ff6f00;
         --color-error: #ef4444;
 
         --colorStatus-ok: #15670a;
-        --colorStatus-maintenance: ##0073e6;
+        --colorStatus-maintenance: #0073e6;
         --colorStatus-unavailable: #b31010;
 
         --color-grey-0: #F8F9FA;
