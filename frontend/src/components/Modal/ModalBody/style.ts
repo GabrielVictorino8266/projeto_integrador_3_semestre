@@ -5,6 +5,7 @@ const ModalBodyStyled = styled.section`
   height: min-content;
   background-color: #ffffff;
   border-radius: 8px;
+  padding: 8px;
 `;
 
 export { ModalBodyStyled };

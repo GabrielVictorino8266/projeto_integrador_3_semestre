@@ -1,12 +1,15 @@
-import { ModalBody } from "../ModalBody";
+import { useContext } from "react";
 import { ModalStyledContainer } from "./style";
+import { ModalContext } from "../../../contexts/modal.context";
+import type { IModalChildrenProps } from "../../../interfaces/modal.interface";
+import { ModalBody } from "../ModalBody";
 
-export const Modal = () => {
+export const Modal = ({ children }: IModalChildrenProps) => {
+  const { modalRef } = useContext(ModalContext);
+
   return (
-    <ModalStyledContainer>
-      <ModalBody>
-        <p>ModalChildren</p>
-      </ModalBody>
+    <ModalStyledContainer ref={modalRef}>
+      <ModalBody>{children}</ModalBody>
     </ModalStyledContainer>
   );
 };

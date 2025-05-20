@@ -1,18 +1,20 @@
-import { useContext } from "react";
-import { Modal } from "../../components/Modal/ModalGeneric";
-import { ModalContext } from "../../contexts/modal.context";
+import { useModal } from "../../hooks";
 
 const HomePage = () => {
-  const { isOpen, handleOpenModal } = useContext(ModalContext);
+  const { handleOpenModal, MODALCOMPONENTS, modalType } = useModal();
+
+  const modalContent = modalType ? MODALCOMPONENTS[modalType] : null;
+  console.log(modalContent);
+
   return (
     <>
-      {isOpen ? <Modal /> : null}
+      {modalContent ? modalContent() : null}
       <button
         onClick={() => {
-          handleOpenModal();
+          handleOpenModal("driverRegister");
         }}
       >
-        Abrir o modal
+        Abrir o registro
       </button>
     </>
   );

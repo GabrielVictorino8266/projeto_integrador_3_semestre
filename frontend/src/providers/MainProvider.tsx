@@ -1,4 +1,4 @@
-import { ModalProvider } from "../contexts/modal.context";
+import { ModalProvider } from "./ModalProvider";
 import type { IDefaultProviderProps } from "../interfaces";
 
 const MainProvider = ({ children }: IDefaultProviderProps) => {
