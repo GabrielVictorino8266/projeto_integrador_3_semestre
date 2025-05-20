@@ -12,15 +12,4 @@ const DriverRegisterModalContent = () => {
   );
 };
 
-const AvisoModalContent = () => {
-  return (
-    <Modal>
-      <ModalHeader modalTitle={"AVISO"} />
-      <p>AVISO</p>
-      <input type="text" />
-      <button>OK</button>
-    </Modal>
-  );
-};
-
-export { DriverRegisterModalContent, AvisoModalContent };
+export { DriverRegisterModalContent };

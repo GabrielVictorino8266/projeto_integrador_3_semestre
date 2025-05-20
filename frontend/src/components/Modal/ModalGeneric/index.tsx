@@ -1,11 +1,10 @@
-import { useContext } from "react";
 import { ModalStyledContainer } from "./style";
-import { ModalContext } from "../../../contexts/modal.context";
 import type { IModalChildrenProps } from "../../../interfaces/modal.interface";
 import { ModalBody } from "../ModalBody";
+import { useModal } from "../../../hooks";
 
 export const Modal = ({ children }: IModalChildrenProps) => {
-  const { modalRef } = useContext(ModalContext);
+  const { modalRef } = useModal();
 
   return (
     <ModalStyledContainer ref={modalRef}>

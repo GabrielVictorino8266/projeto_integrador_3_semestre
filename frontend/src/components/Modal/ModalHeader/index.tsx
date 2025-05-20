@@ -1,12 +1,12 @@
-import { useContext } from "react";
 import { ModalHeaderStyled } from "./style";
-import { ModalContext } from "../../../contexts/modal.context";
+import { useModal } from "../../../hooks";
 
 interface IModalTitle {
   modalTitle: string;
 }
+
 const ModalHeader = ({ modalTitle }: IModalTitle) => {
-  const { handleCloseModal } = useContext(ModalContext);
+  const { handleCloseModal } = useModal();
 
   return (
     <ModalHeaderStyled>
