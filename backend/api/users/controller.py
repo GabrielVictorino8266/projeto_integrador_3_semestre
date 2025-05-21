@@ -7,7 +7,9 @@ from bson.json_util import dumps
 import json
 from .auth_services import auth_user, create_access_token, create_refresh_token, get_user_from_token
 from .authentication import MongoJWTAuthtentication
+from .swagger.swagger_decorators import login_swagger, refresh_token_swagger, user_profile_swagger
 
+@login_swagger
 @api_view(['POST'])
 @permission_classes([AllowAny])
 def login(request):
@@ -69,6 +71,7 @@ def login(request):
         }
     })
 
+@refresh_token_swagger
 @api_view(['POST'])
 @permission_classes([AllowAny])
 def refresh_token(request):
@@ -106,6 +109,7 @@ def refresh_token(request):
         "token_type": "bearer"
     })
 
+@user_profile_swagger
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
 @authentication_classes([MongoJWTAuthtentication])
