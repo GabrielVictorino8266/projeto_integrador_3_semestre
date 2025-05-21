@@ -36,6 +36,7 @@ class MongoJWTAuthtentication(BaseAuthentication):
     
     def authenticate_header(self, request):
         """
-        Valor para o cabeçalho WWW-Authenticate quando a autenticação falha
+        Value for the headers WWW-Authenticate when authentication fails
         """
+        
         return self.keyword

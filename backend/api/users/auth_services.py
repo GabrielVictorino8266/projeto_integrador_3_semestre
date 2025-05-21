@@ -4,21 +4,18 @@ from datetime import datetime, timedelta
 from bson.objectid import ObjectId
 from jose import jwt, JWTError
 from django.conf import settings
-
-from api.settings import mongodb  # Se 'api' é o módulo principal
-# Ou:
+ 
 import sys
-sys.path.append('/app')  # Adiciona diretório raiz ao path
-from api.settings import mongodb  # Agora deve funcionar
+sys.path.append('/app')
+from api.settings import mongodb
 
-# mongo connection
 users_collection = mongodb['users']
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
 def verify_password(plain_password, hashed_password):
     """
-    Verify a plain password against a hashed password.
+        Verify a plain password against a hashed password.
     """
     if plain_password == hashed_password:
         return True
@@ -26,15 +23,14 @@ def verify_password(plain_password, hashed_password):
 
 def get_hash_password(password: str):
     """
-    Hash a password using bcrypt.
+        Hash a password using bcrypt.
     """
     return pwd_context.hash(password)
 
 def auth_user(cpf: str, password: str):
     """
-    Authenticate a user by checking cpf and password.
+        Authenticate a user by checking cpf and password.
     """
-    # print(f"Authenticating user with CPF: {cpf}, {password}")
     user = users_collection.find_one({"cpf": cpf})
 
     if not user:
