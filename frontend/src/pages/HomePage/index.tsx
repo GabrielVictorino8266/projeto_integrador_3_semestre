@@ -4,7 +4,6 @@ const HomePage = () => {
   const { handleOpenModal, MODALCOMPONENTS, modalType } = useModal();
 
   const modalContent = modalType ? MODALCOMPONENTS[modalType] : null;
-  console.log(modalContent);
 
   return (
     <>
