@@ -1,0 +1,15 @@
+import { Modal } from "./ModalGeneric";
+import { ModalHeader } from "./ModalHeader";
+
+const DriverRegisterModalContent = () => {
+  return (
+    <Modal>
+      <ModalHeader modalTitle={"CADASTRO DE MOTORISTA"} />
+      <p>Formulario</p>
+      <input type="text" />
+      <button>Enviar</button>
+    </Modal>
+  );
+};
+
+export { DriverRegisterModalContent };

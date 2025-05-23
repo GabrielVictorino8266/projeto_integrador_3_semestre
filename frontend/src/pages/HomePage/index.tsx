@@ -1,12 +1,22 @@
-import { InputComponent } from "../../components/Input";
-
+import { useModal } from "../../hooks";
 
 const HomePage = () => {
-    return (
-      <>
-        <InputComponent type="password" text="Digite seu CPF" LabelText="CPF"/>
-      </>
-    );
+  const { handleOpenModal, MODALCOMPONENTS, modalType } = useModal();
+
+  const modalContent = modalType ? MODALCOMPONENTS[modalType] : null;
+
+  return (
+    <>
+      {modalContent ? modalContent() : null}
+      <button
+        onClick={() => {
+          handleOpenModal("driverRegister");
+        }}
+      >
+        Abrir o registro
+      </button>
+    </>
+  );
 };
 
 export default HomePage;
