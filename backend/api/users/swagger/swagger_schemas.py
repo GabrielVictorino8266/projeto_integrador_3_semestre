@@ -1,20 +1,13 @@
+# users/swagger/swagger_schemas.py - Versão Simples
 from drf_yasg import openapi
 
-# Request Schemas
+# ===== REQUEST SCHEMAS =====
 login_request_schema = openapi.Schema(
     type=openapi.TYPE_OBJECT,
     required=['cpf', 'password'],
     properties={
-        'cpf': openapi.Schema(
-            type=openapi.TYPE_STRING,
-            description='User CPF (numbers only)',
-            example='12345678901'
-        ),
-        'password': openapi.Schema(
-            type=openapi.TYPE_STRING,
-            description='User password',
-            example='9012004'
-        ),
+        'cpf': openapi.Schema(type=openapi.TYPE_STRING, example='18092754314'),
+        'password': openapi.Schema(type=openapi.TYPE_STRING, example='minhasenha123'),
     },
 )
 
@@ -22,72 +15,43 @@ refresh_token_request_schema = openapi.Schema(
     type=openapi.TYPE_OBJECT,
     required=['refresh_token'],
     properties={
-        'refresh_token': openapi.Schema(
-            type=openapi.TYPE_STRING,
-            description='Refresh Token JWT',
-            example='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...'
-        ),
+        'refresh_token': openapi.Schema(type=openapi.TYPE_STRING, example='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...'),
     },
 )
 
-# Response Schemas
-user_data_schema = openapi.Schema(
+logout_request_schema = openapi.Schema(
     type=openapi.TYPE_OBJECT,
-    description='Basic user data',
     properties={
-        'id': openapi.Schema(
-            type=openapi.TYPE_STRING,
-            description='User ID in MongoDB',
-            example='682a1fc56a7154a8bfbe0529'
-        ),
-        'cpf': openapi.Schema(
-            type=openapi.TYPE_STRING,
-            description='User CPF (numbers only)',
-            example='12345678901'
-        ),
-        'tipo': openapi.Schema(
-            type=openapi.TYPE_STRING,
-            description='User Type',
-            example='admin'
-        ),
-    }
+        'refresh_token': openapi.Schema(type=openapi.TYPE_STRING, example='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...'),
+    },
 )
 
+# ===== RESPONSE SCHEMAS =====
 login_success_response_schema = openapi.Schema(
     type=openapi.TYPE_OBJECT,
     properties={
-        'access_token': openapi.Schema(
-            type=openapi.TYPE_STRING,
-            description='Success Token JWT',
-            example='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...'
+        'access_token': openapi.Schema(type=openapi.TYPE_STRING),
+        'refresh_token': openapi.Schema(type=openapi.TYPE_STRING),
+        'token_type': openapi.Schema(type=openapi.TYPE_STRING, example='bearer'),
+        'expires_in': openapi.Schema(type=openapi.TYPE_INTEGER, example=3600),
+        'user': openapi.Schema(
+            type=openapi.TYPE_OBJECT,
+            properties={
+                'id': openapi.Schema(type=openapi.TYPE_STRING),
+                'cpf': openapi.Schema(type=openapi.TYPE_STRING),
+                'nome': openapi.Schema(type=openapi.TYPE_STRING),
+                'email': openapi.Schema(type=openapi.TYPE_STRING),
+            }
         ),
-        'refresh_token': openapi.Schema(
-            type=openapi.TYPE_STRING,
-            description='Refresh Token JWT',
-            example='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...'
-        ),
-        'token_type': openapi.Schema(
-            type=openapi.TYPE_STRING,
-            description='Token Type',
-            example='bearer'
-        ),
-        'user': user_data_schema,
     }
 )
 
 token_refresh_response_schema = openapi.Schema(
     type=openapi.TYPE_OBJECT,
     properties={
-        'access_token': openapi.Schema(
-            type=openapi.TYPE_STRING,
-            description='New token JWT for access',
-            example='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...'
-        ),
-        'token_type': openapi.Schema(
-            type=openapi.TYPE_STRING,
-            description='Token Type',
-            example='bearer'
-        ),
+        'access_token': openapi.Schema(type=openapi.TYPE_STRING),
+        'token_type': openapi.Schema(type=openapi.TYPE_STRING, example='bearer'),
+        'expires_in': openapi.Schema(type=openapi.TYPE_INTEGER, example=3600),
     }
 )
 
@@ -97,69 +61,38 @@ user_profile_response_schema = openapi.Schema(
         'user': openapi.Schema(
             type=openapi.TYPE_OBJECT,
             properties={
-                'id': openapi.Schema(
-                    type=openapi.TYPE_STRING,
-                    description='User ID in MongoDB',
-                    example='682a1fc56a7154a8bfbe0529'
-                ),
-                'cpf': openapi.Schema(
-                    type=openapi.TYPE_STRING,
-                    description='User CPF (numbers only)',
-                    example='12345678901'
-                ),
-                'tipo': openapi.Schema(
-                    type=openapi.TYPE_STRING,
-                    description='User type',
-                    example='admin'
-                ),
-                'message': openapi.Schema(
-                    type=openapi.TYPE_STRING,
-                    description='Success message',
-                    example='User profile retrieved successfully.'
-                ),
+                'id': openapi.Schema(type=openapi.TYPE_STRING),
+                'nome': openapi.Schema(type=openapi.TYPE_STRING),
+                'cpf': openapi.Schema(type=openapi.TYPE_STRING),
+                'email': openapi.Schema(type=openapi.TYPE_STRING),
+                'type': openapi.Schema(type=openapi.TYPE_STRING),
+                'telefone': openapi.Schema(type=openapi.TYPE_STRING),
+                'active': openapi.Schema(type=openapi.TYPE_STRING),
             }
         ),
+        'message': openapi.Schema(type=openapi.TYPE_STRING, example='Perfil obtido com sucesso.'),
     }
 )
 
-# Error Schemas
+logout_response_schema = openapi.Schema(
+    type=openapi.TYPE_OBJECT,
+    properties={
+        'message': openapi.Schema(type=openapi.TYPE_STRING, example='Logout realizado com sucesso.'),
+    }
+)
+
+# ===== ERROR SCHEMA =====
 error_response_schema = openapi.Schema(
     type=openapi.TYPE_OBJECT,
     properties={
-        'detail': openapi.Schema(
-            type=openapi.TYPE_STRING,
-            description='Error message'
-        )
+        'detail': openapi.Schema(type=openapi.TYPE_STRING)
     }
 )
 
-# Common Responses
+# ===== STANDARD RESPONSES (Para reutilizar em outros endpoints) =====
 standard_responses = {
-    400: openapi.Response(
-        description="Invalid input data",
-        schema=error_response_schema,
-        examples={
-            'application/json': {
-                'detail': 'User cpf and password are required'
-            }
-        }
-    ),
-    401: openapi.Response(
-        description="Invalid Credentials",
-        schema=error_response_schema,
-        examples={
-            'application/json': {
-                'detail': 'Invalid credentials.'
-            }
-        }
-    ),
-    403: openapi.Response(
-        description="Access Denied",
-        schema=error_response_schema,
-        examples={
-            'application/json': {
-                'detail': 'Authentication credentials were not provided.'
-            }
-        }
-    ),
+    400: openapi.Response(description="Dados inválidos", schema=error_response_schema),
+    401: openapi.Response(description="Não autorizado", schema=error_response_schema),
+    403: openapi.Response(description="Acesso negado", schema=error_response_schema),
+    500: openapi.Response(description="Erro interno", schema=error_response_schema),
 }
