@@ -13,47 +13,47 @@ from .swagger_schemas import (
 # Decorator endpoint login
 login_swagger = swagger_auto_schema(
     method='post',
-    operation_description="Endpoint para autenticação de usuários e obtenção de tokens JWT",
-    operation_summary="Login de usuário",
+    operation_description="Endpoint for user authenticattion and token JWT generation",
+    operation_summary="User login",
     request_body=login_request_schema,
     responses={
         200: openapi.Response(
-            description="Login realizado com sucesso",
+            description="User logged successfully",
             schema=login_success_response_schema
         ),
         **standard_responses
     },
-    tags=['Autenticação']
+    tags=['Authentication']
 )
 
 # Decorator refresh_token
 refresh_token_swagger = swagger_auto_schema(
     method='post',
-    operation_description="Endpoint para renovar o token de acesso usando o refresh token",
-    operation_summary="Renovar token de acesso",
+    operation_description="Endpoint to renew the access token using the refresh token",
+    operation_summary="Renew access token",
     request_body=refresh_token_request_schema,
     responses={
         200: openapi.Response(
-            description="Token renovado com sucesso",
+            description="New token renewed successfully",
             schema=token_refresh_response_schema
         ),
         **standard_responses
     },
-    tags=['Autenticação']
+    tags=['Authentication']
 )
 
 # Decorator user profile
 user_profile_swagger = swagger_auto_schema(
     method='get',
-    operation_description="Endpoint protegido que retorna o perfil do usuário autenticado",
-    operation_summary="Obter perfil do usuário",
+    operation_description="Secured endpoint which returns user profile authenticated data",
+    operation_summary="Get user profile",
     responses={
         200: openapi.Response(
-            description="Perfil do usuário obtido com sucesso",
+            description="User profile retrieved successfully",
             schema=user_profile_response_schema
         ),
         **standard_responses
     },
-    tags=['Usuário'],
+    tags=['User'],
     security=[{'Bearer': []}]
 )

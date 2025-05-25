@@ -6,7 +6,7 @@ from datetime import timedelta
 from bson.json_util import dumps
 import json
 from .auth_services import auth_user, create_access_token, create_refresh_token, get_user_from_token
-from .authentication import MongoJWTAuthtentication
+from .authentication import MongoJWTAuthentication
 from .swagger.swagger_decorators import login_swagger, refresh_token_swagger, user_profile_swagger
 
 @login_swagger
@@ -14,10 +14,11 @@ from .swagger.swagger_decorators import login_swagger, refresh_token_swagger, us
 @permission_classes([AllowAny])
 def login(request):
     """
-    Login endpoint for user authentication.
+        Login endpoint for user authentication.
     """
     cpf = request.data.get('cpf')
     password = request.data.get('password')
+    print(cpf, password)
 
     if not cpf or not password:
         return Response(
@@ -112,7 +113,7 @@ def refresh_token(request):
 @user_profile_swagger
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
-@authentication_classes([MongoJWTAuthtentication])
+@authentication_classes([MongoJWTAuthentication])
 def get_user_profile(request):
     """
     Get user endpoint and returns user profile which is logged in.

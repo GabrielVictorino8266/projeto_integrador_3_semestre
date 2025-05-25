@@ -60,3 +60,7 @@ dist/
 .vscode/
 *.sublime-project
 *.sublime-workspace
+
+# backup folders
+backup/
+backup/*

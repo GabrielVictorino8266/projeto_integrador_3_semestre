@@ -79,7 +79,7 @@ def decode_token(token:str):
         Decode jwt token
     """
     try:
-        payload = jwt.decode(token, settings.SECRET_KEY, algorithm=settings.SIMPLE_JWT['ALGORITHM'])
+        payload = jwt.decode(token, settings.SECRET_KEY, algorithms=[settings.SIMPLE_JWT['ALGORITHM']])
         return payload
     except JWTError:
         return None

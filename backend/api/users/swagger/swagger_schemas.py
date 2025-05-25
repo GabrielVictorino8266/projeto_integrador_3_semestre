@@ -3,16 +3,16 @@ from drf_yasg import openapi
 # Request Schemas
 login_request_schema = openapi.Schema(
     type=openapi.TYPE_OBJECT,
-    required=['cpf', 'senha'],
+    required=['cpf', 'password'],
     properties={
         'cpf': openapi.Schema(
             type=openapi.TYPE_STRING,
-            description='CPF do usuário (somente números)',
+            description='User CPF (numbers only)',
             example='12345678901'
         ),
-        'senha': openapi.Schema(
+        'password': openapi.Schema(
             type=openapi.TYPE_STRING,
-            description='Senha do usuário',
+            description='User password',
             example='9012004'
         ),
     },
@@ -24,7 +24,7 @@ refresh_token_request_schema = openapi.Schema(
     properties={
         'refresh_token': openapi.Schema(
             type=openapi.TYPE_STRING,
-            description='Token JWT de refresh',
+            description='Refresh Token JWT',
             example='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...'
         ),
     },
@@ -33,21 +33,21 @@ refresh_token_request_schema = openapi.Schema(
 # Response Schemas
 user_data_schema = openapi.Schema(
     type=openapi.TYPE_OBJECT,
-    description='Dados básicos do usuário',
+    description='Basic user data',
     properties={
         'id': openapi.Schema(
             type=openapi.TYPE_STRING,
-            description='ID do usuário no MongoDB',
+            description='User ID in MongoDB',
             example='682a1fc56a7154a8bfbe0529'
         ),
         'cpf': openapi.Schema(
             type=openapi.TYPE_STRING,
-            description='CPF do usuário',
+            description='User CPF (numbers only)',
             example='12345678901'
         ),
         'tipo': openapi.Schema(
             type=openapi.TYPE_STRING,
-            description='Tipo do usuário',
+            description='User Type',
             example='admin'
         ),
     }
@@ -58,17 +58,17 @@ login_success_response_schema = openapi.Schema(
     properties={
         'access_token': openapi.Schema(
             type=openapi.TYPE_STRING,
-            description='Token JWT de acesso',
+            description='Success Token JWT',
             example='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...'
         ),
         'refresh_token': openapi.Schema(
             type=openapi.TYPE_STRING,
-            description='Token JWT de refresh',
+            description='Refresh Token JWT',
             example='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...'
         ),
         'token_type': openapi.Schema(
             type=openapi.TYPE_STRING,
-            description='Tipo do token',
+            description='Token Type',
             example='bearer'
         ),
         'user': user_data_schema,
@@ -80,12 +80,12 @@ token_refresh_response_schema = openapi.Schema(
     properties={
         'access_token': openapi.Schema(
             type=openapi.TYPE_STRING,
-            description='Novo token JWT de acesso',
+            description='New token JWT for access',
             example='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...'
         ),
         'token_type': openapi.Schema(
             type=openapi.TYPE_STRING,
-            description='Tipo do token',
+            description='Token Type',
             example='bearer'
         ),
     }
@@ -99,22 +99,22 @@ user_profile_response_schema = openapi.Schema(
             properties={
                 'id': openapi.Schema(
                     type=openapi.TYPE_STRING,
-                    description='ID do usuário no MongoDB',
+                    description='User ID in MongoDB',
                     example='682a1fc56a7154a8bfbe0529'
                 ),
                 'cpf': openapi.Schema(
                     type=openapi.TYPE_STRING,
-                    description='CPF do usuário',
+                    description='User CPF (numbers only)',
                     example='12345678901'
                 ),
                 'tipo': openapi.Schema(
                     type=openapi.TYPE_STRING,
-                    description='Tipo do usuário',
+                    description='User type',
                     example='admin'
                 ),
                 'message': openapi.Schema(
                     type=openapi.TYPE_STRING,
-                    description='Mensagem de confirmação',
+                    description='Success message',
                     example='User profile retrieved successfully.'
                 ),
             }
@@ -128,7 +128,7 @@ error_response_schema = openapi.Schema(
     properties={
         'detail': openapi.Schema(
             type=openapi.TYPE_STRING,
-            description='Mensagem de erro'
+            description='Error message'
         )
     }
 )
@@ -136,16 +136,16 @@ error_response_schema = openapi.Schema(
 # Common Responses
 standard_responses = {
     400: openapi.Response(
-        description="Dados de entrada inválidos",
+        description="Invalid input data",
         schema=error_response_schema,
         examples={
             'application/json': {
-                'detail': 'CPF e senha são obrigatórios'
+                'detail': 'User cpf and password are required'
             }
         }
     ),
     401: openapi.Response(
-        description="Credenciais inválidas",
+        description="Invalid Credentials",
         schema=error_response_schema,
         examples={
             'application/json': {
@@ -154,7 +154,7 @@ standard_responses = {
         }
     ),
     403: openapi.Response(
-        description="Acesso negado",
+        description="Access Denied",
         schema=error_response_schema,
         examples={
             'application/json': {
