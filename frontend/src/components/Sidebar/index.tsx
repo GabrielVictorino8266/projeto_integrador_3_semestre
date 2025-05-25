@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
-import Logo from '../../assets/Logo.png';
-import Sair from '../../assets/Sair.png';
-import User from '../../assets/User.png';
+import Logo from '@assets/Logo.png';
+import Sair from '@assets/Sair.png';
+import User from '@assets/User.png';
 import DashboardIcon from '@mui/icons-material/Dashboard';
 import DirectionsBusIcon from '@mui/icons-material/DirectionsBus';
 import BarChartIcon from '@mui/icons-material/BarChart';
