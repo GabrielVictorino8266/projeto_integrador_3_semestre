@@ -1,0 +1,22 @@
+# Django
+django==5.2.1
+djangorestframework==3.14.0
+django-cors-headers==4.3.1
+
+# MongoDB
+pymongo==4.6.1
+dnspython==2.4.2
+
+# JWT Authentication
+djangorestframework-simplejwt==5.3.1
+python-jose
+
+# Environment
+python-dotenv==1.0.1
+
+# Outras dependências úteis
+passlib
+pillow==10.2.0
+gunicorn==21.2.0
+drf-yasg==1.21.7  # Swagger para documentação de API
+whitenoise==6.6.0  # Para servir arquivos estáticos
