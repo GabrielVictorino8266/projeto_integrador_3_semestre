@@ -1,66 +1,142 @@
-# 🗃️ Projeto Integrador 3º Semestre - .gitignore
+# =========================
+#         BACKEND
+# =========================
 
-# 🔥 Diretório geral
+# Python bytecode, cache e arquivos temporários
 __pycache__/
 *.py[cod]
-*.sqlite3
-*.log
-*.pot
 *.pyc
 *.pyo
+*$py.class
+*.so
+*.sqlite3
+db.sqlite3
+*.log
+*.pot
 *.coverage
+.coverage
+.coverage.*
+*.cover
+*.py,cover
+*.orig
+*.bak
+*.tmp
+*.swp
+*.swo
+*.seed
+*.bson
+*.mongo
 
-# 📂 Diretórios de ambiente virtual
+# Diretórios de ambiente virtual e variáveis de ambiente
 venv/
 .env
 .env.example
+.env.*
+*.env
 
-# 🌱 Arquivos temporários
-*.tmp
-*.bak
-*.swp
-*.swo
+# Arquivos temporários e de sistema
 *.DS_Store
 Thumbs.db
 
-# 🐳 Docker
+# Docker
 *.pid
 docker-compose.override.yml
 
-# 📝 Arquivos do Django
+# Django
 media/
 static/
-*.log
-
-# 📝 Arquivos do Django REST Framework
+staticfiles/
+local_settings.py
 drf_session/
 
-# 📂 Arquivos do MongoDB
+# MongoDB
 *.lock
 dump/
 
-# 🌐 Arquivos de cache
+# Cache e relatórios de testes
 *.cache
+.cache
+.pytest_cache/
+.mypy_cache/
+.pyre/
+htmlcov/
+.tox/
+.nox/
+.testenv/
+tests/__pycache__/
 
-# 📦 Node.js / React
+# Pip
+pip-log.txt
+pip-delete-this-directory.txt
+
+# Jupyter Notebook
+.ipynb_checkpoints
+
+# Build e distribuição Python
+develop-eggs/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# backup folders
+backup/
+backup/*
+
+# Configurações de editores
+.idea/
+.vscode/
+*.sublime-project
+*.sublime-workspace
+
+# Exceções para VSCode (mantém o arquivo de extensões)
+!.vscode/extensions.json
+
+# =========================
+#        FRONTEND
+# =========================
+
+# Node.js / React / Vue / etc.
 node_modules/
 build/
 dist/
+dist-ssr
+
+# Arquivos de ambiente do frontend
 .env.local
 .env.development
 .env.production
 .env.test
 .env.*.local
 
-# 📁 Arquivos relacionados ao Git
-*.orig
+# Logs do frontend
+logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
 
-# ⚙️ Configurações do Editor
-.idea/
+# Cache e arquivos temporários do frontend
+*.local
+
+# Configurações de editores
 .vscode/
-*.sublime-project
-*.sublime-workspace
+.vscode/*
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
 
-# backup folders
-backup/
-backup/*
+# Arquivos de sistema
+*.DS_Store
+Thumbs.db
