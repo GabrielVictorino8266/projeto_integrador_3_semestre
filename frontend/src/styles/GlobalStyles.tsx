@@ -12,14 +12,15 @@ export const GlobalStyles = () => (
         --color-success: #15670a;
         --color-attention: #ff6f00;
         --color-error: #ef4444;
+        --color-error-2: #d0aaaa;
 
         --colorStatus-ok: #15670a;
         --colorStatus-maintenance: #0073e6;
         --colorStatus-unavailable: #b31010;
 
-        --color-grey-0: #F8F9FA;
-        --color-grey-1: #868E96;
-        --color-grey-2: #343B41;
+        --color-grey-0: #f8f9fa;
+        --color-grey-1: #868e96;
+        --color-grey-2: #343b41;
         --color-grey-3: #212529;
         --color-grey-4: #121214;
 
@@ -31,30 +32,35 @@ export const GlobalStyles = () => (
         --font-weight-500: 500;
         --font-weight-600: 600;
         --font-weight-700: 700;
+        --font-weight-800: 800;
 
         --font-size-10: 0.25rem; // 10px
         --font-size-12: 0.75rem; // 12px
         --font-size-14: 0.875rem; // 14px
-        --font-size-16: 1rem // 16px
-        --font-size-18: 1.125rem // 18px
-        --font-size-20: 1.25rem // 20px
-        --font-size-24: 1.5rem // 24px
-        --font-size-28: 1.75rem //28px
-        --font-size-40: 2.5rem //40px
+        --font-size-16: 1rem; // 16px
+        --font-size-18: 1.125rem; // 18px
+        --font-size-20: 1.25rem; // 20px
+        --font-size-24: 1.5rem; // 24px
+        --font-size-28: 1.75rem; //28px
+        --font-size-40: 2.5rem; //40px
 
         --font-inter: "Inter", sans-serif;
       }
 
       body {
-        font-family: var(--font-inter)
+        font-family: var(--font-inter);
       }
 
       button {
         cursor: pointer;
+        font-family: var(--font-inter);
       }
 
-      input {
+      input,
+      select,
+      option {
         border: none;
+        box-sizing: border-box;
       }
 
       input:focus {

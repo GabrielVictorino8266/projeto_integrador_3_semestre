@@ -1,3 +1,4 @@
+import { Button } from "../../styles/Buttons";
 import { useModal } from "../../hooks";
 
 const HomePage = () => {
@@ -8,13 +9,13 @@ const HomePage = () => {
   return (
     <>
       {modalContent ? modalContent() : null}
-      <button
+      <Button
         onClick={() => {
           handleOpenModal("driverRegister");
         }}
       >
-        Abrir o registro
-      </button>
+        ABRIR O MODAL
+      </Button>
     </>
   );
 };

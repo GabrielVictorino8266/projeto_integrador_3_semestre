@@ -3,8 +3,7 @@ import Dashboard from "../pages/Dashboard";
 import HomePage from "../pages/HomePage";
 import { CadastroVeiculo } from "../pages/Cadastro/Veiculos";
 import { Login } from "../pages/Login";
-
-
+import { DriverRegister } from "../pages/Cadastro/Driver";
 
 const RoutesMain = () => {
   return (
@@ -13,6 +12,7 @@ const RoutesMain = () => {
       <Route path="/login" element={<Login />} />
       <Route path="/dashboard" element={<Dashboard />} />
       <Route path="veiculos" element={<CadastroVeiculo />} />
+      <Route path="/motorista" element={<DriverRegister />} />
     </Routes>
   );
 };

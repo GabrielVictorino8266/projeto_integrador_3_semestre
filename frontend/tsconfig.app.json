@@ -29,12 +29,13 @@
     /* Alias config */
     "baseUrl": "src",
     "paths": {
-        "@assets/*": ["assets/*"],
-        "@components/*": ["components/*"],
-        "@pages/*": ["pages/*"],
-        "@utils/*": ["utils/*"]
+      "@assets/*": ["assets/*"],
+      "@components/*": ["components/*"],
+      "@pages/*": ["pages/*"],
+      "@utils/*": ["utils/*"],
+      "@schemas/*": ["schemas/*"],
+      "@styles/*": ["styles/*"]
     }
-
   },
   "include": ["src"],
   "exclude": ["node_modules"]
