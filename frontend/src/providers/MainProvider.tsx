@@ -1,7 +1,7 @@
 import { ModalProvider } from "./ModalProvider";
-import type { IDefaultProviderProps } from "../interfaces";
+import type { IDefaultChildrenProp } from "../interfaces";
 
-const MainProvider = ({ children }: IDefaultProviderProps) => {
+const MainProvider = ({ children }: IDefaultChildrenProp) => {
   return <ModalProvider>{children}</ModalProvider>;
 };
 

@@ -1,4 +1,4 @@
-import { type IDefaultProviderProps } from "./default.interface";
+import { type IDefaultChildrenProp } from "./default.interface";
 import { type IModalContextProps } from "./modal.interface";
 
-export type { IDefaultProviderProps, IModalContextProps };
+export type { IDefaultChildrenProp, IModalContextProps };
