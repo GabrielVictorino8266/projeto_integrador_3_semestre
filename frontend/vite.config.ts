@@ -13,6 +13,7 @@ export default defineConfig({
       "@utils": path.resolve(__dirname, "scr/utils"),
       "@schemas": path.resolve(__dirname, "src/schemas"),
       "@styles": path.resolve(__dirname, "src/styles"),
+      "@hooks": path.resolve(__dirname, "src/hooks")
     },
   },
 });

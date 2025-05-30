@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import {useState } from 'react';
 import Logo from '@assets/Logo.png';
 import Sair from '@assets/Sair.png';
 import User from '@assets/User.png';
@@ -6,6 +6,7 @@ import DashboardIcon from '@mui/icons-material/Dashboard';
 import DirectionsBusIcon from '@mui/icons-material/DirectionsBus';
 import BarChartIcon from '@mui/icons-material/BarChart';
 import PersonIcon from '@mui/icons-material/Person';
+import { useUsuario } from '@hooks/useUser/index';
 
 import {
   Baseboard,
@@ -20,32 +21,15 @@ import {
   SubItem
 } from './style';
 
-type Usuario = {
-  nome: string;
-  cargo: string;
-};
+
 
 export function Sidebar() {
     const [expanded, setExpanded] = useState<string | null>(null);
-    const [usuario, setUsuario] = useState<Usuario | null>(null);
+    const { user } = useUsuario()
 
     const toggleExpand = (menu: string) => {
         setExpanded(prev => (prev === menu ? null : menu));
     };
-
-    useEffect(() => {
-      const fetchUsuario = async () => {
-          setTimeout(() => {
-              const teste = {
-                nome: 'Anderson',
-                cargo: 'Administrador'
-              };
-              setUsuario(teste);
-          }, 1000); 
-      };
-  
-      fetchUsuario();
-    }, []);
 
     return (
         <Container>
@@ -59,8 +43,8 @@ export function Sidebar() {
                   <ul>
                     <MenuItem onClick={() => toggleExpand('dashboard')}>
                         <IconText>
-                          <DashboardIcon fontSize="small" />
-                          DASHBOARD
+                            <DashboardIcon fontSize="small" />
+                            DASHBOARD
                         </IconText>
                         <span>{expanded === 'dashboard' ? '-' : '+'}</span>
                     </MenuItem>   
@@ -111,9 +95,9 @@ export function Sidebar() {
               <img src={User} alt="imagem-do-usuario" />
               <UserContainer>
                   <p>
-                    <strong>{usuario ? usuario.nome : 'Carregando...'}</strong>
+                    <strong>{user ? user.nome : 'Carregando...'}</strong>
                     <br />
-                    <small>{usuario ? usuario.cargo : ''}</small>
+                    <small>{user ? user.cargo : ''}</small>
                   </p>
               </UserContainer>
               <button>
