@@ -50,6 +50,34 @@ docker-compose up --build
 
 ---
 
+
+## ▶️ Iniciar o Frontend
+
+Siga os passos abaixo para rodar a aplicação localmente. 
+
+### ✅ Pré-requisitos
+
+- [Node.js](https://nodejs.org/) instalado
+
+### 📁 Passo a passo
+
+### 1. Navegue até a pasta do frontend
+```bash
+cd projeto_integrador_3_semestre/frontend
+```
+
+### 2. Instale as dependências
+```bash
+npm install
+```
+
+### 3. Inicie o servidor de desenvolvimento
+```bash
+npm run dev
+```
+
+---
+
 ## 📚 Documentação
 
 - [Documentação oficial do Django](https://docs.djangoproject.com/pt-br/4.0/)
