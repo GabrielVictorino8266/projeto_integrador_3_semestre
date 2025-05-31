@@ -14,7 +14,11 @@ from .swagger.vehicle_swagger import (
 @authentication_classes([MongoJWTAuthentication])
 @permission_classes([IsAuthenticated])
 def create_vehicle(request):
-    pass
+    serializer = VehicleSerializer(data=request.data)
+    if serializer.is_valid():
+        serializer.save()
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 @update_vehicle_swagger
 @api_view(['PUT'])
