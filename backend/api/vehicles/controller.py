@@ -1,7 +1,7 @@
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view, authentication_classes, permission_classes
 from rest_framework.permissions import IsAuthenticated
-from .authentication import MongoJWTAuthentication
-from .swagger import (
+from users.authentication import MongoJWTAuthentication
+from .swagger.vehicle_swagger import (
     create_vehicle_swagger,
     update_vehicle_swagger,
     delete_vehicle_swagger,
