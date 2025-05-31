@@ -48,7 +48,8 @@ def login(request):
         data={
             "user_id": user_id,
             "cpf": user.get('cpf'),
-            "nome": user.get('nome')
+            "name": user.get('name'),
+            "type": user.get('type')
         },
         expires_delta=timedelta(hours=1)
     )
@@ -57,7 +58,7 @@ def login(request):
         data={
             "user_id": user_id,
             "cpf": user.get('cpf'),
-            "nome": user.get('nome')
+            "name": user.get('name')
         },
         expires_delta=timedelta(days=1)
     )
@@ -73,8 +74,9 @@ def login(request):
         "user": {
             "id": user_id,
             "cpf": user.get('cpf'),
-            "nome": user.get('nome'),
-            "email": user.get('email')
+            "name": user.get('name'),
+            "email": user.get('email'),
+            "type": user.get('type'),
         }
     })
 
@@ -106,7 +108,7 @@ def refresh_token_view(request):
         data={
             "user_id": user_id,
             "cpf": user.get('cpf'),
-            "nome": user.get('nome')
+            "name": user.get('name')
         },
         expires_delta=timedelta(hours=1)
     )
@@ -164,16 +166,16 @@ def get_user_profile(request):
         return Response({
             "user": {
                 "id": user_dict['_id']['$oid'],  # Converter ObjectId corretamente
-                "nome": user_dict.get('nome'),
+                "name": user_dict.get('name'),
                 "cpf": user_dict.get('cpf'),
                 "email": user_dict.get('email'),
                 "type": user_dict.get('type'),
-                "telefone": user_dict.get('telefone'),
-                "tipoCarteira": user_dict.get('tipoCarteira'),
+                "phone": user_dict.get('phone'),
+                "licenseType": user_dict.get('licenseType'),
                 "numeroHabilitacao": user_dict.get('numeroHabilitacao'),
-                "anoNascimento": user_dict.get('anoNascimento'),
-                "aproveitamento": user_dict.get('aproveitamento'),
-                "active": user_dict.get('active')
+                "birthYear": user_dict.get('birthYear'),
+                "performance": user_dict.get('performance'),
+                "isActive": user_dict.get('isActive')
             },
             "message": "Perfil obtido com sucesso."
         })
