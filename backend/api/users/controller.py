@@ -15,7 +15,6 @@ from .auth_services import (
 )
 from .authentication import MongoJWTAuthentication
 
-@login_swagger
 @api_view(['POST'])
 @permission_classes([AllowAny])
 def login(request):
@@ -80,7 +79,6 @@ def login(request):
         }
     })
 
-@refresh_token_swagger
 @api_view(['POST'])
 @permission_classes([AllowAny])
 def refresh_token_view(request):
@@ -119,7 +117,6 @@ def refresh_token_view(request):
         "expires_in": 3600
     })
 
-@logout_swagger
 @api_view(['POST'])
 @authentication_classes([MongoJWTAuthentication])
 @permission_classes([IsAuthenticated])
@@ -148,7 +145,6 @@ def logout(request):
             status=status.HTTP_500_INTERNAL_SERVER_ERROR
         )
 
-@user_profile_swagger
 @api_view(['GET'])
 @authentication_classes([MongoJWTAuthentication])
 @permission_classes([IsAuthenticated])
