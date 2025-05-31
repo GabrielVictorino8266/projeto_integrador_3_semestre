@@ -87,8 +87,8 @@ SIMPLE_JWT = {
 }
 
 CORS_ALLOWED_ORIGINS = [
-    "http://localhost",
-    "https://localhost",
+    "http://localhost:5174",
+    "http://localhost:5173",
 ]
 
 CORS_ALLOW_CREDENTIALS = True  # Permite cookies e cabeçalhos de autenticação

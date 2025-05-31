@@ -39,8 +39,9 @@ login_success_response_schema = openapi.Schema(
             properties={
                 'id': openapi.Schema(type=openapi.TYPE_STRING),
                 'cpf': openapi.Schema(type=openapi.TYPE_STRING),
-                'nome': openapi.Schema(type=openapi.TYPE_STRING),
+                'name': openapi.Schema(type=openapi.TYPE_STRING),
                 'email': openapi.Schema(type=openapi.TYPE_STRING),
+                'type': openapi.Schema(type=openapi.TYPE_STRING),
             }
         ),
     }
@@ -62,7 +63,7 @@ user_profile_response_schema = openapi.Schema(
             type=openapi.TYPE_OBJECT,
             properties={
                 'id': openapi.Schema(type=openapi.TYPE_STRING),
-                'nome': openapi.Schema(type=openapi.TYPE_STRING),
+                'name': openapi.Schema(type=openapi.TYPE_STRING),
                 'cpf': openapi.Schema(type=openapi.TYPE_STRING),
                 'email': openapi.Schema(type=openapi.TYPE_STRING),
                 'type': openapi.Schema(type=openapi.TYPE_STRING),
