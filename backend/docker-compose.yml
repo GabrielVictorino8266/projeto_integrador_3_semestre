@@ -3,8 +3,6 @@ version: '3'
 services:
   backend:
     build: .
-    # command: python api/manage.py runserver 0.0.0.0:8000
-    command: tail -f /dev/null  # Mantém container rodando sem executar Django
     volumes:
       - .:/app
     ports:
@@ -12,5 +10,11 @@ services:
     restart: always
     env_file:
       - .env
-    tty: true        # ADICIONAR: Manter container ativo
-    stdin_open: true # ADICIONAR: Permitir interação
+    tty: true
+    stdin_open: true
+
+    # Command to run Django development server automatically
+    command: python api/manage.py runserver 0.0.0.0:8000
+
+    # Command to run Django development server manually (uncomment to use)
+    # command: tail -f /dev/null
