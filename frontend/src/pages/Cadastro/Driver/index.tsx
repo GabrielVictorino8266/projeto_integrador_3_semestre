@@ -8,7 +8,7 @@ import { useForm, type SubmitHandler } from "react-hook-form";
 import { RegisterPageGeneric } from "@components/RegisterForm";
 import { Button } from "@styles/Buttons";
 import { SelectInputForm } from "@components/Select";
-import { cnhCategories } from "../../../Utils/cnhCategories";
+import { cnhCategories } from "@utils/cnhCategories";
 
 const DriverRegister = () => {
   const {
