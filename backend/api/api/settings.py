@@ -34,7 +34,10 @@ mongodb = mongo_client[MONGO_DB_NAME]
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
+MIGRATIONS_DIR = os.environ.get('MIGRATIONS_DIR', str(BASE_DIR / 'database/migrations'))
 
+if not os.path.isdir(MIGRATIONS_DIR):
+    raise Exception(f'Diretório de migrações não encontrado: {MIGRATIONS_DIR}')
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/

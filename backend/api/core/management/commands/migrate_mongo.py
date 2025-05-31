@@ -2,7 +2,6 @@ from django.core.management.base import BaseCommand
 from django.conf import settings
 from mongodb_migrations.cli import MigrationManager
 from mongodb_migrations.config import Configuration
-import os
 
 class Command(BaseCommand):
     help = 'Executa as migrações do MongoDB usando mongodb-migrations.'
@@ -10,16 +9,7 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         mongo_uri = settings.MONGO_URI
         mongo_db_name = settings.MONGO_DB_NAME
-
-        if not mongo_uri:
-            self.stderr.write(self.style.ERROR('MONGO_URI não configurado nas variáveis de ambiente'))
-            return
-
-        migrations_dir = os.path.join(settings.BASE_DIR, 'database', 'migrations')
-
-        if not os.path.isdir(migrations_dir):
-            self.stderr.write(self.style.ERROR(f'Diretório de migrações não encontrado: {migrations_dir}'))
-            return
+        migrations_dir = settings.MIGRATIONS_DIR
 
         self.stdout.write(f'Executando migrações do MongoDB a partir de: {migrations_dir}')
 
