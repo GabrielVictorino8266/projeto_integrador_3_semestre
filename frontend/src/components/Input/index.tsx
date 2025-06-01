@@ -1,5 +1,5 @@
 import { ContainerInput } from "./styles";
-import { FactoryMask } from "../../Utils/Mask/FactoryMask";
+import { FactoryMask } from "../../utils/Mask/FactoryMask";
 
 type TypesProps = {
   text: string;

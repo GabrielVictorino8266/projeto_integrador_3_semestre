@@ -1,5 +1,5 @@
-import { Button } from "../../styles/Buttons";
-import { useModal } from "../../hooks";
+import { Button } from "@styles/Buttons";
+import { useModal } from "@hooks/useModal";
 
 const HomePage = () => {
   const { handleOpenModal, MODALCOMPONENTS, modalType } = useModal();

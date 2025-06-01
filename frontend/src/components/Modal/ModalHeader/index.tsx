@@ -1,5 +1,5 @@
 import { ModalHeaderStyled } from "./style";
-import { useModal } from "../../../hooks";
+import { useModal } from "@hooks/useModal";
 
 interface IModalTitle {
   modalTitle: string;

@@ -1,7 +1,7 @@
 import { ModalStyledContainer } from "./style";
-import type { IModalChildrenProps } from "../../../interfaces/modal.interface";
+import type { IModalChildrenProps } from "@interfaces/modal.interface";
 import { ModalBody } from "../ModalBody";
-import { useModal } from "../../../hooks";
+import { useModal } from "@hooks/useModal";
 
 export const Modal = ({ children }: IModalChildrenProps) => {
   const { modalRef } = useModal();

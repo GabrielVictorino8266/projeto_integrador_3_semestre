@@ -13,8 +13,8 @@ import {
 } from "./Styles";
 import { toast } from "react-toastify";
 // import { api } from "../../services/api";
-import Logo from "../../assets/Logo.png";
-import { InputComponent } from "../../components/Input";
+import Logo from "@assets/Logo.png";
+import { InputComponent } from "@components/Input";
 
 const schema = z
   .object({

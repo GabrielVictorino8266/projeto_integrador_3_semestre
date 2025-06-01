@@ -1,4 +1,4 @@
-import type { IModalChildrenProps } from "../../../interfaces/modal.interface";
+import type { IModalChildrenProps } from "@interfaces/modal.interface";
 import { ModalBodyStyled } from "./style";
 
 const ModalBody = ({ children }: IModalChildrenProps) => {

@@ -1,4 +1,4 @@
-import type { IDefaultChildrenProp } from "interfaces/default.interface";
+import type { IDefaultChildrenProp } from "@interfaces/default.interface";
 import { StyledRegisterContainer, StyledRegisterFormContainer } from "./styles";
 
 const RegisterPageGeneric = ({ children }: IDefaultChildrenProp) => {
