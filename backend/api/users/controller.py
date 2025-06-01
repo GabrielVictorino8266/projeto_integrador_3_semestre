@@ -15,7 +15,6 @@ from .auth_services import (
 )
 from .authentication import MongoJWTAuthentication
 
-@login_swagger
 @api_view(['POST'])
 @permission_classes([AllowAny])
 def login(request):
@@ -48,7 +47,8 @@ def login(request):
         data={
             "user_id": user_id,
             "cpf": user.get('cpf'),
-            "nome": user.get('nome')
+            "name": user.get('name'),
+            "type": user.get('type')
         },
         expires_delta=timedelta(hours=1)
     )
@@ -57,7 +57,7 @@ def login(request):
         data={
             "user_id": user_id,
             "cpf": user.get('cpf'),
-            "nome": user.get('nome')
+            "name": user.get('name')
         },
         expires_delta=timedelta(days=1)
     )
@@ -73,12 +73,12 @@ def login(request):
         "user": {
             "id": user_id,
             "cpf": user.get('cpf'),
-            "nome": user.get('nome'),
-            "email": user.get('email')
+            "name": user.get('name'),
+            "email": user.get('email'),
+            "type": user.get('type'),
         }
     })
 
-@refresh_token_swagger
 @api_view(['POST'])
 @permission_classes([AllowAny])
 def refresh_token_view(request):
@@ -106,7 +106,7 @@ def refresh_token_view(request):
         data={
             "user_id": user_id,
             "cpf": user.get('cpf'),
-            "nome": user.get('nome')
+            "name": user.get('name')
         },
         expires_delta=timedelta(hours=1)
     )
@@ -117,7 +117,6 @@ def refresh_token_view(request):
         "expires_in": 3600
     })
 
-@logout_swagger
 @api_view(['POST'])
 @authentication_classes([MongoJWTAuthentication])
 @permission_classes([IsAuthenticated])
@@ -146,7 +145,6 @@ def logout(request):
             status=status.HTTP_500_INTERNAL_SERVER_ERROR
         )
 
-@user_profile_swagger
 @api_view(['GET'])
 @authentication_classes([MongoJWTAuthentication])
 @permission_classes([IsAuthenticated])
@@ -164,16 +162,16 @@ def get_user_profile(request):
         return Response({
             "user": {
                 "id": user_dict['_id']['$oid'],  # Converter ObjectId corretamente
-                "nome": user_dict.get('nome'),
+                "name": user_dict.get('name'),
                 "cpf": user_dict.get('cpf'),
                 "email": user_dict.get('email'),
                 "type": user_dict.get('type'),
-                "telefone": user_dict.get('telefone'),
-                "tipoCarteira": user_dict.get('tipoCarteira'),
+                "phone": user_dict.get('phone'),
+                "licenseType": user_dict.get('licenseType'),
                 "numeroHabilitacao": user_dict.get('numeroHabilitacao'),
-                "anoNascimento": user_dict.get('anoNascimento'),
-                "aproveitamento": user_dict.get('aproveitamento'),
-                "active": user_dict.get('active')
+                "birthYear": user_dict.get('birthYear'),
+                "performance": user_dict.get('performance'),
+                "isActive": user_dict.get('isActive')
             },
             "message": "Perfil obtido com sucesso."
         })

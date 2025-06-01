@@ -45,7 +45,7 @@ SECRET_KEY = 'django-insecure-f5o#ebnrpse8%ylekv7n7&mo*6j*8e3$3u9s(8@1@t*&0kki+(
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['*'] # Development
+ALLOWED_HOSTS = ['localhost', '127.0.0.1', '0.0.0.0', '*'] # Development
 # ALLOWED_HOSTS = []
 
 
@@ -70,7 +70,9 @@ REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework_simplejwt.authentication.JWTAuthentication',
     ),
+    'DEFAULT_SCHEMA_CLASS': 'rest_framework.schemas.coreapi.AutoSchema',
 }
+
 
 SIMPLE_JWT = {
     'ACCESS_TOKEN_LIFETIME': timedelta(hours=1),
@@ -85,9 +87,11 @@ SIMPLE_JWT = {
 }
 
 CORS_ALLOWED_ORIGINS = [
-    "http://localhost:3000", #frontend url
-    "http://127.0.0.1:3000",
+    "http://localhost:5174",
+    "http://localhost:5173",
 ]
+
+CORS_ALLOW_CREDENTIALS = True  # Permite cookies e cabeçalhos de autenticação
 
 # Configurações de sessão
 SESSION_COOKIE_HTTPONLY = True  # Previne acesso via JavaScript
@@ -102,6 +106,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
 ]
 
 ROOT_URLCONF = 'api.urls'

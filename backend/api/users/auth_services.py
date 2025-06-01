@@ -131,7 +131,7 @@ def get_user_from_token(token: str):
             print(f"❌ [TOKEN] Usuário com ID {user_id} não encontrado")
             return None
             
-        print(f"✅ [TOKEN] Usuário encontrado: {user.get('nome')} - {user.get('cpf')}")
+        print(f"✅ [TOKEN] Usuário encontrado: {user.get('name')} - {user.get('cpf')}")
         return user
     except Exception as e:
         print(f"❌ [TOKEN] Erro ao buscar usuário: {e}")
@@ -192,7 +192,7 @@ def validate_refresh_token(refresh_token):
             print("❌ [REFRESH] Usuário associado não encontrado")
             return None
             
-        print(f"✅ [REFRESH] Token válido para usuário: {user.get('nome')}")
+        print(f"✅ [REFRESH] Token válido para usuário: {user.get('name')}")
         return user
         
     except Exception as e:
