@@ -5,6 +5,7 @@ import cadeado from '../../assets/Cadeado.png'
 
 interface ImageProps {
     cadeado?: boolean;
+    pessoa?: boolean;
 }
 
 export const ContainerInput = styled.div<ImageProps>`
@@ -25,15 +26,17 @@ export const ContainerInput = styled.div<ImageProps>`
     }
 
     input {
-        background-image: url(${(props) => (props.cadeado ? cadeado : pessoa)});
+        background-image: ${(props) =>
+            props.cadeado ? `url(${cadeado})` :
+            props.pessoa ? `url(${pessoa})` :
+            'none'};
         background-repeat: no-repeat;
         background-position: 10px center;
         background-size: 20px 20px;
         height: 49px;
         font-size: 20px;
         border-radius: 10px;
-        color: black;
-        padding-left: 40px;
+padding-left: ${(props) => (props.cadeado || props.pessoa ? '40px' : '10px')};
 
         @media (max-width: 768px) {
             font-size: 16px;

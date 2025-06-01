@@ -1,10 +1,6 @@
 import styled from "@emotion/styled";
 import VanFundo from '../../assets/VanFundo.png';
 
-interface ImageProps {
-    cadeado?: boolean;
-}
-
 export const Container = styled.div`
     display: flex;
     height: 100vh;
@@ -121,10 +117,7 @@ export const ConainerLift = styled.div`
     width: 100%;
     height:70%;
 
-    p {
-        font-size: 14px;
-        line-height: 80%;
-        color: rgb(209, 100, 100);
+    form{
+        margin-top: 3rem;
     }
-
 `
