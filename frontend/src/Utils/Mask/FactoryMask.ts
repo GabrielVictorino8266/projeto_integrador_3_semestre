@@ -1,3 +1,4 @@
+//Caso precisa adicionar ou retirar tipo de mascara, alterar o TypeMask.ts e FactoryMask.ts
 import type { InterfaceMask } from "./InterfaceMask";
 import { MaskCpf } from "./MaskCpf";
 import { MaskPhone } from "./MaskPhone";

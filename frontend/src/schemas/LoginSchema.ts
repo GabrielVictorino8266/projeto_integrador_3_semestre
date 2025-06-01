@@ -7,7 +7,6 @@ export const LoginSchema = z
       .min(14, "CPF Inválido"),
     password: z
       .string({ required_error: "Senha é obrigatória" })
-      .min(6, "A senha precisa ter no mínimo 6 caracteres"),
   })
   .required();
 

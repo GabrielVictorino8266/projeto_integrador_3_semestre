@@ -2,7 +2,7 @@ import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 // Services
-// import { api } from "@services/api";
+import { api } from "@services/api";
 // Assets
 import Logo from "@assets/Logo.png";
 // Componentes
@@ -10,6 +10,8 @@ import { InputComponent } from "@components/Input";
 // schemas
 import { LoginSchema } from '@schemas/LoginSchema'
 import type { DataProps } from "@schemas/LoginSchema";
+// Utils
+import { ClearMask } from "@utils/Mask/ClearMask";
 // estilos
 import {
     Container,
@@ -30,13 +32,33 @@ export function Login() {
         resolver: zodResolver(LoginSchema),
     }) 
        
-    const Submit = (data: DataProps) => {
-        console.log("Dadus enviados:", data);
-        toast.success("Login enviado com sucesso!");
-        setTimeout(() => {
-            navigate("/");
-        }, 2000);
-    };
+    const Submit = async (data: DataProps) => {
+        const cpf = ClearMask(data.cpf);
+        console.log(cpf)
+        const response = await toast.promise(
+            api.post('/users/login/', {
+                cpf: cpf,
+                password: data.password
+            }),
+            {
+                pending: "Verificando dados",
+                success: {
+                    render() {
+                        setTimeout(() => {
+                            navigate('/')
+                        },2000)
+                        return "Seja bem vinde"
+                    }
+                },
+                error: "CPF ou senha incorretos"
+            }
+        )
+        console.log(response)
+        localStorage.clear()
+        localStorage.setItem("token", response.data.access_token)
+        localStorage.setItem("nome", response.data.user.name)
+        localStorage.setItem("cargo", response.data.user.type)
+    }
 
     return (
         <Container>

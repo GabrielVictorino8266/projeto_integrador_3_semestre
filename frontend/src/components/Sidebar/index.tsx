@@ -22,7 +22,6 @@ import {
 } from './style';
 
 
-
 export function Sidebar() {
     const [expanded, setExpanded] = useState<string | null>(null);
     const { user } = useUsuario()
