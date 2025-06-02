@@ -10,7 +10,7 @@ import { Button } from "@styles/Buttons";
 import { SelectInputForm } from "@components/Select";
 import { cnhCategories } from "@utils/Selects/cnhCategories";
 import { Sidebar } from "@components/Sidebar";
-import { Section } from "./styles";
+import { ContainerInputs, Section } from "./styles";
 
 const DriverRegister = () => {
     const {
@@ -38,36 +38,38 @@ const DriverRegister = () => {
             <Sidebar />
             <RegisterPageGeneric title="Cadastro de motorista">
                 <form onSubmit={handleSubmit(submitDriver)}>
-                    <RegInput
-                        type={"text"}
-                        placeholder={"Digite o nome do motorista"}
-                        id={"nome"}
-                        label={"Nome"}
-                        {...register("name")}
-                        error={errors.name}
-                    />
-                    <SelectInputForm
-                        optionsArray={cnhCategories}
-                        label={"Carteira de Habilitaçao"}
-                        {...register("cnh")}
-                        error={errors.cnh}
-                    />
-                    <RegInput
-                        type={"text"}
-                        placeholder={"Digite o CPF do motorista"}
-                        id={"cpf"}
-                        label={"CPF"}
-                        {...register("cpf")}
-                        error={errors.cpf}
-                    />
-                    <RegInput
-                        type={"password"}
-                        placeholder={"Digite a senha do motorista"}
-                        id={"password"}
-                        label={"Senha"}
-                        {...register("password")}
-                        error={errors.password}
-                    />
+                    <ContainerInputs>
+                        <RegInput
+                            type={"text"}
+                            placeholder={"Digite o nome do motorista"}
+                            id={"nome"}
+                            label={"Nome"}
+                            {...register("name")}
+                            error={errors.name}
+                        />
+                        <SelectInputForm
+                            optionsArray={cnhCategories}
+                            label={"Carteira de Habilitaçao"}
+                            {...register("cnh")}
+                            error={errors.cnh}
+                        />
+                        <RegInput
+                            type={"text"}
+                            placeholder={"Digite o CPF do motorista"}
+                            id={"cpf"}
+                            label={"CPF"}
+                            {...register("cpf")}
+                            error={errors.cpf}
+                        />
+                        <RegInput
+                            type={"password"}
+                            placeholder={"Digite a senha do motorista"}
+                            id={"password"}
+                            label={"Senha"}
+                            {...register("password")}
+                            error={errors.password}
+                        />
+                    </ContainerInputs>
                     <div className="form__sendButton">
                         <Button>ENVIAR</Button>
                     </div>

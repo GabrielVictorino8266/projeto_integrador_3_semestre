@@ -98,7 +98,9 @@ export function Sidebar() {
                         {expanded === "usuarios" && (
                             <Submenu>
                                 <SubItem>
-                                    <a href="#">&gt; Cadastrar</a>
+                                    <a onClick={() => navigate("/motorista")}>
+                                        &gt; Cadastrar
+                                    </a>
                                 </SubItem>
                                 <SubItem>
                                     <a href="#">&gt; Excluir</a>

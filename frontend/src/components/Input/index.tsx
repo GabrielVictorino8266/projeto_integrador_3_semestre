@@ -6,7 +6,7 @@ import { forwardRef, useId, useState, type InputHTMLAttributes } from "react";
 type InputProps = InputHTMLAttributes<HTMLInputElement>  &{
   label?: string;
   errorMessage?: string
-  mask?: MaskType; //Caso precisa adicionar ou retirar tipo de mascara, alterar o TypeMask.ts e FactoryMask.ts
+  mask?: MaskType; //Caso precisa adicionar ou retirar tipo de mascara, alterar os arquivos TypeMask.ts e FactoryMask.ts
   cadeado?: boolean;
   pessoa?: boolean;
 };

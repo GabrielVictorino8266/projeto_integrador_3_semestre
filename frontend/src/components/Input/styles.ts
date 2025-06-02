@@ -17,8 +17,8 @@ export const ContainerInput = styled.div<ImageProps>`
 
     label {
         font-size: 20px;
-        color: #e0e0e0;
-        font-weight: 400;
+        font-weight: var(--font-weight-700);
+        color: var(--color-white);
 
         @media (max-width: 768px) {
             font-size: 16px;
