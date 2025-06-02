@@ -7,7 +7,7 @@ const HomePage = () => {
   const modalContent = modalType ? MODALCOMPONENTS[modalType] : null;
 
   return (
-    <>
+    <>  
       {modalContent ? modalContent() : null}
       <Button
         onClick={() => {

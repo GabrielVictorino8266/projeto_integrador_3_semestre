@@ -1,11 +1,11 @@
 import styled from "@emotion/styled";
-import pessoa from '../../assets/Pessoa.png'
-import cadeado from '../../assets/Cadeado.png'
-
+import pessoa from "../../assets/Pessoa.png";
+import cadeado from "../../assets/Cadeado.png";
 
 interface ImageProps {
     cadeado?: boolean;
     pessoa?: boolean;
+    error?: string;
 }
 
 export const ContainerInput = styled.div<ImageProps>`
@@ -17,7 +17,7 @@ export const ContainerInput = styled.div<ImageProps>`
 
     label {
         font-size: 20px;
-        color: #E0E0E0;
+        color: #e0e0e0;
         font-weight: 400;
 
         @media (max-width: 768px) {
@@ -27,16 +27,21 @@ export const ContainerInput = styled.div<ImageProps>`
 
     input {
         background-image: ${(props) =>
-            props.cadeado ? `url(${cadeado})` :
-            props.pessoa ? `url(${pessoa})` :
-            'none'};
+            props.cadeado
+                ? `url(${cadeado})`
+                : props.pessoa
+                ? `url(${pessoa})`
+                : "none"};
         background-repeat: no-repeat;
         background-position: 10px center;
+        background-color: ${(props) =>
+            props.error ? "var(--color-error-2)" : "var(--color-white)"};
         background-size: 20px 20px;
         height: 49px;
         font-size: 20px;
         border-radius: 10px;
-padding-left: ${(props) => (props.cadeado || props.pessoa ? '40px' : '10px')};
+        padding-left: ${(props) =>
+            props.cadeado || props.pessoa ? "40px" : "10px"};
 
         @media (max-width: 768px) {
             font-size: 16px;
@@ -44,8 +49,9 @@ padding-left: ${(props) => (props.cadeado || props.pessoa ? '40px' : '10px')};
     }
 
     p {
-        font-size: 14px;
+        font-size: var(--font-size-12);
+        color: var(--color-error);
+        font-weight: 500;
         line-height: 80%;
-        color: rgb(209, 100, 100);
     }
 `;

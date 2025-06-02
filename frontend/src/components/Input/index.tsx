@@ -17,7 +17,7 @@ export const InputComponent = forwardRef<HTMLInputElement, InputProps>(({type = 
 
     return(
         <div>
-            <ContainerInput  cadeado={cadeado} pessoa={pessoa}>
+            <ContainerInput  cadeado={cadeado} pessoa={pessoa} error={errorMessage}>
                 {label && <label htmlFor={InputId}>{label}</label>}
                   
                 <input

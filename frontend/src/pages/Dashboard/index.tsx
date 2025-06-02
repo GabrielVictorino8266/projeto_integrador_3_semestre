@@ -1,7 +1,9 @@
+import { Sidebar } from "@components/Sidebar";
+
 const Dashboard = () => {
   return (
     <>
-      <h1>DashboardPage</h1>
+      <Sidebar />
     </>
   );
 };

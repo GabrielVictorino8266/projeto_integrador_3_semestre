@@ -1,12 +1,12 @@
 import type { IDefaultChildrenProp } from "@interfaces/default.interface";
 import { StyledRegisterContainer, StyledRegisterFormContainer } from "./styles";
 
-const RegisterPageGeneric = ({ children }: IDefaultChildrenProp) => {
+const RegisterPageGeneric = ({ children, title }: IDefaultChildrenProp) => {
   return (
     <>
       <StyledRegisterContainer>
         <div className={"title"}>
-          <h1>Cadastro de motorista</h1>
+          <h1>{title}</h1>
         </div>
 
         <StyledRegisterFormContainer>{children}</StyledRegisterFormContainer>

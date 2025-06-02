@@ -1,12 +1,12 @@
 import styled from "@emotion/styled";
-import VanFundo from '../../assets/VanFundo.png';
+import VanFundo from "@assets/VanFundo.png";
 
 export const Container = styled.div`
     display: flex;
     height: 100vh;
     width: 100%;
-    margin: 0; 
-    padding: 0; 
+    margin: 0;
+    padding: 0;
 `;
 
 export const LeftContainer = styled.div`
@@ -15,14 +15,14 @@ export const LeftContainer = styled.div`
     display: flex;
     flex-direction: column;
     align-items: center;
-    background-color: #071425; 
-    justify-content: center; 
+    background-color: #071425;
+    justify-content: center;
 
     @media (max-width: 768px) {
         width: 100%;
-        height: auto;  
+        height: auto;
         padding: 20px;
-        justify-content: center; 
+        justify-content: center;
     }
 `;
 
@@ -34,12 +34,12 @@ export const RightContainer = styled.div`
     background-size: cover;
 
     @media (max-width: 768px) {
-        display: none; 
+        display: none;
     }
 `;
 
 export const TitleDiv = styled.div`
-    margin-top: 0;  
+    margin-top: 0;
     display: flex;
     gap: 20px;
     align-items: flex-start;
@@ -56,7 +56,7 @@ export const TitleDiv = styled.div`
 
     h1 {
         font-size: 40px;
-        color: #E0E0E0;
+        color: #e0e0e0;
         span {
             font-size: 80px;
         }
@@ -75,7 +75,7 @@ export const Links = styled.div`
     justify-content: space-between;
 
     a {
-        color: #FF6F00;
+        color: #ff6f00;
         font-size: 14px;
     }
 
@@ -87,7 +87,7 @@ export const Links = styled.div`
 `;
 
 export const BotaoEntrar = styled.button`
-    background-color: #72B5F8;
+    background-color: #72b5f8;
     border-radius: 10px;
     width: 410px;
     height: 70px;
@@ -99,7 +99,7 @@ export const BotaoEntrar = styled.button`
     margin-top: 5%;
 
     &:hover {
-        background-color:rgb(88, 153, 218);
+        background-color: rgb(88, 153, 218);
         transform: scale(1.05);
     }
 
@@ -115,9 +115,9 @@ export const ConainerLift = styled.div`
     flex-direction: column;
     align-items: center;
     width: 100%;
-    height:70%;
+    height: 70%;
 
-    form{
+    form {
         margin-top: 3rem;
     }
-`
+`;
