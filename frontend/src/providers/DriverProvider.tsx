@@ -16,13 +16,13 @@ const DriverProvider = ({ children }: IDefaultChildrenProp) => {
 
     const handleCreateDriver = async (newDriverData: IDriverRegisterData) => {
         try {
-            const newCarResponse: AxiosResponse = await api.post<IDriverRegisterData>(
+            const newDriverResponse: AxiosResponse = await api.post<IDriverRegisterData>(
                 '/motorista',
                 newDriverData,
                 headersAuth
             );
 
-            if (newCarResponse.status === 201) {
+            if (newDriverResponse.status === 201) {
                 toast.success("Motorista criado com sucesso!")
             }
 
