@@ -1,6 +1,6 @@
 import { ToastContainer } from "react-toastify";
 import RoutesMain from "./routes";
-import MainProvider from "./providers/MainProvider";
+import { MainProvider } from "./providers/MainProvider";
 
 const App = () => {
   return (
