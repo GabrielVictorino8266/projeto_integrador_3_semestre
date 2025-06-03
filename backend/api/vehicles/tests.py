@@ -1,9 +1,24 @@
 from django.test import TestCase
-from rest_framework.test import APIRequestFactory
+from rest_framework.test import APIClient
+from rest_framework import status
 from .controller import create_vehicle
+from users.authentication import SimpleUser
+
 
 class VehicleControllerTest(TestCase):
-    factory = APIRequestFactory()
+    def setUp(self):
+        self.client = APIClient()
+
+        # Dados de usuário simulados
+        self.mock_user_data = {
+            '_id': '507f1f77bcf86cd799439011',
+            'email': 'test@example.com',
+            'name': 'Test User',
+            'role': 'user'
+        }
+
+        # Cria uma instância de SimpleUser para testes
+        self.test_user = SimpleUser(self.mock_user_data)
 
     def test_create_vehicle(self):
         vehicle_data = {
@@ -15,11 +30,10 @@ class VehicleControllerTest(TestCase):
             'kmAtual': 22000.0
         }
 
-        request = self.factory.post('/api/vehicles/create/', vehicle_data, format='json')
-        request.user = self.user
-        response = create_vehicle(request)
+        self.client.force_authenticate(user=self.test_user)
+        response = self.client.post('/api/vehicles/create/', vehicle_data, format='json')
 
-        self.assertEqual(response.status_code, 201)
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         self.assertEqual(response.data['numeroVeiculo'], vehicle_data['numeroVeiculo'])
         self.assertEqual(response.data['placa'], vehicle_data['placa'])
         self.assertEqual(response.data['tipoVeiculo'], vehicle_data['tipoVeiculo'])
