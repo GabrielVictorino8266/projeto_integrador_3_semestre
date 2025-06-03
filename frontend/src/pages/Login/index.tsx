@@ -1,18 +1,16 @@
 import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { useNavigate } from "react-router-dom";
-import { toast } from "react-toastify";
-// Services
-import { api } from "@services/api";
 // Assets
 import Logo from "@assets/Logo.png";
 // Componentes
 import { InputComponent } from "@components/Input";
-// schemas
+// Schemas
 import { LoginSchema } from "@schemas/LoginSchema";
 import type { DataProps } from "@schemas/LoginSchema";
-// Utils
-import { ClearMask } from "@utils/Mask/ClearMask";
-// estilos
+// Services
+import { LoginRequest } from "@services/Api/LoginRequest";
+// Estilos
 import {
     Container,
     LeftContainer,
@@ -22,7 +20,6 @@ import {
     BotaoEntrar,
     ConainerLift,
 } from "./Styles";
-import { zodResolver } from "@hookform/resolvers/zod";
 
 export function Login() {
     const navigate = useNavigate();
@@ -36,32 +33,13 @@ export function Login() {
         resolver: zodResolver(LoginSchema),
     });
 
-    const Submit = async (data: DataProps) => {
-        const cpf = ClearMask(data.cpf);
-        console.log(cpf);
-        const response = await toast.promise(
-            api.post("/users/login/", {
-                cpf: cpf,
-                password: data.password,
-            }),
-            {
-                pending: "Verificando dados",
-                success: {
-                    render() {
-                        setTimeout(() => {
-                            navigate("/dashboard");
-                        }, 2000);
-                        return "Seja bem vinde";
-                    },
-                },
-                error: "CPF ou senha incorretos",
-            }
-        );
-        console.log(response);
-        localStorage.clear();
-        localStorage.setItem("token", response.data.access_token);
-        localStorage.setItem("nome", response.data.user.name);
-        localStorage.setItem("cargo", response.data.user.type);
+    const Submit = async (data: DataProps) => { 
+        const response = await LoginRequest(data)
+        if(response){
+            setTimeout(() => {
+                navigate("/dashboard")
+            }, 2000);
+        }
     };
 
     return (
