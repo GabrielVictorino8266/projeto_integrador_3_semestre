@@ -8,7 +8,7 @@ const MainProvider = ({ children }: IDefaultChildrenProp) => {
       <DriverProvider>
         {children}
       </DriverProvider>
-    </ModalProvider>;
+    </ModalProvider>
   </>
 };
 
