@@ -1,13 +1,12 @@
-from django.db import models
+from mongoengine import Document, StringField, IntField
 from .vehicle_types import VehicleTypes
+import datetime
 
-    
-# Create your models here.
-class Vehicle(models.Model):
-    numero_veiculo = models.CharField(max_length=10)
-    placa = models.CharField(max_length=8)
-    tipo_veiculo = models.CharField(max_length=20, choices=VehicleTypes.choices)
-    ano_fabricacao = models.IntegerField()
-    marca = models.CharField(max_length=20)
-    km_atual = models.IntegerField()
-    limite_aviso_km = models.IntegerField()
+class Vehicle(Document):
+    numeroVeiculo = StringField(max_length=10, required=True)
+    placa = StringField(max_length=8, required=True, regex=r'^[A-Z]{3}[0-9][0-9A-Z][0-9]{2}$', pre_save=lambda s: s.upper() if s else None)
+    tipoVeiculo = StringField(choices=VehicleTypes.values, required=True)
+    anoFabricacao = IntField(min_value=1900, max_value=datetime.date.today().year, required=True)
+    marca = StringField(max_length=20, required=True)
+    kmAtual = IntField(min_value=0, required=True)
+    limiteAvisoKm = IntField(min_value=0, required=True)

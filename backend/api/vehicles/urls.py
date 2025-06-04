@@ -1,10 +1,11 @@
 from django.urls import path
-from . import controller
+from . import views
 
+app_name = 'vehicles'
 urlpatterns = [
-    path('vehicles/', controller.list_vehicles, name='list_vehicles'),
-    path('vehicles/<int:id>/', controller.get_vehicle, name='get_vehicle'),
-    path('vehicles/create/', controller.create_vehicle, name='create_vehicle'),
-    path('vehicles/update/<int:id>/', controller.update_vehicle, name='update_vehicle'),
-    path('vehicles/delete/<int:id>/', controller.delete_vehicle, name='delete_vehicle'),
+    path('create/', views.create_vehicle, name='create_vehicle'),
+    path('update/<str:id>/', views.update_vehicle, name='update_vehicle'),
+    path('delete/<str:id>/', views.delete_vehicle, name='delete_vehicle'),
+    path('<str:id>/', views.get_vehicle, name='get_vehicle'),
+    path('', views.list_vehicles, name='list_vehicles'),
 ]
