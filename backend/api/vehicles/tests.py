@@ -3,7 +3,7 @@ from rest_framework.test import APIClient
 from rest_framework import status
 from .controller import create_vehicle
 from users.authentication import SimpleUser
-
+from .vehicle_types import VehicleTypes
 
 class VehicleControllerTest(TestCase):
     def setUp(self):
@@ -24,10 +24,11 @@ class VehicleControllerTest(TestCase):
         vehicle_data = {
             'numeroVeiculo': 'Ford',
             'placa': 'Mustang',
-            'tipoVeiculo': 'red',
+            'tipoVeiculo': VehicleTypes.CARRO,
             'anoFabricacao': 2019,
             'marca': 'red',
-            'kmAtual': 22000.0
+            'kmAtual': 22000.0,
+            'limiteAvisoKm': 22000
         }
 
         self.client.force_authenticate(user=self.test_user)
@@ -40,3 +41,4 @@ class VehicleControllerTest(TestCase):
         self.assertEqual(response.data['anoFabricacao'], vehicle_data['anoFabricacao'])
         self.assertEqual(response.data['marca'], vehicle_data['marca'])
         self.assertEqual(response.data['kmAtual'], vehicle_data['kmAtual'])
+        self.assertEqual(response.data['limiteAvisoKm'], vehicle_data['limiteAvisoKm'])

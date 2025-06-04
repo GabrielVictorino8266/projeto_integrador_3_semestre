@@ -14,6 +14,7 @@ from pathlib import Path
 from pymongo import MongoClient
 from dotenv import load_dotenv
 from datetime import timedelta
+from mongoengine import connect
 import os
 
 
@@ -30,7 +31,7 @@ if not MONGO_DB_NAME:
 # Conexão MongoDB
 mongo_client = MongoClient(MONGO_URI)
 mongodb = mongo_client[MONGO_DB_NAME]
-
+connect(db=MONGO_DB_NAME, host=MONGO_URI)
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
