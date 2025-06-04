@@ -32,15 +32,15 @@ class CreateVehicleTest(VehicleTestCase):
         Testa a criação de um veículo com tipo de veículo inválido.
         """
         invalid_data = self.valid_vehicle_data.copy()
-        invalid_data['tipoVeiculo'] = 'invalid_choice'
+        invalid_data['vehicleType'] = 'invalid_choice'
         response = self.client.post(self.url, invalid_data, format='json')
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
-        self.assertIn('tipoVeiculo', response.data)
+        self.assertIn('vehicleType', response.data)
 
     def test_create_vehicle_missing_required_fields(self):
         """
         Testa a criação de um veículo com campos obrigatórios ausentes.
         """
-        minimal_data = {'numeroVeiculo': '12345'}
+        minimal_data = {'vehicleNumber': '12345'}
         response = self.client.post(self.url, minimal_data, format='json')
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)

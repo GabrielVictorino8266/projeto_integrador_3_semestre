@@ -33,14 +33,14 @@ class VehicleTestCase(MongoTestCase):
         self.client.force_authenticate(user=self.test_user)
 
         self.valid_vehicle_data = {
-            'numeroVeiculo': '12345',
-            'placa': 'ABC1234',
-            'tipoVeiculo': VehicleTypes.CARRO,
-            'anoFabricacao': 2020,
-            'marca': 'Fiat',
-            'kmAtual': 50000,
-            'limiteAvisoKm': 10000,
-            'dataExclusao': None
+            'vehicleNumber': '12345',
+            'licensePlate': 'ABC1234',
+            'vehicleType': VehicleTypes.CARRO,
+            'manufacturingYear': 2020,
+            'brand': 'Fiat',
+            'currentKm': 50000,
+            'warningKmLimit': 10000,
+            'deletedAt': None
         }
 
     def tearDown(self) -> None:

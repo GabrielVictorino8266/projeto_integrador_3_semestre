@@ -7,6 +7,7 @@ from bson import ObjectId
 import datetime
 
 from .models import Vehicle
+from .types import VehicleStatus
 from .serializer import VehicleSerializer
 from users.authentication import MongoJWTAuthentication
 from .swagger.vehicle_swagger import (
@@ -101,6 +102,7 @@ def delete_vehicle(request, id):
     except Exception:
         raise ParseError('ID inválido')
 
-    vehicle.dataExclusao = datetime.datetime.now()
+    vehicle.deletedAt = datetime.datetime.now()
+    vehicle.status = VehicleStatus.INACTIVE
     vehicle.save()
     return Response('Veículo deletado com sucesso', status=status.HTTP_204_NO_CONTENT)

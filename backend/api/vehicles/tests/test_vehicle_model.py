@@ -1,7 +1,6 @@
-from django.test import TestCase
-from mongoengine import ValidationError, connection
+from mongoengine import ValidationError
 from vehicles.models import Vehicle
-from vehicles.vehicle_types import VehicleTypes
+from vehicles.types import VehicleTypes
 from .vehicle_test_case import VehicleTestCase
 
 class VehicleModelTest(VehicleTestCase):
@@ -21,9 +20,9 @@ class VehicleModelTest(VehicleTestCase):
         """
         vehicle = Vehicle(**self.valid_vehicle_data)
         vehicle.save()
-        retrieved_vehicle = Vehicle.objects.get(numeroVeiculo='12345')
-        self.assertEqual(retrieved_vehicle.placa, 'ABC1234')
-        self.assertEqual(retrieved_vehicle.tipoVeiculo, VehicleTypes.CARRO)
+        retrieved_vehicle = Vehicle.objects.get(vehicleNumber='12345')
+        self.assertEqual(retrieved_vehicle.licensePlate, 'ABC1234')
+        self.assertEqual(retrieved_vehicle.vehicleType, VehicleTypes.CARRO)
 
     def test_required_fields_validation(self):
         """
@@ -33,58 +32,80 @@ class VehicleModelTest(VehicleTestCase):
         with self.assertRaises(ValidationError) as cm:
             vehicle.validate()
         error_message = str(cm.exception)
-        required_fields = ['numeroVeiculo', 'placa', 'tipoVeiculo']
+        required_fields = ['vehicleNumber', 'licensePlate', 'vehicleType']
         for field in required_fields:
             self.assertIn(field, error_message)
 
-    def test_numero_veiculo_max_length(self):
+    def test_vehicle_number_max_length(self):
         """
-        Testa validação do comprimento máximo do campo numeroVeiculo.
+        Testa validação do comprimento máximo do campo vehicleNumber.
         """
         data = self.valid_vehicle_data.copy()
-        data['numeroVeiculo'] = 'X' * 999
+        data['vehicleNumber'] = 'X' * 999
         vehicle = Vehicle(**data)
         with self.assertRaises(ValidationError) as cm:
             vehicle.validate()
-        self.assertIn('numeroVeiculo', str(cm.exception))
+        self.assertIn('vehicleNumber', str(cm.exception))
 
-    def test_placa_format_validation(self):
+    def test_license_plate_format_validation(self):
         """
-        Testa validação do formato do campo placa.
+        Testa validação do formato do campo licensePlate.
         """
         data = self.valid_vehicle_data.copy()
-        data['placa'] = 'INVALID'
+        data['licensePlate'] = 'INVALID'
         vehicle = Vehicle(**data)
         with self.assertRaises(ValidationError):
             vehicle.validate()
 
-    def test_tipo_veiculo_invalid_choice(self):
+    def test_vehicle_type_invalid_choice(self):
         """
-        Testa validação para escolha inválida em tipoVeiculo.
+        Testa validação para escolha inválida em vehicleType.
         """
         data = self.valid_vehicle_data.copy()
-        data['tipoVeiculo'] = 'invalid_choice'
+        data['vehicleType'] = 'invalid_choice'
         vehicle = Vehicle(**data)
         with self.assertRaises(ValidationError) as cm:
             vehicle.validate()
-        self.assertIn('tipoVeiculo', str(cm.exception))
+        self.assertIn('vehicleType', str(cm.exception))
 
-    def test_ano_fabricacao_range(self):
+    def test_manufacturing_year_range(self):
         """
-        Testa validação do intervalo permitido para anoFabricacao.
+        Testa validação do intervalo permitido para manufacturingYear.
         """
         data = self.valid_vehicle_data.copy()
-        data['anoFabricacao'] = 1800
+        data['manufacturingYear'] = 1800
         vehicle = Vehicle(**data)
         with self.assertRaises(ValidationError):
             vehicle.validate()
 
-    def test_km_atual_negative(self):
+    def test_current_km_negative(self):
         """
-        Testa que kmAtual não aceita valores negativos.
+        Testa que currentKm não aceita valores negativos.
         """
         data = self.valid_vehicle_data.copy()
-        data['kmAtual'] = -1000
+        data['currentKm'] = -1000
         vehicle = Vehicle(**data)
         with self.assertRaises(ValidationError):
             vehicle.validate()
+
+    def test_invalid_deleted_at(self):
+        """
+        Testa validação para deletedAt inválido.
+        """
+        data = self.valid_vehicle_data.copy()
+        data['deletedAt'] = 'invalid_date'
+        vehicle = Vehicle(**data)
+        with self.assertRaises(ValidationError) as cm:
+            vehicle.validate()
+        self.assertIn('deletedAt', str(cm.exception))
+
+    def test_invalid_status(self):
+        """
+        Testa validação para escolha inválida em status.
+        """
+        data = self.valid_vehicle_data.copy()
+        data['status'] = 'invalid_status'
+        vehicle = Vehicle(**data)
+        with self.assertRaises(ValidationError) as cm:
+            vehicle.validate()
+        self.assertIn('status', str(cm.exception))

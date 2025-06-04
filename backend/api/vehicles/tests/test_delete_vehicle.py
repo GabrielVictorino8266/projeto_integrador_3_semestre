@@ -2,6 +2,7 @@ from rest_framework import status
 from django.urls import reverse
 from .vehicle_test_case import VehicleTestCase
 from vehicles.models import Vehicle
+from vehicles.types import VehicleStatus
 from bson import ObjectId
 
 class DeleteVehicleTest(VehicleTestCase):
@@ -22,7 +23,8 @@ class DeleteVehicleTest(VehicleTestCase):
 
         vehicle = Vehicle.objects(id=self.vehicle.id).first()
         self.assertIsNotNone(vehicle)
-        self.assertIsNotNone(vehicle.dataExclusao)
+        self.assertIsNotNone(vehicle.deletedAt)
+        self.assertEqual(vehicle.status, VehicleStatus.INACTIVE)
 
     def test_delete_vehicle_unauthenticated(self):
         """

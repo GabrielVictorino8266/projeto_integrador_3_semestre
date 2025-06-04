@@ -42,6 +42,6 @@ class UpdateVehicleTest(VehicleTestCase):
         """
         Testa a tentativa de atualização com dados inválidos.
         """
-        invalid_data = {'numeroVeiculo': '12345', 'placa': 'INVALID'}
+        invalid_data = {'vehicleNumber': '12345', 'licensePlate': 'INVALID'}
         response = self.client.put(self.url, invalid_data, format='json')
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
