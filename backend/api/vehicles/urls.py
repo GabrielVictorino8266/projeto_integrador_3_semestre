@@ -1,10 +1,10 @@
 from django.urls import path
-from . import controller
+from . import views
 
 urlpatterns = [
-    path('', controller.list_vehicles, name='list_vehicles'),
-    path('<int:id>/', controller.get_vehicle, name='get_vehicle'),
-    path('create/', controller.create_vehicle, name='create_vehicle'),
-    path('update/<int:id>/', controller.update_vehicle, name='update_vehicle'),
-    path('delete/<int:id>/', controller.delete_vehicle, name='delete_vehicle'),
+    path('', views.list_vehicles, name='list_vehicles'),
+    path('<int:id>/', views.get_vehicle, name='get_vehicle'),
+    path('create/', views.create_vehicle, name='create_vehicle'),
+    path('update/<int:id>/', views.update_vehicle, name='update_vehicle'),
+    path('delete/<int:id>/', views.delete_vehicle, name='delete_vehicle'),
 ]

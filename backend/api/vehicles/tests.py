@@ -1,7 +1,7 @@
 from django.test import TestCase
 from rest_framework.test import APIClient
 from rest_framework import status
-from .controller import create_vehicle
+from .views import create_vehicle
 from users.authentication import SimpleUser
 from .vehicle_types import VehicleTypes
 
