@@ -1,3 +1,4 @@
+from django.urls import reverse
 from rest_framework.decorators import api_view, authentication_classes, permission_classes
 from rest_framework import status, serializers
 from rest_framework.permissions import IsAuthenticated
@@ -10,6 +11,7 @@ from .models import Vehicle
 from .types import VehicleStatus
 from .serializer import VehicleSerializer
 from users.authentication import MongoJWTAuthentication
+from core.utils.pagination import Paginator
 from .swagger.vehicle_swagger import (
     create_vehicle_swagger,
     update_vehicle_swagger,
@@ -17,6 +19,14 @@ from .swagger.vehicle_swagger import (
     list_vehicles_swagger,
     get_vehicle_swagger
 )
+
+
+"""
+Classe de serialização para os parâmetros de paginação.
+"""
+class PaginationParamsSerializer(serializers.Serializer):
+    page = serializers.IntegerField(min_value=1, required=False)
+    limit = serializers.IntegerField(min_value=1, max_value=100, required=False, default=50)
 
 @list_vehicles_swagger
 @api_view(['GET'])
@@ -26,6 +36,20 @@ def list_vehicles(request):
     """
     GET /vehicles/
     """
+    serializer = PaginationParamsSerializer(data=request.query_params)
+    serializer.is_valid(raise_exception=True)
+    page = serializer.validated_data.get('page')
+    limit = serializer.validated_data.get('limit', 50)
+
+    if page is not None:
+        pagination = Paginator(
+            queryset=Vehicle.objects.all(),
+            per_page=limit,
+            base_url=reverse('vehicles:list_vehicles'),
+            serializer_class=VehicleSerializer
+        ).paginate(page)
+        return Response(pagination)
+
     vehicles = Vehicle.objects.all()
     serializer = VehicleSerializer(vehicles, many=True)
     return Response(serializer.data)
@@ -84,7 +108,7 @@ def update_vehicle(request, id):
     if serializer.is_valid():
         serializer.save()
         return Response(serializer.data)
-    raise ParseError(serializer.errors)
+    raise serializers.ValidationError(serializer.errors)
 
 
 @delete_vehicle_swagger
