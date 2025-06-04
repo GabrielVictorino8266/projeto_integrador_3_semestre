@@ -1,20 +1,10 @@
 from django.test import TestCase
-from mongoengine import ValidationError
+from mongoengine import ValidationError, connection
 from vehicles.models import Vehicle
 from vehicles.vehicle_types import VehicleTypes
+from .vehicle_test_case import VehicleTestCase
 
-class VehicleModelTest(TestCase):
-    def setUp(self):
-        self.valid_vehicle_data = {
-            'numeroVeiculo': '12345',
-            'placa': 'ABC1234',
-            'tipoVeiculo': VehicleTypes.CARRO,
-            'anoFabricacao': 2020,
-            'marca': 'Fiat',
-            'kmAtual': 50000,
-            'limiteAvisoKm': 10000
-        }
-
+class VehicleModelTest(VehicleTestCase):
     def test_valid_vehicle_creation(self):
         vehicle = Vehicle(**self.valid_vehicle_data)
         try:

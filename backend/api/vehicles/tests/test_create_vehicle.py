@@ -1,31 +1,11 @@
-from django.test import TestCase
 from rest_framework import status
-from rest_framework.test import APIClient
 from django.urls import reverse
-from users.authentication import SimpleUser
-from vehicles.vehicle_types import VehicleTypes
+from .vehicle_test_case import VehicleTestCase
 
-class CreateVehicleTest(TestCase):
+class CreateVehicleTest(VehicleTestCase):
     def setUp(self):
-        self.client = APIClient()
-        self.mock_user_data = {
-            '_id': '507f1f77bcf86cd799439011',
-            'email': 'test@example.com',
-            'name': 'Test User',
-            'role': 'user'
-        }
-        self.test_user = SimpleUser(self.mock_user_data)
-        self.valid_vehicle_data = {
-            'numeroVeiculo': '12345',
-            'placa': 'ABC1234',
-            'tipoVeiculo': VehicleTypes.CARRO,
-            'anoFabricacao': 2020,
-            'marca': 'Fiat',
-            'kmAtual': 50000,
-            'limiteAvisoKm': 10000
-        }
-        self.client.force_authenticate(user=self.test_user)
-        self.url = reverse('create_vehicle')
+        super().setUp()
+        self.url = reverse('vehicles:create_vehicle')
 
     def test_create_vehicle_success(self):
         response = self.client.post(self.url, self.valid_vehicle_data, format='json')
