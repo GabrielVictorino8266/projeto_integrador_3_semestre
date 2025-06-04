@@ -23,6 +23,7 @@ update_vehicle_swagger = swagger_auto_schema(
     responses={
         200: VehicleSerializer,
         400: ValidationError,
+        404: 'Not Found',
         401: 'Unauthorized',
     },
     tags=['Vehicle']

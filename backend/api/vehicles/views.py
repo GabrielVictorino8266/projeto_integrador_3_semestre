@@ -17,6 +17,9 @@ from .swagger.vehicle_swagger import (
 @authentication_classes([MongoJWTAuthentication])
 @permission_classes([IsAuthenticated])
 def create_vehicle(request):
+    """
+    Criar um novo veículo.
+    """
     serializer = VehicleSerializer(data=request.data)
     if serializer.is_valid():
         serializer.save()
@@ -27,8 +30,20 @@ def create_vehicle(request):
 @api_view(['PUT'])
 @authentication_classes([MongoJWTAuthentication])
 @permission_classes([IsAuthenticated])
-def update_vehicle(request):
-    pass
+def update_vehicle(request, id):
+    """
+    Atualizar um veículo existente.
+    """
+    try:
+        vehicle = Vehicle.objects.get(id=ObjectId(id))
+    except Vehicle.DoesNotExist:
+        return Response({'detail': 'Veículo não encontrado'}, status=status.HTTP_404_NOT_FOUND)
+
+    serializer = VehicleSerializer(vehicle, data=request.data)
+    if serializer.is_valid():
+        serializer.save()
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 @delete_vehicle_swagger
 @api_view(['DELETE'])
