@@ -1,17 +1,41 @@
 from drf_yasg.utils import swagger_auto_schema
 from drf_yasg import openapi
-from mongoengine import ValidationError
-from ..serializer import VehicleSerializer
+from vehicles.serializer import VehicleSerializer
+
+# Define schemas de resposta de erro
+error_response_schema = openapi.Schema(
+    type=openapi.TYPE_OBJECT,
+    properties={
+        'detail': openapi.Schema(type=openapi.TYPE_STRING, description='Mensagem de erro'),
+    }
+)
+
+validation_error_schema = openapi.Schema(
+    type=openapi.TYPE_OBJECT,
+    properties={
+        'field_name': openapi.Schema(
+            type=openapi.TYPE_ARRAY,
+            items=openapi.Schema(type=openapi.TYPE_STRING),
+            description='Erros de validação do campo'
+        ),
+        'non_field_errors': openapi.Schema(
+            type=openapi.TYPE_ARRAY,
+            items=openapi.Schema(type=openapi.TYPE_STRING),
+            description='Erros gerais de validação'
+        ),
+    }
+)
 
 create_vehicle_swagger = swagger_auto_schema(
     method="post",
     operation_id='create_vehicle',
+    operation_summary='Criação de veículo',
     operation_description='Cria um veículo com os dados informados',
     request_body=VehicleSerializer(),
     responses={
-        201: VehicleSerializer,
-        400: 'Bad Request',
-        401: 'Unauthorized',
+        201: openapi.Response(description='Veículo criado com sucesso'),
+        400: openapi.Response(description='Requisição inválida', schema=validation_error_schema),
+        401: openapi.Response(description='Não autorizado', schema=error_response_schema),
     },
     tags=['Vehicle']
 )
@@ -19,13 +43,14 @@ create_vehicle_swagger = swagger_auto_schema(
 update_vehicle_swagger = swagger_auto_schema(
     method="put",
     operation_id='update_vehicle',
+    operation_summary='Atualização de veículo',
     operation_description='Atualiza um veículo com os dados informados',
     request_body=VehicleSerializer(),
     responses={
-        200: VehicleSerializer,
-        400: 'Bad Request',
-        404: 'Not Found',
-        401: 'Unauthorized',
+        200: openapi.Response(description='Veículo atualizado com sucesso'),
+        400: openapi.Response(description='Requisição inválida', schema=validation_error_schema),
+        404: openapi.Response(description='Veículo não encontrado', schema=error_response_schema),
+        401: openapi.Response(description='Não autorizado', schema=error_response_schema),
     },
     tags=['Vehicle']
 )
@@ -33,12 +58,13 @@ update_vehicle_swagger = swagger_auto_schema(
 delete_vehicle_swagger = swagger_auto_schema(
     method="delete",
     operation_id='delete_vehicle',
+    operation_summary='Exclusão de veículo',
     operation_description='Deleta um veículo',
     responses={
-        204: 'No Content',
-        400: 'Bad Request',
-        404: 'Not Found',
-        401: 'Unauthorized',
+        204: openapi.Response(description='Veículo deletado com sucesso'),
+        400: openapi.Response(description='Requisição inválida', schema=validation_error_schema),
+        404: openapi.Response(description='Veículo não encontrado', schema=error_response_schema),
+        401: openapi.Response(description='Não autorizado', schema=error_response_schema),
     },
     tags=['Vehicle']
 )
@@ -46,11 +72,12 @@ delete_vehicle_swagger = swagger_auto_schema(
 list_vehicles_swagger = swagger_auto_schema(
     method="get",
     operation_id='list_vehicles',
+    operation_summary='Listagem de veículos',
     operation_description='Lista todos os veículos',
     responses={
-        200: VehicleSerializer(many=True),
-        400: 'Bad Request',
-        401: 'Unauthorized',
+        200: openapi.Response(description='Lista de veículos'),
+        400: openapi.Response(description='Requisição inválida', schema=validation_error_schema),
+        401: openapi.Response(description='Não autorizado', schema=error_response_schema),
     },
     tags=['Vehicle']
 )
@@ -58,6 +85,7 @@ list_vehicles_swagger = swagger_auto_schema(
 get_vehicle_swagger = swagger_auto_schema(
     method="get",
     operation_id='get_vehicle',
+    operation_summary='Obter veículo',
     operation_description='Obtém um veículo pelo ID',
     manual_parameters=[
         openapi.Parameter(
@@ -69,10 +97,10 @@ get_vehicle_swagger = swagger_auto_schema(
         )
     ],
     responses={
-        200: VehicleSerializer,
-        400: 'Bad Request',
-        404: 'Not Found',
-        401: 'Unauthorized',
+        200: openapi.Response(description='Detalhes do veículo'),
+        400: openapi.Response(description='Requisição inválida', schema=validation_error_schema),
+        404: openapi.Response(description='Veículo não encontrado', schema=error_response_schema),
+        401: openapi.Response(description='Não autorizado', schema=error_response_schema),
     },
     tags=['Vehicle']
 )

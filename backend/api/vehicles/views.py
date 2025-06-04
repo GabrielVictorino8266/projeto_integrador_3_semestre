@@ -1,6 +1,7 @@
 from rest_framework.decorators import api_view, authentication_classes, permission_classes
-from rest_framework import status
+from rest_framework import status, serializers
 from rest_framework.permissions import IsAuthenticated
+from rest_framework.exceptions import NotFound, ParseError
 from rest_framework.response import Response
 from bson import ObjectId
 import datetime
@@ -26,7 +27,7 @@ def list_vehicles(request):
     """
     vehicles = Vehicle.objects.all()
     serializer = VehicleSerializer(vehicles, many=True)
-    return Response(serializer.data, status=status.HTTP_200_OK)
+    return Response(serializer.data)
 
 
 @get_vehicle_swagger
@@ -40,12 +41,12 @@ def get_vehicle(request, id):
     try:
         vehicle = Vehicle.objects.get(id=ObjectId(id))
     except Vehicle.DoesNotExist:
-        return Response({'detail': 'Veículo não encontrado'}, status=status.HTTP_404_NOT_FOUND)
+        raise NotFound('Veículo não encontrado')
     except Exception:
-        return Response({'detail': 'ID inválido'}, status=status.HTTP_400_BAD_REQUEST)
+        raise ParseError('ID inválido')
 
     serializer = VehicleSerializer(vehicle)
-    return Response(serializer.data, status=status.HTTP_200_OK)
+    return Response(serializer.data)
 
 
 @create_vehicle_swagger
@@ -60,7 +61,7 @@ def create_vehicle(request):
     if serializer.is_valid():
         serializer.save()
         return Response(serializer.data, status=status.HTTP_201_CREATED)
-    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    raise serializers.ValidationError(serializer.errors)
 
 
 @update_vehicle_swagger
@@ -74,15 +75,15 @@ def update_vehicle(request, id):
     try:
         vehicle = Vehicle.objects.get(id=ObjectId(id))
     except Vehicle.DoesNotExist:
-        return Response({'detail': 'Veículo não encontrado'}, status=status.HTTP_404_NOT_FOUND)
+        raise NotFound('Veículo não encontrado')
     except Exception:
-        return Response({'detail': 'ID inválido'}, status=status.HTTP_400_BAD_REQUEST)
+        raise ParseError('ID inválido')
 
     serializer = VehicleSerializer(vehicle, data=request.data)
     if serializer.is_valid():
         serializer.save()
-        return Response(serializer.data, status=status.HTTP_200_OK)
-    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        return Response(serializer.data)
+    raise ParseError(serializer.errors)
 
 
 @delete_vehicle_swagger
@@ -96,10 +97,10 @@ def delete_vehicle(request, id):
     try:
         vehicle = Vehicle.objects.get(id=ObjectId(id))
     except Vehicle.DoesNotExist:
-        return Response({'detail': 'Veículo não encontrado'}, status=status.HTTP_404_NOT_FOUND)
+        raise NotFound('Veículo não encontrado')
     except Exception:
-        return Response({'detail': 'ID inválido'}, status=status.HTTP_400_BAD_REQUEST)
+        raise ParseError('ID inválido')
 
     vehicle.dataExclusao = datetime.datetime.now()
     vehicle.save()
-    return Response({'detail': 'Veículo deletado com sucesso'}, status=status.HTTP_204_NO_CONTENT)
+    return Response('Veículo deletado com sucesso', status=status.HTTP_204_NO_CONTENT)
