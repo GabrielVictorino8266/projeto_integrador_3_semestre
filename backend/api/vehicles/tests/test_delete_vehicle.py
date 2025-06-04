@@ -13,7 +13,10 @@ class DeleteVehicleTest(VehicleTestCase):
     def test_delete_vehicle_success(self):
         response = self.client.delete(self.url)
         self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
-        self.assertIsNone(Vehicle.objects(id=self.vehicle.id).first())
+
+        vehicle = Vehicle.objects(id=self.vehicle.id).first()
+        self.assertIsNotNone(vehicle) 
+        self.assertIsNotNone(vehicle.dataExclusao)
 
     def test_delete_vehicle_unauthenticated(self):
         self.client.force_authenticate(user=None)

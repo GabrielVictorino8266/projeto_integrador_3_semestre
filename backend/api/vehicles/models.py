@@ -1,4 +1,4 @@
-from mongoengine import Document, StringField, IntField
+from mongoengine import DateTimeField, Document, StringField, IntField
 from .vehicle_types import VehicleTypes
 import datetime
 
@@ -10,3 +10,4 @@ class Vehicle(Document):
     marca = StringField(max_length=20, required=True)
     kmAtual = IntField(min_value=0, required=True)
     limiteAvisoKm = IntField(min_value=0, required=True)
+    dataExclusao = DateTimeField(null=True)

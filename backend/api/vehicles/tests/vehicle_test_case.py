@@ -23,7 +23,8 @@ class VehicleTestCase(APITestCase):
             'anoFabricacao': 2020,
             'marca': 'Fiat',
             'kmAtual': 50000,
-            'limiteAvisoKm': 10000
+            'limiteAvisoKm': 10000,
+            'dataExclusao': None
         }
 
     def tearDown(self) -> None:
