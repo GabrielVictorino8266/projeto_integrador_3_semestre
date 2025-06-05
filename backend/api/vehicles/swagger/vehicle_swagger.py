@@ -37,7 +37,8 @@ create_vehicle_swagger = swagger_auto_schema(
         400: openapi.Response(description='Requisição inválida', schema=validation_error_schema),
         401: openapi.Response(description='Não autorizado', schema=error_response_schema),
     },
-    tags=['Vehicle']
+    tags=['Vehicle'],
+    security=[{'Bearer': []}]
 )
 
 update_vehicle_swagger = swagger_auto_schema(
@@ -73,9 +74,51 @@ list_vehicles_swagger = swagger_auto_schema(
     method="get",
     operation_id='list_vehicles',
     operation_summary='Listagem de veículos',
-    operation_description='Lista todos os veículos',
+    operation_description='Lista todos os veículos com paginação',
+    manual_parameters=[
+        openapi.Parameter(
+            'page',
+            openapi.IN_QUERY,
+            description='Número da página (opcional)',
+            type=openapi.TYPE_INTEGER,
+            required=False,
+        ),
+        openapi.Parameter(
+            'limit',
+            openapi.IN_QUERY,
+            description='Número de itens por página (opcional)',
+            type=openapi.TYPE_INTEGER,
+            required=False,
+        ),
+    ],
     responses={
-        200: openapi.Response(description='Lista de veículos'),
+        200: openapi.Response(
+            description='Lista paginada de veículos',
+            schema=openapi.Schema(
+                type=openapi.TYPE_OBJECT,
+                properties={
+                    'total': openapi.Schema(type=openapi.TYPE_INTEGER, description='Total de registros'),
+                    'per_page': openapi.Schema(type=openapi.TYPE_INTEGER, description='Itens por página'),
+                    'current_page': openapi.Schema(type=openapi.TYPE_INTEGER, description='Página atual'),
+                    'last_page': openapi.Schema(type=openapi.TYPE_INTEGER, description='Última página'),
+                    'first_page_url': openapi.Schema(type=openapi.TYPE_STRING, description='URL da primeira página'),
+                    'last_page_url': openapi.Schema(type=openapi.TYPE_STRING, description='URL da última página'),
+                    'next_page_url': openapi.Schema(type=openapi.TYPE_STRING, description='URL da próxima página'),
+                    'prev_page_url': openapi.Schema(type=openapi.TYPE_STRING, description='URL da página anterior'),
+                    'path': openapi.Schema(type=openapi.TYPE_STRING, description='Caminho base da API'),
+                    'from': openapi.Schema(type=openapi.TYPE_INTEGER, description='Primeiro item da página atual'),
+                    'to': openapi.Schema(type=openapi.TYPE_INTEGER, description='Último item da página atual'),
+                    'items': openapi.Schema(
+                        type=openapi.TYPE_ARRAY,
+                        description='Lista de veículos',
+                        items=openapi.Schema(
+                            type=openapi.TYPE_OBJECT,
+                            description='Dados do veículo'
+                        )
+                    )
+                }
+            )
+        ),
         400: openapi.Response(description='Requisição inválida', schema=validation_error_schema),
         401: openapi.Response(description='Não autorizado', schema=error_response_schema),
     },

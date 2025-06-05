@@ -19,8 +19,9 @@ python-jose
 python-dotenv==1.0.1
 
 # Outras dependências úteis
-passlib
+passlib==1.7.4
 pillow==10.2.0
 gunicorn==21.2.0
 drf-yasg==1.21.7  # Swagger para documentação de API
 whitenoise==6.6.0  # Para servir arquivos estáticos
+bcrypt==4.0.1
