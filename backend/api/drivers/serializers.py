@@ -4,14 +4,19 @@
 """
 
 from rest_framework import serializers
+from .models import Driver
 from datetime import datetime, date
 import re
 
 
 class DriverSerializer(serializers.Serializer):
-    """
-    Serializer for driver data.
-    """
+    class Meta:
+        model = Driver
+        fields = '__all__'
+        extra_kwargs = {
+            'password': {'write_only': True},
+        }
+
     id = serializers.IntegerField(required=False, read_only=True)
     name = serializers.CharField(
         max_length=200,
@@ -57,15 +62,6 @@ class DriverSerializer(serializers.Serializer):
         error_messages={
             'invalid': 'Invalid email format.',
             'blank': 'Driver email can be blank.'
-        }
-    )
-    address = serializers.CharField(
-        max_length=255,
-        required=False,
-        help_text="Driver's address",
-        error_messages={
-            'max_length': 'Driver address cannot exceed 255 characters.',
-            'blank': 'Driver address can be blank.'
         }
     )
     cnh_number = serializers.CharField(
@@ -197,22 +193,3 @@ class DriverDashboardSerializer(serializers.Serializer):
         Get the number of inactive drivers.
         """
         return obj.get('inactive_drivers', 0)
-
-
-
-class ErrorResponseSerializer(serializers.Serializer):
-    """
-    Serializer padrão para respostas de erro.
-    """
-    success = serializers.BooleanField(default=False)
-    error = serializers.CharField()
-    details = serializers.DictField(required=False)
-
-
-class SuccessResponseSerializer(serializers.Serializer):
-    """
-    Serializer padrão para respostas de sucesso.
-    """
-    success = serializers.BooleanField(default=True)
-    message = serializers.CharField(required=False)
-    data = serializers.DictField(required=False)
