@@ -36,7 +36,7 @@ class Paginator:
 
         # Se a página for None, exibe todos os resultados
         per_page = self.per_page if page else self.total
-        last_page = max(1, math.ceil(self.total / per_page))
+        last_page = 1 if self.total == 0 else max(1, math.ceil(self.total / per_page))
 
         # Garante que a página está dentro dos limites válidos
         current_page = max(1, min(page or 1, last_page))
