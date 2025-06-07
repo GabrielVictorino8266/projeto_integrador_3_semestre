@@ -12,13 +12,6 @@ from .types import VehicleStatus
 from .serializer import VehicleSerializer
 from users.authentication import MongoJWTAuthentication
 from core.utils.pagination import Paginator
-from .swagger.vehicle_swagger import (
-    create_vehicle_swagger,
-    update_vehicle_swagger,
-    delete_vehicle_swagger,
-    list_vehicles_swagger,
-    get_vehicle_swagger
-)
 
 
 """
@@ -28,7 +21,6 @@ class PaginationParamsSerializer(serializers.Serializer):
     page = serializers.IntegerField(min_value=1, required=False)
     limit = serializers.IntegerField(min_value=1, max_value=100, required=False, default=50)
 
-@list_vehicles_swagger
 @api_view(['GET'])
 @authentication_classes([MongoJWTAuthentication])
 @permission_classes([IsAuthenticated])
@@ -55,7 +47,6 @@ def list_vehicles(request):
     # return Response(serializer.data)
 
 
-@get_vehicle_swagger
 @api_view(['GET'])
 @authentication_classes([MongoJWTAuthentication])
 @permission_classes([IsAuthenticated])
@@ -74,7 +65,6 @@ def get_vehicle(request, id):
     return Response(serializer.data)
 
 
-@create_vehicle_swagger
 @api_view(['POST'])
 @authentication_classes([MongoJWTAuthentication])
 @permission_classes([IsAuthenticated])
@@ -89,7 +79,6 @@ def create_vehicle(request):
     raise serializers.ValidationError(serializer.errors)
 
 
-@update_vehicle_swagger
 @api_view(['PUT'])
 @authentication_classes([MongoJWTAuthentication])
 @permission_classes([IsAuthenticated])
@@ -111,7 +100,6 @@ def update_vehicle(request, id):
     raise serializers.ValidationError(serializer.errors)
 
 
-@delete_vehicle_swagger
 @api_view(['DELETE'])
 @authentication_classes([MongoJWTAuthentication])
 @permission_classes([IsAuthenticated])
