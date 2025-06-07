@@ -17,9 +17,11 @@ from core.utils.pagination import Paginator
 """
 Classe de serialização para os parâmetros de paginação.
 """
-class PaginationParamsSerializer(serializers.Serializer):
+class ListVehicleParamsSerializer(serializers.Serializer):
     page = serializers.IntegerField(min_value=1, required=False)
     limit = serializers.IntegerField(min_value=1, max_value=100, required=False, default=50)
+    status = serializers.ChoiceField(choices=VehicleStatus.choices, default=VehicleStatus.ACTIVE, required=False)
+    licensePlate = serializers.CharField(max_length=8, required=False)
 
 @api_view(['GET'])
 @authentication_classes([MongoJWTAuthentication])
@@ -28,23 +30,27 @@ def list_vehicles(request):
     """
     GET /vehicles/
     """
-    serializer = PaginationParamsSerializer(data=request.query_params)
+    serializer = ListVehicleParamsSerializer(data=request.query_params)
     serializer.is_valid(raise_exception=True)
     page = serializer.validated_data.get('page')
     limit = serializer.validated_data.get('limit')
+    status = serializer.validated_data.get('status')
+    licensePlate = serializer.validated_data.get('licensePlate')
+
+    # Cria um dicionário de filtros
+    filters = {}
+    if status:
+        filters['status'] = status
+    if licensePlate:
+        filters['licensePlate__icontains'] = licensePlate
 
     pagination = Paginator(
-        queryset=Vehicle.objects.all(),
+        queryset=Vehicle.objects.filter(**filters),
         per_page=limit,
         base_url=reverse('vehicles:list_vehicles', request=request),
         serializer_class=VehicleSerializer
     ).paginate(page)
     return Response(pagination)
-        
-
-    # vehicles = Vehicle.objects.all()
-    # serializer = VehicleSerializer(vehicles, many=True)
-    # return Response(serializer.data)
 
 
 @api_view(['GET'])

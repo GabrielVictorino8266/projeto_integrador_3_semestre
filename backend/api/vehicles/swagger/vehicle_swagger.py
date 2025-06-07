@@ -1,6 +1,7 @@
 from drf_yasg.utils import swagger_auto_schema
 from drf_yasg import openapi
 from vehicles.serializer import VehicleSerializer
+from vehicles.models import VehicleStatus
 
 # Define schemas de resposta de erro
 error_response_schema = openapi.Schema(
@@ -88,6 +89,21 @@ list_vehicles_swagger = swagger_auto_schema(
             openapi.IN_QUERY,
             description='Número de itens por página (opcional)',
             type=openapi.TYPE_INTEGER,
+            required=False,
+        ),
+        openapi.Parameter(
+            'status',
+            openapi.IN_QUERY,
+            description='Filtro por status do veículo (opcional)',
+            enum=[v.value for v in VehicleStatus],
+            type=openapi.TYPE_STRING,
+            required=False,
+        ),
+        openapi.Parameter(
+            'licensePlate',
+            openapi.IN_QUERY,
+            description='Filtro por placa do veículo (opcional)',
+            type=openapi.TYPE_STRING,
             required=False,
         ),
     ],
