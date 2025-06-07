@@ -9,10 +9,8 @@ The connection is lazy-loaded, meaning that it is only created when the
 """
 from django.conf import settings
 from pymongo import MongoClient
-
 class MongoConnection:
     _client = None
-
     @classmethod
     def get_client(cls):
         # Check if the client has already been created

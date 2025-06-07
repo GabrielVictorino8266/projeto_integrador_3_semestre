@@ -63,7 +63,7 @@ INSTALLED_APPS = [
     'corsheaders',
     'drf_yasg',
     'users',
-    'drivers'
+    'drivers',
     'core'
 ]
 
