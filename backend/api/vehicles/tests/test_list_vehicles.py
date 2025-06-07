@@ -63,7 +63,7 @@ class ListVehiclesTest(VehicleTestCase):
         """
         Testa a filtragem de veículos por status.
         """
-        Vehicle.objects.create(**self.valid_vehicle_data, status=VehicleStatus.INACTIVE)
+        Vehicle.objects.create(**(self.valid_vehicle_data | {'status': VehicleStatus.INACTIVE}))
         response = self.client.get(self.url, {'status': VehicleStatus.ACTIVE})
         
         self.assertEqual(response.status_code, status.HTTP_200_OK)

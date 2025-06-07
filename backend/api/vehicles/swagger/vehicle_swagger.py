@@ -1,7 +1,7 @@
 from drf_yasg.utils import swagger_auto_schema
 from drf_yasg import openapi
 from vehicles.serializer import VehicleSerializer
-from vehicles.models import VehicleStatus
+from vehicles.types import VehicleStatus
 
 # Define schemas de resposta de erro
 error_response_schema = openapi.Schema(
@@ -54,7 +54,8 @@ update_vehicle_swagger = swagger_auto_schema(
         404: openapi.Response(description='Veículo não encontrado', schema=error_response_schema),
         401: openapi.Response(description='Não autorizado', schema=error_response_schema),
     },
-    tags=['Vehicle']
+    tags=['Vehicle'],
+    security=[{'Bearer': []}]
 )
 
 delete_vehicle_swagger = swagger_auto_schema(
@@ -68,7 +69,8 @@ delete_vehicle_swagger = swagger_auto_schema(
         404: openapi.Response(description='Veículo não encontrado', schema=error_response_schema),
         401: openapi.Response(description='Não autorizado', schema=error_response_schema),
     },
-    tags=['Vehicle']
+    tags=['Vehicle'],
+    security=[{'Bearer': []}]
 )
 
 list_vehicles_swagger = swagger_auto_schema(
@@ -95,7 +97,7 @@ list_vehicles_swagger = swagger_auto_schema(
             'status',
             openapi.IN_QUERY,
             description='Filtro por status do veículo (opcional)',
-            enum=[v.value for v in VehicleStatus],
+            enum=VehicleStatus.choices,
             type=openapi.TYPE_STRING,
             required=False,
         ),
@@ -138,7 +140,8 @@ list_vehicles_swagger = swagger_auto_schema(
         400: openapi.Response(description='Requisição inválida', schema=validation_error_schema),
         401: openapi.Response(description='Não autorizado', schema=error_response_schema),
     },
-    tags=['Vehicle']
+    tags=['Vehicle'],
+    security=[{'Bearer': []}]
 )
 
 get_vehicle_swagger = swagger_auto_schema(
@@ -156,10 +159,33 @@ get_vehicle_swagger = swagger_auto_schema(
         )
     ],
     responses={
-        200: openapi.Response(description='Detalhes do veículo'),
+        200: openapi.Response(description='Detalhes do veículo', schema=VehicleSerializer()),
         400: openapi.Response(description='Requisição inválida', schema=validation_error_schema),
         404: openapi.Response(description='Veículo não encontrado', schema=error_response_schema),
         401: openapi.Response(description='Não autorizado', schema=error_response_schema),
     },
-    tags=['Vehicle']
+    tags=['Vehicle'],
+    security=[{'Bearer': []}]
+)
+
+list_vehicle_status_swagger = swagger_auto_schema(
+    method="get",
+    operation_id='list_vehicle_status',
+    operation_summary='Listagem de status de veículos',
+    operation_description='Lista todos os status de veículos',
+    responses={
+        200: openapi.Response(description='Lista de status de veículos', schema=openapi.Schema(
+            type=openapi.TYPE_ARRAY,
+            items=openapi.Schema(
+                type=openapi.TYPE_OBJECT,
+                properties={
+                    'value': openapi.Schema(type=openapi.TYPE_STRING, description='Valor do status'),
+                    'label': openapi.Schema(type=openapi.TYPE_STRING, description='Descrição do status')
+                }
+            )
+        )),
+        401: openapi.Response(description='Não autorizado', schema=error_response_schema),
+    },
+    tags=['Vehicle'],
+    security=[{'Bearer': []}]
 )

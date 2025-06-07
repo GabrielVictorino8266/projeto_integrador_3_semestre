@@ -124,3 +124,11 @@ def delete_vehicle(request, id):
     vehicle.status = VehicleStatus.INACTIVE
     vehicle.save()
     return Response('Veículo deletado com sucesso', status=status.HTTP_204_NO_CONTENT)
+
+@api_view(['GET'])
+def list_vehicle_status(request):
+    """
+    GET /vehicles/status/
+    """
+    status_list = [{"value": value, "label": label} for value, label in VehicleStatus.choices]
+    return Response(status_list)
