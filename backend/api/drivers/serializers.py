@@ -28,6 +28,17 @@ class DriverSerializer(serializers.Serializer):
             'blank': 'Driver name cannot be blank.'
         }
     )
+    password = serializers.CharField(
+        max_length=512,
+        write_only=True,
+        required=True,
+        help_text="Driver's password",
+        error_messages={
+            'required': 'Driver password is required.',
+            'max_length': 'Driver password cannot exceed 512 characters.',
+            'blank': 'Driver password cannot be blank.'
+        }
+    )
     cpf = serializers.CharField(
         max_length=11,
         required=True,
@@ -38,7 +49,7 @@ class DriverSerializer(serializers.Serializer):
             'blank': 'Driver CPF cannot be blank.'
         }
     )
-    birth_date = serializers.DateField(
+    birthYear = serializers.DateField(
         required=True,
         help_text="Driver's birth date (YYYY-MM-DD)",
         error_messages={
@@ -64,7 +75,7 @@ class DriverSerializer(serializers.Serializer):
             'blank': 'Driver email can be blank.'
         }
     )
-    cnh_number = serializers.CharField(
+    licenseNumber = serializers.CharField(
         max_length=11,
         required=True,
         help_text="Driver's CNH (Carteira Nacional de Habilitação) number",
@@ -74,7 +85,7 @@ class DriverSerializer(serializers.Serializer):
             'blank': 'Driver CNH number cannot be blank.'
         }
     )
-    cnh_category = serializers.ChoiceField(
+    licenseType = serializers.ChoiceField(
         choices=[
             ('A', 'Categoria A'),
             ('B', 'Categoria B'),
@@ -93,7 +104,7 @@ class DriverSerializer(serializers.Serializer):
             'invalid_choice': 'Categoria da CNH inválida.'
         }
     )
-    is_active = serializers.BooleanField(
+    isActive = serializers.BooleanField(
         default=True,
         help_text="Indicates if the driver is currently active",
     )
