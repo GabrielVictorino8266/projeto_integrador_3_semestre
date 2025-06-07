@@ -1,4 +1,5 @@
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useNavigate, useParams } from "react-router-dom";
 import { useForm } from "react-hook-form";
 // Componente
 import { Sidebar } from "@components/Sidebar";
@@ -8,25 +9,46 @@ import { InputComponent } from "@components/Input";
 // Utils
 import { veiculos } from "@utils/Selects/TipoVeiculos";
 import { status } from "@utils/Selects/StatusVeiculo";
+// hooks
+import { useFetchVeiculos } from "@hooks/useFetchVeiculos/index";
 // Schemas
 import { schemaCadVeiculo, type DataProps } from "@schemas/CadsVeiculos";
+// Service
+import { VehiclesRegistration } from "@services/Api/Registration/VehiclesRegistration";
+// Styles
 import { ButtonWrapper, Container, ContainerInputs } from "./styles";
 
 export function CadastroVeiculo() {
+    const { id } = useParams<{ id: string }>();
+    const navigate = useNavigate();
     const {
         register,
         handleSubmit,
         formState: { errors },
+        reset,
     } = useForm<DataProps>({
         mode: "onBlur",
         resolver: zodResolver(schemaCadVeiculo),
     });
 
+    const { loading } = useFetchVeiculos(id, reset);
+
+    if (loading) return <p>Carregando...</p>;
+
+    const Submit = async (data: DataProps) => {
+        const sucess = await VehiclesRegistration(data, id);
+        setTimeout(() => {
+            navigate("/dashboard");
+        }, 1800);
+        console.log(sucess);
+        console.log("Cadastrado", data);
+    };
+
     return (
         <Container>
             <Sidebar />
             <RegisterPageGeneric title="Cadastro de veículo">
-                <form onSubmit={handleSubmit((data) => console.log(data))}>
+                <form onSubmit={handleSubmit(Submit)}>
                     <ContainerInputs>
                         <InputComponent
                             label="Placa"
@@ -70,7 +92,9 @@ export function CadastroVeiculo() {
                     </ContainerInputs>
 
                     <ButtonWrapper>
-                        <button type="submit">Cadastrar</button>
+                        <button type="submit">
+                            {id ? "Atualizar" : "Cadastrar"}
+                        </button>
                     </ButtonWrapper>
                 </form>
             </RegisterPageGeneric>
