@@ -14,10 +14,11 @@ from pathlib import Path
 from pymongo import MongoClient
 from dotenv import load_dotenv
 from datetime import timedelta
+from mongoengine import connect
 import os
 
-
 load_dotenv()
+
 
 MONGO_URI = os.environ.get('MONGO_URI')
 if not MONGO_URI:
@@ -30,6 +31,8 @@ if not MONGO_DB_NAME:
 # Conexão MongoDB
 mongo_client = MongoClient(MONGO_URI)
 mongodb = mongo_client[MONGO_DB_NAME]
+
+connect(db=MONGO_DB_NAME, host=MONGO_URI)
 
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -71,8 +74,7 @@ REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework_simplejwt.authentication.JWTAuthentication',
     ),
-    'DEFAULT_SCHEMA_CLASS': 'rest_framework.schemas.coreapi.AutoSchema',
-    'EXCEPTION_HANDLER': 'drivers.exceptions.custom_exception_handler',
+    'DEFAULT_SCHEMA_CLASS': 'rest_framework.schemas.coreapi.AutoSchema'
 }
 
 

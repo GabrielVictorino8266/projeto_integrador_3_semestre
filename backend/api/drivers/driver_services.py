@@ -1,8 +1,5 @@
-from core.mongo import MongoConnection
-
 class DriverService:
     def __init__(self):
-        self.db = MongoConnection.get_database()
         self.drivers_collection = self.db['users']
 
     def get_all_drivers(self, query_params):
@@ -15,3 +12,8 @@ class DriverService:
             query_filter['licenseType'] = query_params['licenseType']
     
         return self.drivers_collection.find(query_filter)
+    
+    def create_driver(self, driver_data):
+        """Create a new driver."""
+        driver_data['isActive'] = True
+        return self.drivers_collection.insert_one(driver_data)

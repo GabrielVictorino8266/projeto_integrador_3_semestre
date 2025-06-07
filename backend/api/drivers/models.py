@@ -1,4 +1,4 @@
-from mongoengine import Document, StringField, IntField, ListField, ReferenceField, BooleanField
+from mongoengine import Document, StringField, IntField, ListField, DateField, BooleanField
 import datetime
 
 class Driver(Document):
@@ -6,7 +6,7 @@ class Driver(Document):
     cpf = StringField(required=True, unique=True)
     email = StringField(required=True)
     name =StringField(required=True)
-    birthDate = datetime.date
+    birthYear = DateField(required=True)
     phone = StringField(required=True)
     licenseType = StringField(required=True)
     licenseNumber = StringField(required=True)
@@ -14,3 +14,5 @@ class Driver(Document):
     incidents = ListField(StringField(), default=[])
     isActive = BooleanField(default=True)
     type = StringField(default='Motorista')
+
+    meta = {'collection': 'users'}
