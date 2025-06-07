@@ -52,6 +52,18 @@ DEBUG = True
 ALLOWED_HOSTS = ['localhost', '127.0.0.1', '0.0.0.0', '*'] # Development
 # ALLOWED_HOSTS = []
 
+# Swagger
+SWAGGER_SETTINGS = {
+    'SECURITY_DEFINITIONS': {
+        'Bearer': {
+            'type': 'apiKey',
+            'name': 'Authorization',
+            'in': 'header',
+            'description': 'JWT Authorization header usando o esquema Bearer. Exemplo: "Authorization: Bearer <token>"',
+        },
+    },
+    'USE_SESSION_AUTH': False,
+}
 
 # Application definition
 
