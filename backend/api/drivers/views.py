@@ -4,17 +4,18 @@
 """
 
 from rest_framework.reverse import reverse
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view, authentication_classes, permission_classes
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from core.utils.pagination import Paginator
-from rest_framework import serializers
-from rest_framework import status
-from mongoengine import QuerySet
-from django.http import Http404
+from rest_framework import serializers, status
+from rest_framework.exceptions import NotFound, ParseError
+from users.auth_services import get_hash_password
 from .models import Driver
 from .serializers import (
     DriverSerializer
 )
+from bson import ObjectId
 
 """
 Classe de serialização para os parâmetros de paginação.
@@ -42,3 +43,15 @@ def list_drivers(request):
         return Response(pagination)
     else:
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+@api_view(['POST'])
+def create_driver(request):
+    """Create a new driver."""
+    serializer = DriverSerializer(data=request.data)
+    if serializer.is_valid():
+        password = request.data.get('password')
+        hashed_password = get_hash_password(password)
+        serializer.validated_data['password'] = hashed_password
+        serializer.save()
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+    raise serializers.ValidationError(serializer.errors)

@@ -1,5 +1,4 @@
 from mongoengine import Document, StringField, IntField, ListField, DateField, BooleanField
-import datetime
 
 class Driver(Document):
     password = StringField(required=True)
