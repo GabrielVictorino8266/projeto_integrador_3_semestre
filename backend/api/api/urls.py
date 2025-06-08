@@ -23,7 +23,7 @@ schema_view = get_schema_view(
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('/api/drivers/', include('drivers.urls')),
+    path('api/drivers/', include('drivers.urls')),
     path('api/users/', include('users.urls')),
     path('api/vehicles/', include('vehicles.urls')),
     re_path(r'^swagger(?P<format>\.json|\.yaml)$', schema_view.without_ui(cache_timeout=0), name='schema-json'),
