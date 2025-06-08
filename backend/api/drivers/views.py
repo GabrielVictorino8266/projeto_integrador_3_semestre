@@ -13,7 +13,8 @@ from rest_framework.exceptions import NotFound, ParseError
 from users.auth_services import get_hash_password
 from .models import Driver
 from .serializers import (
-    DriverSerializer
+    DriverSerializer,
+    DriverDetailSerializer
 )
 from bson import ObjectId
 
@@ -47,7 +48,7 @@ def list_drivers(request):
 @api_view(['POST'])
 def create_driver(request):
     """Create a new driver."""
-    serializer = DriverSerializer(data=request.data)
+    serializer = DriverDetailSerializer(data=request.data)
     if serializer.is_valid():
         password = request.data.get('password')
         hashed_password = get_hash_password(password)
@@ -55,3 +56,12 @@ def create_driver(request):
         serializer.save()
         return Response(serializer.data, status=status.HTTP_201_CREATED)
     raise serializers.ValidationError(serializer.errors)
+
+@api_view(['GET'])
+def get_driver(request, driver_id):
+    """Get driver by id"""
+    try:
+        driver = Driver.objects.get(id=ObjectId(driver_id))
+    except Driver.DoesNotExist:
+        raise NotFound("Driver not found")
+    return Response(DriverSerializer(driver).data)
