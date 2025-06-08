@@ -1,12 +1,17 @@
-import type { IDefaultChildrenProp } from "@interfaces/default.interface";
 import { StyledRegisterContainer, StyledRegisterFormContainer } from "./styles";
+import type { ReactNode } from "react";
 
-const RegisterPageGeneric = ({ children }: IDefaultChildrenProp) => {
+export interface IChildrenProp {
+  children: ReactNode;
+  title: string
+}
+
+const RegisterPageGeneric = ({ children, title }: IChildrenProp) => {
   return (
     <>
       <StyledRegisterContainer>
         <div className={"title"}>
-          <h1>Cadastro de motorista</h1>
+          <h1>{title}</h1>
         </div>
 
         <StyledRegisterFormContainer>{children}</StyledRegisterFormContainer>

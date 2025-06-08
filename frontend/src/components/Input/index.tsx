@@ -1,54 +1,38 @@
+import { ApplyMask } from '@utils/Mask/ApplyMask'
+import type { MaskType } from '@utils/Mask/TypeMask';
 import { ContainerInput } from "./styles";
-import { FactoryMask } from "../../utils/Mask/FactoryMask";
+import { forwardRef, useId, useState, type InputHTMLAttributes } from "react";
 
-type TypesProps = {
-  text: string;
-  LabelText: string;
+type InputProps = InputHTMLAttributes<HTMLInputElement>  &{
+  label?: string;
+  errorMessage?: string
+  mask?: MaskType; //Caso precisa adicionar ou retirar tipo de mascara, alterar os arquivos TypeMask.ts e FactoryMask.ts
   cadeado?: boolean;
-  type: string;
-  mask?: "cpf" | "telefone";
-  value?: string;
-  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  name?: string;
-  inputRef: React.Ref<HTMLInputElement>;
+  pessoa?: boolean;
 };
 
-export function InputComponent(props: TypesProps) {
-  function getChange(e: React.ChangeEvent<HTMLInputElement>) {
-    if (props.mask != null) {
-      const instance = FactoryMask(props.mask);
-      const formated = instance.mask(e.target.value);
+export const InputComponent = forwardRef<HTMLInputElement, InputProps>(({type = 'text', name = '', label = '', errorMessage = '', mask, pessoa, cadeado, ...props }, ref) => {
+    const InputId = useId()
+    const [value, setValue ] = useState<string>('')
 
-      const customEvnt = {
-        ...e,
-        target: {
-          ...e.target,
-          value: formated,
-          name: props.name || "",
-        },
-      };
+    return(
+        <div>
+            <ContainerInput  cadeado={cadeado} pessoa={pessoa} error={errorMessage}>
+                {label && <label htmlFor={InputId}>{label}</label>}
+                  
+                <input
+                    id={InputId}
+                    type={type}
+                    name={name}
+                    ref={ref}
+                    {...props}
+                    onChange={(e) => ApplyMask(e, mask, setValue)}
+                    value={value}
+                />
 
-      props.onChange(customEvnt as React.ChangeEvent<HTMLInputElement>);
-    } else {
-      props.onChange?.(e);
-    }
-  }
+                {errorMessage && <p>{errorMessage}</p> } 
+            </ContainerInput>
+        </div>
+    )
+})
 
-  return (
-    <div>
-      <ContainerInput cadeado={props.cadeado}>
-        <label>{props.LabelText}</label>
-
-        <input
-          type={props.type}
-          placeholder={props.text}
-          value={props.value || ""}
-          onChange={getChange}
-          name={props.name}
-          ref={props.inputRef}
-          maxLength={14}
-        />
-      </ContainerInput>
-    </div>
-  );
-}

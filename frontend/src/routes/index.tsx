@@ -6,15 +6,18 @@ import { Login } from "../pages/Login";
 import { DriverRegister } from "../pages/Cadastro/Driver";
 
 const RoutesMain = () => {
-  return (
-    <Routes>
-      <Route path="/" element={<HomePage />} />
-      <Route path="/login" element={<Login />} />
-      <Route path="/dashboard" element={<Dashboard />} />
-      <Route path="veiculos" element={<CadastroVeiculo />} />
-      <Route path="/motorista" element={<DriverRegister />} />
-    </Routes>
-  );
+    return (
+        <Routes>
+            <Route path="/" element={<HomePage />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="/veiculos">
+                <Route index element={<CadastroVeiculo />} />
+                <Route path=":id" element={<CadastroVeiculo />} />
+            </Route>
+            <Route path="/motorista" element={<DriverRegister />} />
+        </Routes>
+    );
 };
 
 export default RoutesMain;

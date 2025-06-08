@@ -1,9 +1,9 @@
 import { useState, useRef, useEffect } from "react";
-import type { IDefaultChildrenProp } from "../interfaces";
 import { ModalContext } from "../contexts/modal.context";
 import { DriverRegisterModalContent } from "../components/Modal/ModalContents";
 import type { JSX } from "@emotion/react/jsx-runtime";
 import type { TModalTypes } from "../interfaces/modal.interface";
+import type { IDefaultChildrenProp } from "@interfaces/default.interface";
 
 const ModalProvider = ({ children }: IDefaultChildrenProp) => {
   const [modalType, setModalType] = useState<TModalTypes | null>(null);
