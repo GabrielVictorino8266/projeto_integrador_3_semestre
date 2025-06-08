@@ -8,4 +8,5 @@ urlpatterns = [
     path('create', views.create_driver, name='create_driver'),
     path('<str:driver_id>', views.get_driver, name='get_driver'),
     path('delete/<str:driver_id>', views.delete_driver, name='delete_driver'),
+    path('update/<str:driver_id>', views.update_driver, name='update_driver')
 ]

@@ -81,3 +81,34 @@ def delete_driver(request, driver_id):
     driver.isActive = False
     driver.save()
     return Response(status=status.HTTP_204_NO_CONTENT)
+
+@api_view(['PUT'])
+def update_driver(request, driver_id):
+    """Update driver by id"""
+    try:
+        driver = Driver.objects.get(id=ObjectId(driver_id))
+    except Driver.DoesNotExist:
+        raise NotFound("Driver not found")
+    except Exception as e:
+        raise ParseError(f"Error updating driver: {e}")
+    
+    serializer = DriverDetailSerializer(driver, data=request.data, partial=True)
+    if serializer.is_valid():
+        if 'password' in request.data:
+            password = request.data.get('password')
+            hashed_password = get_hash_password(password)
+            serializer.validated_data['password'] = hashed_password
+        serializer.save()
+        driver_data = convert_objectids(serializer.data)
+        return Response(driver_data)
+    raise serializers.ValidationError(serializer.errors)
+
+def convert_objectids(data):
+    """Convert ObjectId fields in a dictionary to strings."""
+    if isinstance(data, dict):
+        return {k: convert_objectids(v) for k, v in data.items()}
+    elif isinstance(data, list):
+        return [convert_objectids(item) for item in data]
+    elif isinstance(data, ObjectId):
+        return str(data)
+    return data
