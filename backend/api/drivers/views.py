@@ -17,6 +17,7 @@ from .serializers import (
     DriverDetailSerializer
 )
 from bson import ObjectId
+from datetime import datetime
 
 """
 Classe de serialização para os parâmetros de paginação.
@@ -65,3 +66,18 @@ def get_driver(request, driver_id):
     except Driver.DoesNotExist:
         raise NotFound("Driver not found")
     return Response(DriverSerializer(driver).data)
+
+@api_view(['DELETE'])
+def delete_driver(request, driver_id):
+    """Delte driver by id"""
+    try:
+        driver = Driver.objects.get(id=ObjectId(driver_id))
+    except Driver.DoesNotExist:
+        raise NotFound("Driver not found")
+    except Exception as e:
+        raise ParseError(f"Error deleting driver: {str(e)}")
+    
+    driver.deletedAt  = datetime.now()
+    driver.isActive = False
+    driver.save()
+    return Response(status=status.HTTP_204_NO_CONTENT)
