@@ -10,6 +10,7 @@ class DriverSerializer(DocumentSerializer):
     class Meta:
         model = Driver
         fields = ['id', 'cpf', 'email', 'name', 'birthYear', 'phone', 'licenseType', 'licenseNumber', 'performance', 'incidents', 'isActive', 'type']
+    
 
 class DriverDetailSerializer(DocumentSerializer):
     class Meta:

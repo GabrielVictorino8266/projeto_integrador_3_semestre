@@ -42,6 +42,8 @@ def list_drivers(request):
             serializer_class=DriverSerializer
         ).paginate(page)
 
+        pagination = convert_objectids(pagination)
+        
         return Response(pagination)
     else:
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
