@@ -31,13 +31,14 @@ if not MONGO_DB_NAME:
 # Conexão MongoDB
 mongo_client = MongoClient(MONGO_URI)
 mongodb = mongo_client[MONGO_DB_NAME]
-
 connect(db=MONGO_DB_NAME, host=MONGO_URI)
-
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
+MIGRATIONS_DIR = os.environ.get('MIGRATIONS_DIR', str(BASE_DIR / 'database/migrations'))
 
+if not os.path.isdir(MIGRATIONS_DIR):
+    raise Exception(f'Diretório de migrações não encontrado: {MIGRATIONS_DIR}')
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
@@ -51,6 +52,18 @@ DEBUG = True
 ALLOWED_HOSTS = ['localhost', '127.0.0.1', '0.0.0.0', '*'] # Development
 # ALLOWED_HOSTS = []
 
+# Swagger
+SWAGGER_SETTINGS = {
+    'SECURITY_DEFINITIONS': {
+        'Bearer': {
+            'type': 'apiKey',
+            'name': 'Authorization',
+            'in': 'header',
+            'description': 'JWT Authorization header usando o esquema Bearer. Exemplo: "Authorization: Bearer <token>"',
+        },
+    },
+    'USE_SESSION_AUTH': False,
+}
 
 # Application definition
 
