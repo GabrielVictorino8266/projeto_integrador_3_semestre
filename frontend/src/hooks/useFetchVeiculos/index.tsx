@@ -15,35 +15,27 @@ export function useFetchVeiculos(
             return;
         }
 
-        // const fetchData = async ( ) => {
-        //     try{
-        //         const response = await getVehiclesId(id)
-
-        //         const veiculo = {
-        //             ...response,
-        //              anoVeiculo: formatDateToBR(response.anoVeiculo),
-        //         }
-        //         reset(veiculo)
-        //     }catch(error){
-        //         console.log("Erro")
-        //     }finally{
-        //         setLoading(false)
+        // const fetchData = async () => {
+        //     try {
+        //         const response = await getVehiclesId(id);
+        //         reset(response);
+        //     } catch (error) {
+        //         console.log("Erro");
+        //     } finally {
+        //         setLoading(false);
         //     }
-        // }
-        
+        // };
+
         const timer = setTimeout(() => {
             if (id === "1") {
                 const mockVeiculo: DataProps = {
                     placa: "ABC1234",
                     marca: "Volkswagen",
                     numero: "42",
-                    anoVeiculo: "2015-05-15",
+                    anoVeiculo: "2024",
                     tipoVeiculo: "Onibus",
                     status: "manutencao",
                 };
-
-                mockVeiculo.anoVeiculo = formatDateToBR(mockVeiculo.anoVeiculo);
-
                 reset(mockVeiculo);
             } else {
                 console.warn(`ID ${id} não encontrado`);

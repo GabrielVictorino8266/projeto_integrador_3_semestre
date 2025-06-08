@@ -21,6 +21,7 @@ import { ButtonWrapper, Container, ContainerInputs } from "./styles";
 export function CadastroVeiculo() {
     const { id } = useParams<{ id: string }>();
     const navigate = useNavigate();
+    const currentYear = new Date().getFullYear();
     const {
         register,
         handleSubmit,
@@ -72,9 +73,8 @@ export function CadastroVeiculo() {
                         <InputComponent
                             label="Ano do veículo"
                             {...register("anoVeiculo")}
-                            placeholder="Ex: 03/05/2001"
-                            mask="data"
-                            maxLength={10}
+                            placeholder={`Ex: ${currentYear}`}
+                            maxLength={4}
                             errorMessage={errors.anoVeiculo?.message}
                         />
                         <SelectInputForm
