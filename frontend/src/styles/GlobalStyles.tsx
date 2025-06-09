@@ -7,6 +7,8 @@ export const GlobalStyles = () => (
         --color-brand-1: #071425;
         --color-brand-2: #006fdd;
 
+        --color-background-dashboard: #dde8f0;
+
         --color-white: #ffffff;
 
         --color-success: #15670a;
