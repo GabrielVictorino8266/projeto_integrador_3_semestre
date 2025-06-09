@@ -32,7 +32,6 @@ export function CadastroVeiculo() {
         resolver: zodResolver(schemaCadVeiculo),
     });
 
-<<<<<<< HEAD
     const { loading } = useFetchVeiculos(id, reset);
 
     if (loading) return <p>Carregando...</p>;
@@ -102,23 +101,4 @@ export function CadastroVeiculo() {
         </Container>
     );
 }
-=======
-        <Container>
-            <Sidebar />  
-            <Main>
-                <Header>
-                    <h1>Cadastro de viagem</h1>
-                </Header>
-                
-                <BoxForm>
-                    <Form>
-                        
-                    </Form>
-                </BoxForm>
 
-            </Main>  
-        </Container>
-        
-    )
-}
->>>>>>> origin/backend/vehicles
