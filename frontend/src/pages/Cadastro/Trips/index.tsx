@@ -8,6 +8,7 @@ import { useForm, type SubmitHandler } from "react-hook-form";
 import { tripFormSchema, type ITripFormRegister } from "@schemas/trip.schema";
 import { useState } from "react";
 import { statusTrip } from "@utils/Selects/statusTrip";
+import { Button } from "@styles/Buttons";
 
 const TripRegister = () => {
   const [inputTime, setInputTime] = useState("");
@@ -95,6 +96,9 @@ const TripRegister = () => {
               label="Status"
             />
           </ContainerInputs>
+          <div className="form__sendButton">
+            <Button>ENVIAR</Button>
+          </div>
         </form>
       </RegisterPageGeneric>
     </Section>
