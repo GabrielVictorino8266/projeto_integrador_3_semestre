@@ -5,16 +5,18 @@ import { api } from "@services/api";
 import { toast } from "react-toastify";
 import { DriverContext } from "@contexts/driver.context";
 import { useEffect, useState } from "react";
-import { driversMockList } from "@utils/mock";
 import { type IDriverListResponse } from "@interfaces/driver.interface";
 
 const DriverProvider = ({ children }: IDefaultChildrenProp) => {
   const token = localStorage.getItem("@TOKEN") || null;
   const [driverList, setDriverList] = useState<IDriverListResponse | []>([]);
+  const [driverQuantity, setDriverQuantity] = useState<number | 0>(0);
+  const [driverActive, setDriverActive] = useState<number | 0>(0);
+  const [driverInactive, setDriverInative] = useState<number | 0>(0);
 
   useEffect(() => {
     getDriverList();
-  });
+  }, []);
 
   const headersAuth = {
     headers: {
@@ -40,13 +42,25 @@ const DriverProvider = ({ children }: IDefaultChildrenProp) => {
     }
   };
 
-  const getDriverList = () => {
-    setDriverList(driversMockList);
-    // try {
-    //   setDriverList(driversMockList);
-    // } catch (error) {
-    //   console.log(error);
-    // }
+  const getDriverList = async () => {
+    try {
+      const driverListResponse = await api.get("/drivers/list");
+      if (driverListResponse.status === 200) {
+        const driverListApi: IDriverListResponse =
+          driverListResponse.data.items;
+        toast.success("Lista de motoristas carregada!");
+        setDriverList(driverListApi);
+        const quantity = driverListApi.length;
+        const active = driverListApi.filter((driver) => driver.isActive).length;
+        const inactive = quantity - active;
+
+        setDriverQuantity(quantity);
+        setDriverActive(active);
+        setDriverInative(inactive);
+      }
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
@@ -55,6 +69,9 @@ const DriverProvider = ({ children }: IDefaultChildrenProp) => {
         driverList,
         handleCreateDriver,
         getDriverList,
+        driverActive,
+        driverInactive,
+        driverQuantity,
       }}
     >
       {children}

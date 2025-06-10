@@ -5,8 +5,10 @@ import { Button } from "@styles/Buttons";
 import { CardWithRightBorder } from "@components/Dashboard/Cards";
 import { DriverList } from "@components/Dashboard/DriverList";
 import { RegInput } from "@components/InputForm";
+import { useDriver } from "@hooks/useDriver";
 
 const DriverDashboard = () => {
+  const { driverActive, driverInactive, driverQuantity } = useDriver();
   return (
     <Main>
       <Sidebar />
@@ -20,16 +22,19 @@ const DriverDashboard = () => {
           <section className="dashboard__details">
             <div className="cards__container">
               <CardWithRightBorder>
-                <h3>Total de motoristas</h3>
-                <p>30</p>
+                <p>Total de motoristas</p>
+                <p>{driverQuantity}</p>
               </CardWithRightBorder>
 
               <CardWithRightBorder>
-                <p>dados aqui</p>
+                <p>Motoristas Ativos</p>
+                <p>{driverActive}</p>
+                <p>Motoristas Inativos</p>
+                <p>{driverInactive}</p>
               </CardWithRightBorder>
 
               <CardWithRightBorder>
-                <p>dados aqui</p>
+                <p>Gráfico</p>
               </CardWithRightBorder>
             </div>
 

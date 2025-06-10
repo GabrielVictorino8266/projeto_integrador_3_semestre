@@ -8,6 +8,9 @@ export interface IDriverContextProps {
   handleCreateDriver: (newDriverData: IDriverRegisterData) => Promise<void>;
   getDriverList: () => void;
   driverList: IDriverListResponse | [];
+  driverQuantity: number;
+  driverActive: number;
+  driverInactive: number;
 }
 
 export interface IDriverList {
