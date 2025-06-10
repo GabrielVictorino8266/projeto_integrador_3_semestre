@@ -10,14 +10,12 @@ const RoutesMain = () => {
     <Routes>
       <Route path="/" element={<HomePage />} />
       <Route path="/login" element={<Login />} />
-      <Route path="/dashboard" />
+      <Route path="/motorista" element={<DriverRegister />} />
       <Route path="/dashboard/motoristas" element={<DriverDashboard />} />
-
       <Route path="/veiculos">
         <Route index element={<CadastroVeiculo />} />
         <Route path=":id" element={<CadastroVeiculo />} />
       </Route>
-      <Route path="/motorista" element={<DriverRegister />} />
     </Routes>
   );
 };

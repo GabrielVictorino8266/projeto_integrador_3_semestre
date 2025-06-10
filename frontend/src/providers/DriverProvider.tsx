@@ -4,7 +4,7 @@ import type { AxiosResponse } from "axios";
 import { api } from "@services/api";
 import { toast } from "react-toastify";
 import { DriverContext } from "@contexts/driver.context";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { type IDriverListResponse } from "@interfaces/driver.interface";
 
 const DriverProvider = ({ children }: IDefaultChildrenProp) => {
@@ -13,10 +13,8 @@ const DriverProvider = ({ children }: IDefaultChildrenProp) => {
   const [driverQuantity, setDriverQuantity] = useState<number | 0>(0);
   const [driverActive, setDriverActive] = useState<number | 0>(0);
   const [driverInactive, setDriverInative] = useState<number | 0>(0);
-
-  useEffect(() => {
-    getDriverList();
-  }, []);
+  const [inputValue, setInputValue] = useState("");
+  const [inputDate, setInputDate] = useState("");
 
   const headersAuth = {
     headers: {
@@ -53,7 +51,6 @@ const DriverProvider = ({ children }: IDefaultChildrenProp) => {
         const quantity = driverListApi.length;
         const active = driverListApi.filter((driver) => driver.isActive).length;
         const inactive = quantity - active;
-
         setDriverQuantity(quantity);
         setDriverActive(active);
         setDriverInative(inactive);
@@ -61,6 +58,31 @@ const DriverProvider = ({ children }: IDefaultChildrenProp) => {
     } catch (error) {
       console.log(error);
     }
+  };
+
+  const cpfMask = (value: string) => {
+    return value
+      .replace(/\D/g, "")
+      .replace(/(\d{3})(\d)/, "$1.$2")
+      .replace(/(\d{3})(\d)/, "$1.$2")
+      .replace(/(\d{3})(\d{1,2})/, "$1-$2")
+      .replace(/(-\d{2})\d+?$/, "$1");
+  };
+
+  const dateMask = (value: string) => {
+    return value
+      .replace(/\D/g, "")
+      .replace(/^(\d{2})(\d)/, "$1/$2")
+      .replace(/^(\d{2})\/(\d{2})(\d)/, "$1/$2/$3")
+      .slice(0, 10);
+  };
+
+  const handleInputMask = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setInputValue(cpfMask(event.target.value));
+  };
+
+  const handleDateMask = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setInputDate(dateMask(event.target.value));
   };
 
   return (
@@ -72,6 +94,12 @@ const DriverProvider = ({ children }: IDefaultChildrenProp) => {
         driverActive,
         driverInactive,
         driverQuantity,
+        cpfMask,
+        dateMask,
+        handleInputMask,
+        handleDateMask,
+        inputDate,
+        inputValue,
       }}
     >
       {children}

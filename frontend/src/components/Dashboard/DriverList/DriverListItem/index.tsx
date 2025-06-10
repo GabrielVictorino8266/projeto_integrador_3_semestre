@@ -2,6 +2,7 @@ import { StyledTableRow } from "./styles";
 import { FiTrash2 } from "react-icons/fi";
 import { TbEdit } from "react-icons/tb";
 import { FaCircle } from "react-icons/fa";
+import { useModal } from "@hooks/useModal";
 
 interface IDriverListItemProps {
   id: string;
@@ -20,6 +21,8 @@ const DriverListItem = ({
   cpf,
   licenceNumber,
 }: IDriverListItemProps) => {
+  const { handleOpenModal } = useModal();
+
   return (
     <StyledTableRow>
       <td scope="row">{name}</td>
@@ -38,14 +41,14 @@ const DriverListItem = ({
       <td>
         <button
           onClick={() => {
-            console.log(id);
+            handleOpenModal({ modalType: "driverEdit", id });
           }}
         >
           <TbEdit className="icon editButton" />
         </button>
         <button
           onClick={() => {
-            console.log(id);
+            handleOpenModal({ modalType: "driverDeleteConfirmation", id });
           }}
         >
           <FiTrash2 className="icon deleteButton" />

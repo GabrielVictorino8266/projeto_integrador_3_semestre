@@ -11,6 +11,12 @@ export interface IDriverContextProps {
   driverQuantity: number;
   driverActive: number;
   driverInactive: number;
+  handleInputMask: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  handleDateMask: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  cpfMask: (value: string) => string;
+  dateMask: (value: string) => string;
+  inputValue: string;
+  inputDate: string;
 }
 
 export interface IDriverList {

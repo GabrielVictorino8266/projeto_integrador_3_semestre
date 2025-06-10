@@ -1,17 +1,16 @@
 import { Button } from "@styles/Buttons";
 import { useModal } from "@hooks/useModal";
+import { Modal } from "@components/Modal/ModalGeneric";
 
 const HomePage = () => {
-  const { handleOpenModal, MODALCOMPONENTS, modalType } = useModal();
-
-  const modalContent = modalType ? MODALCOMPONENTS[modalType] : null;
+  const { isOpen, modalType, handleOpenModal } = useModal();
 
   return (
-    <>  
-      {modalContent ? modalContent() : null}
+    <>
+      {isOpen && <Modal type={modalType} />}
       <Button
         onClick={() => {
-          handleOpenModal("driverRegister");
+          handleOpenModal({ modalType: "driverEdit" });
         }}
       >
         ABRIR O MODAL

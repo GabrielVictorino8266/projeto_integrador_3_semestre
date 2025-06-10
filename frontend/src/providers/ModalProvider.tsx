@@ -1,20 +1,16 @@
 import { useState, useRef, useEffect } from "react";
 import { ModalContext } from "../contexts/modal.context";
-import { DriverRegisterModalContent } from "../components/Modal/ModalContents";
-import type { JSX } from "@emotion/react/jsx-runtime";
-import type { TModalTypes } from "../interfaces/modal.interface";
+import type {
+  IHandleOpenModalProps,
+  TModalContentID,
+  TModalTypes,
+} from "../interfaces/modal.interface";
 import type { IDefaultChildrenProp } from "@interfaces/default.interface";
 
 const ModalProvider = ({ children }: IDefaultChildrenProp) => {
   const [modalType, setModalType] = useState<TModalTypes | null>(null);
-
-  const MODALCOMPONENTS: Record<string, () => JSX.Element> = {
-    driverRegister: DriverRegisterModalContent,
-    // vehicleRegister: vehicleRegisterModalContent,
-    // confirm: ConfirmModalContent,
-  };
-
   const [isOpen, setIsOpen] = useState<boolean>(false);
+  const [modalContentID, setModalContentID] = useState<TModalContentID>(null);
   const modalRef = useRef(null);
 
   useEffect(() => {
@@ -30,14 +26,16 @@ const ModalProvider = ({ children }: IDefaultChildrenProp) => {
     };
   }, []);
 
-  const handleOpenModal = (modalType: TModalTypes) => {
+  const handleOpenModal = ({ modalType, id }: IHandleOpenModalProps) => {
     setIsOpen(true);
     setModalType(modalType);
+    setModalContentID(id);
   };
 
   const handleCloseModal = () => {
     setIsOpen(false);
     setModalType(null);
+    setModalContentID(null);
   };
 
   return (
@@ -48,7 +46,7 @@ const ModalProvider = ({ children }: IDefaultChildrenProp) => {
         isOpen,
         handleOpenModal,
         handleCloseModal,
-        MODALCOMPONENTS,
+        modalContentID,
       }}
     >
       {children}

@@ -14,4 +14,14 @@ const Button = styled.button`
   ${genericButton}
 `;
 
-export { Button };
+const DeleteButton = styled(Button)`
+  background-color: var(--color-error);
+  color: var(--color-white);
+`;
+
+const DarkBlueButton = styled(Button)`
+  background-color: var(--color-brand-1);
+  color: var(--color-white);
+`;
+
+export { Button, DeleteButton, DarkBlueButton };
