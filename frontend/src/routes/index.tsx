@@ -2,10 +2,10 @@ import { Route, Routes } from "react-router-dom";
 import HomePage from "../pages/HomePage";
 import { CadastroVeiculo } from "../pages/Cadastro/Veiculos";
 import { Login } from "../pages/Login";
-import DashboardLayout from "@pages/Dashboard/Layout";
+import { DriverRegister } from "@components/Dashboard/Driver/CreateDriver";
 import { DriverDashboard } from "@components/Dashboard/Driver/ListDrivers";
-import { DriverRegister } from "@pages/Cadastro/Driver";
 import { DriverUpdate } from "@components/Dashboard/Driver/UpdateDriver";
+import DashboardLayout from "@pages/Dashboard/Layout";
 
 const RoutesMain = () => {
   return (

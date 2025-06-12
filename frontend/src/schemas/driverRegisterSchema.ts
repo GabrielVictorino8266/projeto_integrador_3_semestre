@@ -4,8 +4,8 @@ const driverRegisterFormSchema = z.object({
   name: z.string().nonempty("O nome é obrigatório"),
   cpf: z.string().nonempty("CPF é obrigatório"),
   password: z.string().nonempty("Senha deve ser preenchida"),
-  licenceType: z.string().nonempty("Tipo de CNH é obrigatório"),
-  licenceNumber: z.string().nonempty("Num CNH é obrigatório"),
+  licenseType: z.string().nonempty("Tipo de CNH é obrigatório"),
+  licenseNumber: z.string().nonempty("Num CNH é obrigatório"),
   phone: z.string().nonempty("Telefone é obrigatório"),
   birthYear: z
     .string()
@@ -20,7 +20,4 @@ const driverRegisterFormSchema = z.object({
   }, z.number().min(0).max(10)),
 });
 
-type IDriverRegisterData = z.output<typeof driverRegisterFormSchema>;
-
 export { driverRegisterFormSchema };
-export type { IDriverRegisterData };

@@ -1,9 +1,6 @@
 import { RegInput } from "@components/InputForm";
 import { zodResolver } from "@hookform/resolvers/zod";
-import {
-  driverRegisterFormSchema,
-  type IDriverRegisterData,
-} from "@schemas/driverRegisterSchema";
+import { driverRegisterFormSchema } from "@schemas/driverRegisterSchema";
 import { useForm, type FieldError, type SubmitHandler } from "react-hook-form";
 import { RegisterPageGeneric } from "@components/RegisterForm";
 import { Button } from "@styles/Buttons";
@@ -11,21 +8,15 @@ import { SelectInputForm } from "@components/Select";
 import { cnhCategories } from "@utils/Selects/cnhCategories";
 import { ContainerInputs } from "./styles";
 import { useDriver } from "@hooks/useDriver";
-import { MaskPhone } from "@utils/Mask/MaskPhone";
 import { useState } from "react";
+import type { ICreateDriverData } from "@interfaces/driver.interface";
+import { cpfMask, dateMask, phoneMask } from "@utils/reserve";
 
 const DriverRegister = () => {
-  const {
-    handleCreateDriver,
-    inputDate,
-    inputValue,
-    handleDateMask,
-    handleInputMask,
-  } = useDriver();
-
+  const { handleCreateDriver } = useDriver();
   const [phoneValue, setPhoneValue] = useState<string>("");
-
-  const maskPhone = new MaskPhone();
+  const [cpfValue, setcpfValue] = useState<string>("");
+  const [dateValue, setdateValue] = useState<string>("");
 
   const {
     register,
@@ -35,8 +26,8 @@ const DriverRegister = () => {
     resolver: zodResolver(driverRegisterFormSchema),
   });
 
-  const submitDriver: SubmitHandler<IDriverRegisterData> = async (
-    registerForm: IDriverRegisterData
+  const submitDriver: SubmitHandler<ICreateDriverData> = async (
+    registerForm: ICreateDriverData
   ) => {
     registerForm.phone = registerForm.phone.replace(/\D/g, "");
     registerForm.cpf = registerForm.cpf.replace(/\D/g, "");
@@ -59,26 +50,28 @@ const DriverRegister = () => {
           <SelectInputForm
             optionsArray={cnhCategories}
             label={"Carteira de Habilitaçao"}
-            {...register("licenceType")}
-            error={errors.licenceType}
+            {...register("licenseType")}
+            error={errors.licenseType}
           />
           <RegInput
             type={"text"}
-            placeholder={"999.999.99-99"}
+            placeholder={"123.456.789-00"}
             id={"cpf"}
             label={"CPF"}
             {...register("cpf")}
             error={errors.cpf}
-            value={inputValue}
-            onChange={handleInputMask}
+            value={cpfValue}
+            onChange={(event) => {
+              setcpfValue(cpfMask(event.target.value));
+            }}
           />
           <RegInput
             type={"number"}
             placeholder={"Numero da habilitação"}
             id={"licenceNumber"}
             label={"Número CNH"}
-            {...register("licenceNumber")}
-            error={errors.licenceNumber}
+            {...register("licenseNumber")}
+            error={errors.licenseNumber}
           />
           <RegInput
             type={"password"}
@@ -105,7 +98,7 @@ const DriverRegister = () => {
             error={errors.phone}
             value={phoneValue}
             onChange={(event) => {
-              setPhoneValue(maskPhone.mask(event.target.value));
+              setPhoneValue(phoneMask(event.target.value));
             }}
           />
           <RegInput
@@ -115,8 +108,10 @@ const DriverRegister = () => {
             label={"Data de nascimento"}
             {...register("birthYear")}
             error={errors.birthYear}
-            value={inputDate}
-            onChange={handleDateMask}
+            value={dateValue}
+            onChange={(event) => {
+              setdateValue(dateMask(event.target.value));
+            }}
           />
         </ContainerInputs>
         <div className="form__sendButton">
