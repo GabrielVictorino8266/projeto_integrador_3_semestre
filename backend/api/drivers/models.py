@@ -4,7 +4,7 @@ import datetime
 class Driver(Document):
     password = StringField(required=True)
     cpf = StringField(required=True, unique=True, regex=r'^\d{11}$', help_text='CPF must contain exactly 11 digits')
-    email = StringField(required=False)
+    email = StringField(required=False, default='')
     name =StringField(required=True)
     birthYear = DateField(required=True)
     phone = StringField(required=True)
