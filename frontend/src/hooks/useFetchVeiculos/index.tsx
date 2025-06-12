@@ -1,11 +1,10 @@
 import type { DataProps } from "@schemas/CadsVeiculos";
 import { useEffect, useState } from "react";
-import { formatDateToBR } from "@utils/Mask/FormatDateToBR";
 import { getVehiclesId } from "@services/Api/Registration/GetVehiclesId";
 
 export function useFetchVeiculos(
     id: string | undefined,
-    reset: (velues: DataProps) => void
+    reset: (values: DataProps) => void
 ) {
     const [loading, setLoading] = useState(true);
 
@@ -14,38 +13,21 @@ export function useFetchVeiculos(
             setLoading(false);
             return;
         }
-
-        // const fetchData = async () => {
-        //     try {
-        //         const response = await getVehiclesId(id);
-        //         reset(response);
-        //     } catch (error) {
-        //         console.log("Erro");
-        //     } finally {
-        //         setLoading(false);
-        //     }
-        // };
-
-        const timer = setTimeout(() => {
-            if (id === "1") {
-                const mockVeiculo: DataProps = {
-                    placa: "ABC1234",
-                    marca: "Volkswagen",
-                    numero: "42",
-                    anoVeiculo: "2024",
-                    tipoVeiculo: "Onibus",
-                    status: "manutencao",
-                };
-                reset(mockVeiculo);
-            } else {
-                console.warn(`ID ${id} não encontrado`);
+        console.log("id: ", id);
+        const fetchData = async () => {
+            try {
+                const response = await getVehiclesId(id);
+                if (response) {
+                    reset(response);
+                }
+            } catch (error) {
+                console.log("Erro");
+            } finally {
+                setLoading(false);
             }
+        };
 
-            setLoading(false);
-        }, 0);
-
-        // fetchData()
-        return () => clearTimeout(timer);
+        fetchData();
     }, [id, reset]);
 
     return { loading };

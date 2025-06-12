@@ -22,6 +22,7 @@ export function CadastroVeiculo() {
     const { id } = useParams<{ id: string }>();
     const navigate = useNavigate();
     const currentYear = new Date().getFullYear();
+    
     const {
         register,
         handleSubmit,
