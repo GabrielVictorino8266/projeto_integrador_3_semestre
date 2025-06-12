@@ -33,7 +33,9 @@ class Command(BaseCommand):
             print(f"MONGO_URI = {os.environ.get('MONGO_URI')}")
             print(f"MONGO_DB_NAME = {os.environ.get('MONGO_DB_NAME')}")
             # Conectar diretamente
-            MONGO_URI = os.environ.get('MONGO_URI', 'mongodb+srv://projetointegradorfatecararas:V1VEQNL2Q1PBXLVi@test.jw0sbz1.mongodb.net/')
+            MONGO_URI = os.environ.get('MONGO_URI')
+            if not MONGO_URI:
+                raise Exception("❌ MONGO_URI environment variable is not set. Please configure it in your environment.")
             MONGO_DB_NAME = os.environ.get('MONGO_DB_NAME', 'projeto_teste')
             
             client = MongoClient(MONGO_URI)
