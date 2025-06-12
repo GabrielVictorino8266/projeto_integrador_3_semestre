@@ -38,11 +38,10 @@ export function CadastroVeiculo() {
 
     const Submit = async (data: DataProps) => {
         const sucess = await VehiclesRegistration(data, id);
-        setTimeout(() => {
-            navigate("/dashboard");
-        }, 1800);
+        // setTimeout(() => {
+        //     navigate("/dashboard");
+        // }, 1800);
         console.log(sucess);
-        console.log("Cadastrado", data);
     };
 
     return (
@@ -53,35 +52,49 @@ export function CadastroVeiculo() {
                     <ContainerInputs>
                         <InputComponent
                             label="Placa"
-                            {...register("placa")}
+                            {...register("licensePlate")}
                             placeholder="Placa do veículo"
                             maxLength={7}
-                            errorMessage={errors.placa?.message}
+                            errorMessage={errors.licensePlate?.message}
                         />
                         <InputComponent
                             label="Marca"
-                            {...register("marca")}
+                            {...register("brand")}
                             placeholder="Marca"
-                            errorMessage={errors.marca?.message}
+                            errorMessage={errors.brand?.message}
                         />
                         <InputComponent
                             label="Número"
-                            {...register("numero")}
+                            {...register("vehicleNumber")}
                             placeholder="Número do veículo"
-                            errorMessage={errors.numero?.message}
+                            errorMessage={errors.vehicleNumber?.message}
                         />
                         <InputComponent
                             label="Ano do veículo"
-                            {...register("anoVeiculo")}
+                            {...register("manufacturingYear")}
                             placeholder={`Ex: ${currentYear}`}
                             maxLength={4}
-                            errorMessage={errors.anoVeiculo?.message}
+                            errorMessage={errors.manufacturingYear?.message}
+                        />
+                        <InputComponent
+                            label="KM do veículo"
+                            {...register("currentKm")}
+                            placeholder="Km do veículo"
+                            maxLength={4}
+                            errorMessage={errors.currentKm?.message}
+                        />
+                        <InputComponent
+                            label="Limte de KM para aviso"
+                            {...register("warningKmLimit")}
+                            placeholder="KM limite"
+                            maxLength={4}
+                            errorMessage={errors.warningKmLimit?.message}
                         />
                         <SelectInputForm
                             label="Tipo de veículo"
                             optionsArray={veiculos}
-                            {...register("tipoVeiculo")}
-                            error={errors.tipoVeiculo}
+                            {...register("vehicleType")}
+                            error={errors.vehicleType}
                         />
                         <SelectInputForm
                             label="Status"
@@ -101,4 +114,3 @@ export function CadastroVeiculo() {
         </Container>
     );
 }
-

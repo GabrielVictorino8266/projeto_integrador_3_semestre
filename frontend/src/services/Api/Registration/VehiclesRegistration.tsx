@@ -1,21 +1,30 @@
 import type { DataProps } from "@schemas/CadsVeiculos";
 import { api } from "@services/api";
 import { toast } from "react-toastify";
-import { InvertDate } from "@utils/Mask/InvertDate";
 
 export async function VehiclesRegistration(
     data: DataProps,
     id?: string
 ): Promise<boolean> {
     try {
-        data.anoVeiculo = InvertDate(data.anoVeiculo);
-        console.log(data.anoVeiculo);
-        
-        const response = id
-            ? await api.put("teste/teste/", data)
-            : await api.post("teste/teste/", data);
+        console.log("Data", data);
 
-        if (response.status === 200) {
+        const newData = {
+            ...data,
+            manufacturingYear: Number(data.manufacturingYear),
+            currentKm: Number(data.currentKm),
+            warningKmLimit: Number(data.warningKmLimit),
+            status: data.status.trim(),
+        };
+
+        console.log("newDta", newData);
+
+        console.log(newData);
+        const response = id
+            ? await api.put(`/vehicles/update/${id}/`, newData)
+            : await api.post("/vehicles/create/", newData);
+
+        if (response.status === 200 || response.status === 201) {
             toast.success(
                 id
                     ? "Veículo registrado com sucesso!"
@@ -28,6 +37,7 @@ export async function VehiclesRegistration(
         }
     } catch (error: any) {
         const status = error.resposne?.status;
+        console.log("Erro detalhado", error.response?.data);
 
         switch (status) {
             case 401:

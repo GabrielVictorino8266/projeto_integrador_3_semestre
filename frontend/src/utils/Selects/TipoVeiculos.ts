@@ -1,6 +1,7 @@
 export const veiculos = [
-    { "value": "Van", "label": "Van" },
-    { "value": "Onibus", "label": "Ônibus" },
-    { "value": "Carro", "label": "Carro" },
-    { "value": "Moto", "label": "Moto" },
+    { "value": "carro", "label": "Carro" },
+    { "value": "moto", "label": "Moto" },
+    { "value": "caminhao", "label": "Caminhão" },
+    { "value": "van", "label": "Van" },
+    { "value": "onibus", "label": "Ônibus" },
 ]
