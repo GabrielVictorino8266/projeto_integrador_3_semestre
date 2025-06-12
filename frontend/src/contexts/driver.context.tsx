@@ -28,6 +28,9 @@ const DriverContext = createContext<IDriverContextProps>({
   ): void {
     throw new Error("Function not implemented.");
   },
+  deleteDriver: function (_id: string): Promise<void> {
+    throw new Error("Function not implemented.");
+  },
 });
 
 export { DriverContext };

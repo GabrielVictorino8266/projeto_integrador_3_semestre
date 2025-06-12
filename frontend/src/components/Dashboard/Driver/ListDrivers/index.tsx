@@ -6,7 +6,8 @@ import { DriverList } from "@components/Dashboard/DriverList";
 import { RegInput } from "@components/InputForm";
 import { useDriver } from "@hooks/useDriver";
 import { useEffect } from "react";
-import { FaCircle } from "react-icons/fa";
+import { StatusIcon } from "@components/Dashboard/Icons/StatusIcon";
+import { DashboardTable } from "@components/Dashboard/Table";
 
 const DriverDashboard = () => {
   const { driverActive, driverInactive, driverQuantity, getDriverList } =
@@ -20,7 +21,7 @@ const DriverDashboard = () => {
     <>
       <div className="dashboardItems_container">
         <DashboardHeader>
-          <p>Motoristas</p>
+          <p>LISTAGEM DE MOTORISTAS</p>
           <GoToDriverRegister to={"/dashboard/cadastrar-motorista"}>
             CADASTRAR
           </GoToDriverRegister>
@@ -39,7 +40,7 @@ const DriverDashboard = () => {
               <CardWithRightBorder>
                 <div className="card__values">
                   <p className="card__text">
-                    <FaCircle className="driverActive iconButtonsEditDelete" />
+                    <StatusIcon option={"blue"} />
                     Motoristas Ativos
                   </p>
                   <p className="card__number">{driverActive}</p>
@@ -47,7 +48,7 @@ const DriverDashboard = () => {
 
                 <div className="card__values">
                   <p className="card__text">
-                    <FaCircle className="driverInactive iconButtonsEditDelete" />
+                    <StatusIcon option={"red"} />
                     Motoristas Inativos
                   </p>
                   <p className="card__number">{driverInactive}</p>
@@ -68,24 +69,12 @@ const DriverDashboard = () => {
               />
             </div>
 
-            <div>
-              <div>
-                <h2 className="list__title">Motoristas</h2>
-              </div>
-              <table>
-                <thead>
-                  <tr>
-                    <th>Nome</th>
-                    <th>CPF</th>
-                    <th>CNH</th>
-                    <th>Aproveitamento</th>
-                    <th>Status</th>
-                    <th>Ações</th>
-                  </tr>
-                </thead>
-                <DriverList />
-              </table>
-            </div>
+            <DashboardTable
+              title="LISTA DE MOTORISTAS"
+              thTitles={["NOME", "CPF", "CNH", "AVALIAÇÃO", "STATUS", "AÇÕES"]}
+            >
+              <DriverList />
+            </DashboardTable>
           </section>
         </Container>
       </div>

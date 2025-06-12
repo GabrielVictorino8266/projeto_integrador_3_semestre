@@ -1,9 +1,8 @@
 import { StyledTableRow } from "./styles";
-import { FiTrash2 } from "react-icons/fi";
-import { TbEdit } from "react-icons/tb";
-import { FaCircle } from "react-icons/fa";
 import { useModal } from "@hooks/useModal";
-import { GoToDriverEdit } from "@styles/Buttons";
+import { GoToDriverEdit, IconButton } from "@styles/Buttons";
+import { StatusIcon } from "@components/Dashboard/Icons/StatusIcon";
+import { ActionIcon } from "@components/Dashboard/Icons/ActionIcon";
 
 interface IDriverListItemProps {
   id: string;
@@ -33,23 +32,24 @@ const DriverListItem = ({
       <td>
         <button>
           {status ? (
-            <FaCircle className="iconButtonsEditDelete driverActive " />
+            <StatusIcon option={"blue"} />
           ) : (
-            <FaCircle className="iconButtonsEditDelete driverInactive" />
+            <StatusIcon option={"red"} />
           )}
         </button>
       </td>
       <td>
         <GoToDriverEdit to={`/dashboard/motorista/${id}`}>
-          <TbEdit className="iconButtonsEditDelete editButton" />
+          <ActionIcon type="edit" />
         </GoToDriverEdit>
-        <button
+
+        <IconButton
           onClick={() => {
             handleOpenModal({ modalType: "driverDeleteConfirmation", id });
           }}
         >
-          <FiTrash2 className="iconButtonsEditDelete deleteButton" />
-        </button>
+          <ActionIcon type="delete" />
+        </IconButton>
       </td>
     </StyledTableRow>
   );

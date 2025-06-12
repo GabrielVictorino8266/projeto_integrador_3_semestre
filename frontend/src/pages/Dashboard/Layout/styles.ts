@@ -53,6 +53,7 @@ const Main = styled.main`
 
   thead > tr > th {
     height: 2rem;
+    font-size: var(--font-size-18);
   }
 
   .list__title {

@@ -6,6 +6,7 @@ import { DriverRegister } from "@components/Dashboard/Driver/CreateDriver";
 import { DriverDashboard } from "@components/Dashboard/Driver/ListDrivers";
 import { DriverUpdate } from "@components/Dashboard/Driver/UpdateDriver";
 import DashboardLayout from "@pages/Dashboard/Layout";
+import { TripRegister } from "@components/Dashboard/Trips/listTrips";
 
 const RoutesMain = () => {
   return (
@@ -20,6 +21,7 @@ const RoutesMain = () => {
           element={<DriverRegister />}
         />
         <Route path="/dashboard/motorista/:id" element={<DriverUpdate />} />
+        <Route path="/dashboard/cadastrar-viagem" element={<TripRegister />} />
       </Route>
       <Route path="/veiculos">
         <Route index element={<CadastroVeiculo />} />

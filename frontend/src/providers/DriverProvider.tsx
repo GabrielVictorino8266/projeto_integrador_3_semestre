@@ -10,9 +10,11 @@ import {
   type IDriver,
   type IGetDriversResponse,
 } from "@interfaces/driver.interface";
+import { useModal } from "@hooks/useModal";
 
 const DriverProvider = ({ children }: IDefaultChildrenProp) => {
   const token = localStorage.getItem("token") || null;
+  const { handleCloseModal } = useModal();
 
   const [driverList, setDriverList] = useState<Array<IDriver>>([]);
   const [driverQuantity, setDriverQuantity] = useState<number | 0>(0);
@@ -86,6 +88,23 @@ const DriverProvider = ({ children }: IDefaultChildrenProp) => {
     }
   };
 
+  const deleteDriver = async (id: string) => {
+    try {
+      const driverResponse: AxiosResponse = await api.delete(
+        `/drivers/delete/${id}`
+      );
+
+      if (driverResponse.status === 204) {
+        handleCloseModal();
+        getDriverList();
+        toast.success("Motorista deletado");
+      }
+    } catch (error) {
+      console.log(error);
+      toast.error("Erro ao deletar motorista");
+    }
+  };
+
   // const updateDriver = async (id: string) => {
   //   try {
   //     const driverListResponse = await api.put(`/drivers/update/${id}`);
@@ -104,10 +123,11 @@ const DriverProvider = ({ children }: IDefaultChildrenProp) => {
         driverList,
         handleCreateDriver,
         getDriverList,
+        deleteDriver,
+        getDriverByID,
         driverActive,
         driverInactive,
         driverQuantity,
-        getDriverByID,
         driverUnderEdition,
         setDriverUnderEdition,
       }}

@@ -1,4 +1,4 @@
-import { normalizeDate, normalizeFormString } from "@utils/reserve";
+import { normalizeFormDate, normalizeFormString } from "@utils/reserve";
 import { z } from "zod";
 
 const driverRegisterFormSchema = z.object({
@@ -27,7 +27,7 @@ const driverRegisterFormSchema = z.object({
     .string()
     .nonempty("Data de nascimento é obrigatória")
     .transform((value) => {
-      return normalizeDate(value);
+      return normalizeFormDate(value);
     }),
   performance: z.preprocess((val) => {
     if (val === "" || val == null) return 10;

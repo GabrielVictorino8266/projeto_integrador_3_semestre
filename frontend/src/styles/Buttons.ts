@@ -41,17 +41,11 @@ const GoToDriverEdit = styled(Link)`
   border: none;
   text-decoration: none;
   color: inherit;
+`;
 
-  .icon {
-    width: 32px;
-    height: 32px;
-  }
-
-  .editButton {
-    :hover {
-      color: var(--color-brand-2);
-    }
-  }
+const IconButton = styled.button`
+  background-color: transparent;
+  border: none;
 `;
 
 export {
@@ -60,4 +54,5 @@ export {
   DarkBlueButton,
   GoToDriverRegister,
   GoToDriverEdit,
+  IconButton,
 };

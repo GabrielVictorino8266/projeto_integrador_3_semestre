@@ -27,8 +27,8 @@ const normalizeFormString = (value: string) => {
   return value.replace(/\D/g, "");
 };
 
-const normalizeDate = (date: string) => {
+const normalizeFormDate = (date: string) => {
   return date.split(`/`).reverse().join("-");
 };
 
-export { cpfMask, dateMask, phoneMask, normalizeFormString, normalizeDate };
+export { cpfMask, dateMask, phoneMask, normalizeFormString, normalizeFormDate };

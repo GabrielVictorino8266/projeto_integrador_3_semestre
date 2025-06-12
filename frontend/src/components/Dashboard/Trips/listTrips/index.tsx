@@ -1,55 +1,37 @@
+import { ContainerInputs } from "@components/Dashboard/Driver/CreateDriver/styles";
 import { RegInput } from "@components/InputForm";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { driverRegisterFormSchema } from "@schemas/driverRegisterSchema";
-import { useForm, type FieldError, type SubmitHandler } from "react-hook-form";
 import { RegisterPageGeneric } from "@components/RegisterForm";
-import { Button } from "@styles/Buttons";
 import { SelectInputForm } from "@components/Select";
-import { cnhCategories } from "@utils/Selects/cnhCategories";
-import { ContainerInputs } from "./styles";
-import { useDriver } from "@hooks/useDriver";
-import { useState } from "react";
-import type { ICreateDriverData } from "@interfaces/driver.interface";
-import { cpfMask, dateMask, phoneMask } from "@utils/reserve";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { tripCreateFormSchema } from "@schemas/tripCreateSchema";
 
-const DriverRegister = () => {
-  const { handleCreateDriver } = useDriver();
-  const [phoneValue, setPhoneValue] = useState<string>("");
-  const [cpfValue, setcpfValue] = useState<string>("");
-  const [dateValue, setdateValue] = useState<string>("");
-
+const TripRegister = () => {
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm({
-    resolver: zodResolver(driverRegisterFormSchema),
+    resolver: zodResolver(tripCreateFormSchema),
   });
+
+  // CRIAR OS TIPOS DO FORMULÁRIO E FUNCAO DE CADASTRO.
 
   const submitDriver: SubmitHandler<ICreateDriverData> = async (
     registerForm: ICreateDriverData
   ) => {
-    handleCreateDriver(registerForm);
+    // handleCreateDriver(registerForm);
     console.log(registerForm);
   };
 
   return (
-    <RegisterPageGeneric title="CADASTRO DE MOTORISTA">
+    <RegisterPageGeneric title={"CADASTRO DE VIAGEM"}>
       <form onSubmit={handleSubmit(submitDriver)}>
         <ContainerInputs>
-          <RegInput
-            type={"text"}
-            placeholder={"Digite o nome do motorista"}
-            id={"nome"}
-            label={"Nome"}
-            {...register("name")}
-            error={errors.name}
-          />
-          <SelectInputForm
-            optionsArray={cnhCategories}
-            label={"Carteira de Habilitaçao"}
-            {...register("licenseType")}
-            error={errors.licenseType}
+          {/* <SelectInputForm
+            optionsArray={[]}
+            label={"Motorista"}
+            // {...register("licenseType")}
+            // error={errors.licenseType}
           />
           <RegInput
             type={"text"}
@@ -110,7 +92,7 @@ const DriverRegister = () => {
             onChange={(event) => {
               setdateValue(dateMask(event.target.value));
             }}
-          />
+          /> */}
         </ContainerInputs>
         <div className="form__sendButton">
           <Button>ENVIAR</Button>
@@ -120,4 +102,4 @@ const DriverRegister = () => {
   );
 };
 
-export { DriverRegister };
+export { TripRegister };

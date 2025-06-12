@@ -69,6 +69,7 @@ export interface IDriverContextProps {
   getDriverByID: (id: string) => Promise<void>;
   driverUnderEdition: IDriver | null;
   setDriverUnderEdition: React.Dispatch<React.SetStateAction<IDriver | null>>;
+  deleteDriver: (id: string) => Promise<void>;
 }
 
 export interface IDriverChildrenProps {

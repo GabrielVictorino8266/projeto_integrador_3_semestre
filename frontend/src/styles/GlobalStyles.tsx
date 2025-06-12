@@ -16,9 +16,12 @@ export const GlobalStyles = () => (
         --color-error: #ef4444;
         --color-error-2: #d0aaaa;
 
-        --colorStatus-ok: #15670a;
+        --colorStatus-available: #15670a;
         --colorStatus-maintenance: #0073e6;
         --colorStatus-unavailable: #b31010;
+
+        --color-edit: #0073e6;
+        --color-delete: #b31010;
 
         --color-grey-0: #f8f9fa;
         --color-grey-1: #868e96;
@@ -75,18 +78,6 @@ export const GlobalStyles = () => (
       input[type="number"]::-webkit-outer-spin-button {
         -webkit-appearance: none;
         margin: 0;
-      }
-
-      .driverActive {
-        color: var(--colorStatus-maintenance);
-      }
-      .driverInactive {
-        color: var(--colorStatus-unavailable);
-      }
-
-      .iconButtonsEditDelete {
-        width: 32px;
-        height: 32px;
       }
     `}
   />
