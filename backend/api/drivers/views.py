@@ -98,7 +98,7 @@ def update_driver(request, driver_id):
     except Exception as e:
         raise ParseError(f"Error updating driver: {e}")
     
-    serializer = DriverDetailSerializer(driver, data=request.data, partial=True)
+    serializer = DriverSerializer(driver, data=request.data, partial=True)
     if serializer.is_valid():
         if 'password' in request.data:
             password = request.data.get('password')
