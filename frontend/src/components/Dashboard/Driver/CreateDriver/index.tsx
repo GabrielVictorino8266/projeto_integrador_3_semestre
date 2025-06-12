@@ -29,8 +29,6 @@ const DriverRegister = () => {
   const submitDriver: SubmitHandler<ICreateDriverData> = async (
     registerForm: ICreateDriverData
   ) => {
-    registerForm.phone = registerForm.phone.replace(/\D/g, "");
-    registerForm.cpf = registerForm.cpf.replace(/\D/g, "");
     handleCreateDriver(registerForm);
     console.log(registerForm);
   };

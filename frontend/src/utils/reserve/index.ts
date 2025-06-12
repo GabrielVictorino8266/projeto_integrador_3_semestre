@@ -23,4 +23,12 @@ const phoneMask = (value: string) => {
     .replace(/(-\d{4})(\d+?)/, "$1");
 };
 
-export { cpfMask, dateMask, phoneMask };
+const normalizeFormString = (value: string) => {
+  return value.replace(/\D/g, "");
+};
+
+const normalizeDate = (date: string) => {
+  return date.split(`/`).reverse().join("-");
+};
+
+export { cpfMask, dateMask, phoneMask, normalizeFormString, normalizeDate };
