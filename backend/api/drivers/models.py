@@ -4,7 +4,7 @@ import datetime
 class Driver(Document):
     password = StringField(required=True)
     cpf = StringField(required=True, unique=True, regex=r'^\d{11}$', help_text='CPF must contain exactly 11 digits')
-    email = StringField(required=True)
+    email = StringField(required=False)
     name =StringField(required=True)
     birthYear = DateField(required=True)
     phone = StringField(required=True)
@@ -13,6 +13,7 @@ class Driver(Document):
     performance = IntField(default=0)
     incidents = ListField(default=[])
     isActive = BooleanField(default=True)
-    type = StringField(default='Motorista')
+    type = StringField(default='Motorista', required=False)
 
     meta = {'collection': 'users'}
+
