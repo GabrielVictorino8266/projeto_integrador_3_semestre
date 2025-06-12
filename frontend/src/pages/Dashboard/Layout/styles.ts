@@ -54,11 +54,10 @@ const Main = styled.main`
   thead > tr > th {
     height: 2rem;
   }
-`;
 
-const Container = styled.section`
-  margin: 0, auto;
-  padding: 0 24px;
-  width: 100%;
+  .list__title {
+    font-size: var(--font-size-20);
+    margin-bottom: 8px;
+  }
 `;
-export { Main, Container };
+export { Main };

@@ -8,7 +8,7 @@ import { GoToDriverEdit } from "@styles/Buttons";
 interface IDriverListItemProps {
   id: string;
   name: string;
-  licenceNumber: string;
+  licenceType: string;
   cpf: string;
   performance: number;
   status: boolean;
@@ -20,7 +20,7 @@ const DriverListItem = ({
   performance,
   status,
   cpf,
-  licenceNumber,
+  licenceType,
 }: IDriverListItemProps) => {
   const { handleOpenModal } = useModal();
 
@@ -28,27 +28,27 @@ const DriverListItem = ({
     <StyledTableRow>
       <td scope="row">{name}</td>
       <td>{cpf}</td>
-      <td>{licenceNumber}</td>
+      <td>{licenceType}</td>
       <td>{performance}</td>
       <td>
         <button>
           {status ? (
-            <FaCircle className="icon driverActive " />
+            <FaCircle className="iconButtonsEditDelete driverActive " />
           ) : (
-            <FaCircle className="icon driverInactive" />
+            <FaCircle className="iconButtonsEditDelete driverInactive" />
           )}
         </button>
       </td>
       <td>
         <GoToDriverEdit to={`/dashboard/motorista/${id}`}>
-          <TbEdit className="icon editButton" />
+          <TbEdit className="iconButtonsEditDelete editButton" />
         </GoToDriverEdit>
         <button
           onClick={() => {
             handleOpenModal({ modalType: "driverDeleteConfirmation", id });
           }}
         >
-          <FiTrash2 className="icon deleteButton" />
+          <FiTrash2 className="iconButtonsEditDelete deleteButton" />
         </button>
       </td>
     </StyledTableRow>

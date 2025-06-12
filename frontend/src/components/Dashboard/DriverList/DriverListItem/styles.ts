@@ -7,11 +7,6 @@ const StyledTableRow = styled.tr`
     background-color: transparent;
     border: none;
 
-    .icon {
-      width: 32px;
-      height: 32px;
-    }
-
     .deleteButton {
       :hover {
         color: var(--color-error);
@@ -22,13 +17,6 @@ const StyledTableRow = styled.tr`
       :hover {
         color: var(--color-brand-2);
       }
-    }
-
-    .driverActive {
-      color: var(--colorStatus-maintenance);
-    }
-    .driverInactive {
-      color: var(--colorStatus-unavailable);
     }
   }
 `;

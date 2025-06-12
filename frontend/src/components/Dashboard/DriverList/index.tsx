@@ -6,7 +6,7 @@ const DriverList = () => {
   const { driverList } = useDriver();
 
   const driversElements = driverList.map((driver) => {
-    const { id, name, cpf, performance, isActive, licenseNumber } = driver;
+    const { id, name, cpf, performance, isActive, licenseType } = driver;
 
     return (
       <DriverListItem
@@ -14,7 +14,7 @@ const DriverList = () => {
         id={id}
         name={name}
         cpf={cpf}
-        licenceNumber={licenseNumber}
+        licenceType={licenseType}
         performance={performance}
         status={isActive}
       />

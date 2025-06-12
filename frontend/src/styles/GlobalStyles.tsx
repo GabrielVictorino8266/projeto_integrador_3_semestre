@@ -44,6 +44,7 @@ export const GlobalStyles = () => (
         --font-size-20: 1.25rem; // 20px
         --font-size-24: 1.5rem; // 24px
         --font-size-28: 1.75rem; //28px
+        --font-size-36: 2.25rem; //36px
         --font-size-40: 2.5rem; //40px
 
         --font-inter: "Inter", sans-serif;
@@ -74,6 +75,18 @@ export const GlobalStyles = () => (
       input[type="number"]::-webkit-outer-spin-button {
         -webkit-appearance: none;
         margin: 0;
+      }
+
+      .driverActive {
+        color: var(--colorStatus-maintenance);
+      }
+      .driverInactive {
+        color: var(--colorStatus-unavailable);
+      }
+
+      .iconButtonsEditDelete {
+        width: 32px;
+        height: 32px;
       }
     `}
   />

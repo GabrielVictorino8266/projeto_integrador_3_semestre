@@ -6,6 +6,7 @@ import { DriverList } from "@components/Dashboard/DriverList";
 import { RegInput } from "@components/InputForm";
 import { useDriver } from "@hooks/useDriver";
 import { useEffect } from "react";
+import { FaCircle } from "react-icons/fa";
 
 const DriverDashboard = () => {
   const { driverActive, driverInactive, driverQuantity, getDriverList } =
@@ -29,15 +30,28 @@ const DriverDashboard = () => {
           <section className="dashboard__details">
             <div className="cards__container">
               <CardWithRightBorder>
-                <p>Total de motoristas</p>
-                <p>{driverQuantity}</p>
+                <div className="card__values">
+                  <p className="card__text">Total de motoristas</p>
+                  <p className="card__number">{driverQuantity}</p>
+                </div>
               </CardWithRightBorder>
 
               <CardWithRightBorder>
-                <p>Motoristas Ativos</p>
-                <p>{driverActive}</p>
-                <p>Motoristas Inativos</p>
-                <p>{driverInactive}</p>
+                <div className="card__values">
+                  <p className="card__text">
+                    <FaCircle className="driverActive iconButtonsEditDelete" />
+                    Motoristas Ativos
+                  </p>
+                  <p className="card__number">{driverActive}</p>
+                </div>
+
+                <div className="card__values">
+                  <p className="card__text">
+                    <FaCircle className="driverInactive iconButtonsEditDelete" />
+                    Motoristas Inativos
+                  </p>
+                  <p className="card__number">{driverInactive}</p>
+                </div>
               </CardWithRightBorder>
 
               <CardWithRightBorder>
@@ -56,14 +70,14 @@ const DriverDashboard = () => {
 
             <div>
               <div>
-                <h2>Motoristas</h2>
+                <h2 className="list__title">Motoristas</h2>
               </div>
               <table>
                 <thead>
                   <tr>
                     <th>Nome</th>
                     <th>CPF</th>
-                    <th>Carteira</th>
+                    <th>CNH</th>
                     <th>Aproveitamento</th>
                     <th>Status</th>
                     <th>Ações</th>
