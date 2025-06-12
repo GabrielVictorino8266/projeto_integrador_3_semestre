@@ -9,10 +9,10 @@ from .models import Driver
 class DriverSerializer(DocumentSerializer):
     class Meta:
         model = Driver
-        fields = ['id', 'cpf', 'email', 'name', 'birthYear', 'phone', 'licenseType', 'licenseNumber', 'performance', 'incidents', 'isActive', 'type']
+        fields = ['id', 'cpf', 'name', 'birthYear', 'phone', 'licenseType', 'licenseNumber', 'performance', 'incidents', 'isActive', 'type']
     
 
-class DriverDetailSerializer(DocumentSerializer):
-    class Meta:
-        model = Driver
-        fields = ['id', 'password', 'cpf', 'email', 'name', 'birthYear', 'phone', 'licenseType', 'licenseNumber', 'performance', 'incidents', 'isActive', 'type']
+# class DriverDetailSerializer(DocumentSerializer):
+#     class Meta:
+#         model = Driver
+#         fields = ['id', 'cpf', 'email', 'name', 'birthYear', 'phone', 'licenseType', 'licenseNumber', 'performance', 'incidents', 'isActive', 'type']

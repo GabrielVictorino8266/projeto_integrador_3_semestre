@@ -13,8 +13,7 @@ from rest_framework.exceptions import NotFound, ParseError
 from users.auth_services import get_hash_password
 from .models import Driver
 from .serializers import (
-    DriverSerializer,
-    DriverDetailSerializer
+    DriverSerializer
 )
 from bson import ObjectId
 from datetime import datetime
@@ -25,33 +24,38 @@ Classe de serialização para os parâmetros de paginação.
 class PaginationParamsSerializer(serializers.Serializer):
     page = serializers.IntegerField(min_value=1, required=False)
     limit = serializers.IntegerField(min_value=1, max_value=100, required=False, default=50)
+    name = serializers.CharField(required=False)
 
 
 @api_view(['GET'])
 def list_drivers(request):
-    """List alll drivers."""
+    """List all drivers."""
     serializer = PaginationParamsSerializer(data=request.query_params)
-    if serializer.is_valid():
-        page = serializer.validated_data.get('page')
-        limit = serializer.validated_data.get('limit')
+    serializer.is_valid(raise_exception=True)
+    page = serializer.validated_data.get('page')
+    limit = serializer.validated_data.get('limit')
+    name = serializer.validated_data.get('name')
 
-        pagination = Paginator(
-            queryset=Driver.objects.all(),
-            per_page=limit,
-            base_url=reverse('drivers:list_drivers', request=request),
-            serializer_class=DriverSerializer
-        ).paginate(page)
+    filters = {}
+    if name:
+        # Using MongoDB/MongoEngine syntax for case-insensitive search
+        filters['name__icontains'] = name
 
-        pagination = convert_objectids(pagination)
-        
-        return Response(pagination)
-    else:
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    pagination = Paginator(
+        queryset=Driver.objects.filter(**filters),
+        per_page=limit,
+        base_url=reverse('drivers:list_drivers', request=request),
+        serializer_class=DriverSerializer
+    ).paginate(page)
+
+    pagination = convert_objectids(pagination)
+
+    return Response(pagination)
 
 @api_view(['POST'])
 def create_driver(request):
     """Create a new driver."""
-    serializer = DriverDetailSerializer(data=request.data)
+    serializer = DriverSerializer(data=request.data)
     if serializer.is_valid():
         password = request.data.get('password')
         hashed_password = get_hash_password(password)
