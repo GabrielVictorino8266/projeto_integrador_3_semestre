@@ -22,7 +22,7 @@ export function CadastroVeiculo() {
     const { id } = useParams<{ id: string }>();
     const navigate = useNavigate();
     const currentYear = new Date().getFullYear();
-    
+
     const {
         register,
         handleSubmit,
@@ -39,10 +39,12 @@ export function CadastroVeiculo() {
 
     const Submit = async (data: DataProps) => {
         const sucess = await VehiclesRegistration(data, id);
-        // setTimeout(() => {
-        //     navigate("/dashboard");
-        // }, 1800);
-        console.log(sucess);
+        if (sucess) {
+            reset();
+        }
+        if (id && sucess) {
+            setTimeout(() => navigate("/dashboard"), 1800);
+        }
     };
 
     return (

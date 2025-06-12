@@ -21,6 +21,7 @@ import {
     SubItem,
 } from "./style";
 import { useNavigate } from "react-router-dom";
+import { logoutUser } from "@services/Api/LogoutUser";
 
 export function Sidebar() {
     const [expanded, setExpanded] = useState<string | null>(null);
@@ -120,7 +121,12 @@ export function Sidebar() {
                         <small>{user ? user.cargo : ""}</small>
                     </p>
                 </UserContainer>
-                <button>
+                <button
+                    onClick={async () =>{
+                        await logoutUser()
+                        navigate("/login")
+                    }}
+                >
                     <img src={Sair} alt="Botão-sair" className="botao" />
                 </button>
             </Baseboard>

@@ -17,6 +17,7 @@ export async function LoginRequest(data: DataProps): Promise<boolean> {
         if (response.status === 200) {
             toast.success(`Bem vinde, ${response.data.user.name}`);
             localStorage.setItem("token", response.data.access_token);
+            localStorage.setItem("refresh_token", response.data.refresh_token);
             localStorage.setItem("nome", response.data.user.name);
             localStorage.setItem("cargo", response.data.user.type);
             return true;
