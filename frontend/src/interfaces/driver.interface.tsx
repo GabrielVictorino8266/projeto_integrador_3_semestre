@@ -17,6 +17,11 @@ export interface IDriverContextProps {
   dateMask: (value: string) => string;
   inputValue: string;
   inputDate: string;
+  getDriverByID: (id: string) => Promise<void>;
+  driverUnderEdition: IDriverRegisterData | null;
+  setDriverUnderEdition: React.Dispatch<
+    React.SetStateAction<IDriverRegisterData | null>
+  >;
 }
 
 export interface IDriverList {

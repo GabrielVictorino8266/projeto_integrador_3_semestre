@@ -12,16 +12,30 @@ import { cnhCategories } from "@utils/Selects/cnhCategories";
 import { ContainerInputs } from "./styles";
 import { useDriver } from "@hooks/useDriver";
 import { MaskPhone } from "@utils/Mask/MaskPhone";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
 
-const DriverRegister = () => {
+const DriverUpdate = () => {
   const {
     handleCreateDriver,
     inputDate,
     inputValue,
     handleDateMask,
     handleInputMask,
+    getDriverByID,
+    driverUnderEdition,
+    setDriverUnderEdition,
   } = useDriver();
+  const { id } = useParams();
+
+  useEffect(() => {
+    getDriverByID(id!);
+    return () => {
+      setDriverUnderEdition(null);
+    };
+  }, []);
+
+  console.log(driverUnderEdition);
 
   const [phoneValue, setPhoneValue] = useState<string>("");
 
@@ -40,12 +54,12 @@ const DriverRegister = () => {
   ) => {
     registerForm.phone = registerForm.phone.replace(/\D/g, "");
     registerForm.cpf = registerForm.cpf.replace(/\D/g, "");
-    handleCreateDriver(registerForm);
+    handleCreateDriver(registerForm); // TROCAR PARA UPDATEDRIVER
     console.log(registerForm);
   };
 
   return (
-    <RegisterPageGeneric title="Cadastro de motorista">
+    <RegisterPageGeneric title="Editar motorista">
       <form onSubmit={handleSubmit(submitDriver)}>
         <ContainerInputs>
           <RegInput
@@ -55,6 +69,7 @@ const DriverRegister = () => {
             label={"Nome"}
             {...register("name")}
             error={errors.name}
+            defaultValue={driverUnderEdition?.name}
           />
           <SelectInputForm
             optionsArray={cnhCategories}
@@ -64,7 +79,7 @@ const DriverRegister = () => {
           />
           <RegInput
             type={"text"}
-            placeholder={"999.999.99-99"}
+            placeholder={"xxx.xxx.xxx-xx"}
             id={"cpf"}
             label={"CPF"}
             {...register("cpf")}
@@ -120,11 +135,11 @@ const DriverRegister = () => {
           />
         </ContainerInputs>
         <div className="form__sendButton">
-          <Button>ENVIAR</Button>
+          <Button>ATUALIZAR</Button>
         </div>
       </form>
     </RegisterPageGeneric>
   );
 };
 
-export { DriverRegister };
+export { DriverUpdate };

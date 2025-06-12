@@ -1,11 +1,11 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import type { IDriverContextProps } from "@interfaces/driver.interface";
 import type { IDriverRegisterData } from "@schemas/driverRegisterSchema";
-import { createContext } from "react";
+import { createContext, type SetStateAction } from "react";
 
 const DriverContext = createContext<IDriverContextProps>({
   handleCreateDriver: function (
-    _newDriverData: IDriverRegisterData
+    newDriverData: IDriverRegisterData
   ): Promise<void> {
     throw new Error("Function not implemented.");
   },
@@ -16,20 +16,29 @@ const DriverContext = createContext<IDriverContextProps>({
   driverQuantity: 0,
   driverActive: 0,
   driverInactive: 0,
-  handleInputMask: function (
-    _event: React.ChangeEvent<HTMLInputElement>
-  ): void {},
-  handleDateMask: function (
-    _event: React.ChangeEvent<HTMLInputElement>
-  ): void {},
-  cpfMask: function (_value: string): string {
-    return "";
+  handleInputMask: function (event: React.ChangeEvent<HTMLInputElement>): void {
+    throw new Error("Function not implemented.");
   },
-  dateMask: function (_value: string): string {
-    return "";
+  handleDateMask: function (event: React.ChangeEvent<HTMLInputElement>): void {
+    throw new Error("Function not implemented.");
+  },
+  cpfMask: function (value: string): string {
+    throw new Error("Function not implemented.");
+  },
+  dateMask: function (value: string): string {
+    throw new Error("Function not implemented.");
   },
   inputValue: "",
   inputDate: "",
+  getDriverByID: function (id: string): Promise<void> {
+    throw new Error("Function not implemented.");
+  },
+  driverUnderEdition: null,
+  setDriverUnderEdition: function (
+    value: SetStateAction<IDriverRegisterData | null>
+  ): void {
+    throw new Error("Function not implemented.");
+  },
 });
 
 export { DriverContext };

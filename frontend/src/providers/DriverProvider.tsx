@@ -8,13 +8,16 @@ import { useState } from "react";
 import { type IDriverListResponse } from "@interfaces/driver.interface";
 
 const DriverProvider = ({ children }: IDefaultChildrenProp) => {
-  const token = localStorage.getItem("@TOKEN") || null;
+  const token = localStorage.getItem("token") || null;
+
   const [driverList, setDriverList] = useState<IDriverListResponse | []>([]);
   const [driverQuantity, setDriverQuantity] = useState<number | 0>(0);
   const [driverActive, setDriverActive] = useState<number | 0>(0);
   const [driverInactive, setDriverInative] = useState<number | 0>(0);
   const [inputValue, setInputValue] = useState("");
   const [inputDate, setInputDate] = useState("");
+  const [driverUnderEdition, setDriverUnderEdition] =
+    useState<IDriverRegisterData | null>(null);
 
   const headersAuth = {
     headers: {
@@ -26,7 +29,7 @@ const DriverProvider = ({ children }: IDefaultChildrenProp) => {
     try {
       const newDriverResponse: AxiosResponse =
         await api.post<IDriverRegisterData>(
-          "/motorista",
+          "/drivers/create",
           newDriverData,
           headersAuth
         );
@@ -57,6 +60,44 @@ const DriverProvider = ({ children }: IDefaultChildrenProp) => {
       }
     } catch (error) {
       console.log(error);
+      toast.error("Falha ao carregar lista de motoristas!");
+    }
+  };
+
+  const getDriverByID = async (id: string) => {
+    try {
+      const driverResponse = await api.get(`/drivers/${id}`);
+      console.log(driverResponse);
+      if (driverResponse.status === 200) {
+        const driverFound: IDriverRegisterData = driverResponse.data;
+        toast.success("Motorista encontrado");
+
+        setDriverUnderEdition(driverFound);
+      }
+    } catch (error) {
+      console.log(error);
+      toast.error("Falha ao atualizar o motorista!");
+    }
+  };
+
+  const updateDriver = async (id: string) => {
+    try {
+      const driverListResponse = await api.put(`/drivers/update/${id}`);
+      if (driverListResponse.status === 200) {
+        const driverListApi: IDriverListResponse =
+          driverListResponse.data.items;
+        toast.success("Lista de motoristas carregada!");
+        setDriverList(driverListApi);
+        const quantity = driverListApi.length;
+        const active = driverListApi.filter((driver) => driver.isActive).length;
+        const inactive = quantity - active;
+        setDriverQuantity(quantity);
+        setDriverActive(active);
+        setDriverInative(inactive);
+      }
+    } catch (error) {
+      console.log(error);
+      toast.error("Falha ao atualizar o motorista!");
     }
   };
 
@@ -100,6 +141,9 @@ const DriverProvider = ({ children }: IDefaultChildrenProp) => {
         handleDateMask,
         inputDate,
         inputValue,
+        getDriverByID,
+        driverUnderEdition,
+        setDriverUnderEdition,
       }}
     >
       {children}

@@ -1,5 +1,6 @@
 import { css } from "@emotion/react";
 import styled from "@emotion/styled";
+import { Link } from "react-router-dom";
 
 const genericButton = css`
   width: 200px;
@@ -24,4 +25,39 @@ const DarkBlueButton = styled(Button)`
   color: var(--color-white);
 `;
 
-export { Button, DeleteButton, DarkBlueButton };
+const LinkStyled = styled(Link)`
+  ${genericButton}
+  background-color: var(--color-brand-1);
+  color: var(--color-white);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+
+const GoToDriverRegister = styled(LinkStyled)``;
+
+const GoToDriverEdit = styled(Link)`
+  background-color: transparent;
+  border: none;
+  text-decoration: none;
+  color: inherit;
+
+  .icon {
+    width: 32px;
+    height: 32px;
+  }
+
+  .editButton {
+    :hover {
+      color: var(--color-brand-2);
+    }
+  }
+`;
+
+export {
+  Button,
+  DeleteButton,
+  DarkBlueButton,
+  GoToDriverRegister,
+  GoToDriverEdit,
+};

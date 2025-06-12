@@ -3,6 +3,7 @@ import { FiTrash2 } from "react-icons/fi";
 import { TbEdit } from "react-icons/tb";
 import { FaCircle } from "react-icons/fa";
 import { useModal } from "@hooks/useModal";
+import { GoToDriverEdit } from "@styles/Buttons";
 
 interface IDriverListItemProps {
   id: string;
@@ -39,13 +40,9 @@ const DriverListItem = ({
         </button>
       </td>
       <td>
-        <button
-          onClick={() => {
-            handleOpenModal({ modalType: "driverEdit", id });
-          }}
-        >
+        <GoToDriverEdit to={`/dashboard/motorista/${id}`}>
           <TbEdit className="icon editButton" />
-        </button>
+        </GoToDriverEdit>
         <button
           onClick={() => {
             handleOpenModal({ modalType: "driverDeleteConfirmation", id });

@@ -38,6 +38,14 @@ const ModalBodyStyled = styled.section`
     gap: 16px;
     justify-content: center;
   }
+
+  form {
+    display: flex;
+    flex-direction: column;
+    background-color: var(--color-brand-1);
+    padding: 16px;
+    border-radius: 8px;
+  }
 `;
 
 export { ModalBodyStyled };
