@@ -8,6 +8,7 @@ import { useDriver } from "@hooks/useDriver";
 import { useEffect } from "react";
 import { StatusIcon } from "@components/Dashboard/Icons/StatusIcon";
 import { DashboardTable } from "@components/Dashboard/Table";
+import { ChartComponent, DoughnutChart } from "@components/Dashboard/Chart";
 
 const DriverDashboard = () => {
   const { driverActive, driverInactive, driverQuantity, getDriverList } =
@@ -16,6 +17,30 @@ const DriverDashboard = () => {
   useEffect(() => {
     getDriverList();
   }, []);
+
+  const datatochart = [
+    {
+      value: driverActive,
+      label: "Ativos",
+    },
+    { value: driverInactive, label: "Inativos" },
+  ];
+
+  const doughnutChartDriverData = {
+    labels: datatochart.map((item) => item.label),
+    datasets: [
+      {
+        label: "",
+        data: datatochart.map((item) => item.value),
+        backgroundColor: ["#0073e6", "#b31010"],
+        borderWidth: 2,
+        borderRadius: 8,
+        borderSkipped: false,
+        cutout: "50%",
+        radius: "100%",
+      },
+    ],
+  };
 
   return (
     <>
@@ -56,7 +81,10 @@ const DriverDashboard = () => {
               </CardWithRightBorder>
 
               <CardWithRightBorder>
-                <p>Gráfico</p>
+                <p className="card__text">DISPONIBILIDADE</p>
+                <ChartComponent>
+                  <DoughnutChart chartData={doughnutChartDriverData} />
+                </ChartComponent>
               </CardWithRightBorder>
             </div>
 

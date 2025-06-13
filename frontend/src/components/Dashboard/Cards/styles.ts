@@ -2,8 +2,9 @@ import styled from "@emotion/styled";
 
 const StyledCardWithRightBorder = styled.div`
   background-color: var(--color-white);
+  height: 300px;
   min-height: 10rem;
-  width: 20rem;
+  width: 30rem;
   border-left: 8px solid var(--color-brand-2);
   border-radius: 0 15px 15px 0;
   padding: 16px;

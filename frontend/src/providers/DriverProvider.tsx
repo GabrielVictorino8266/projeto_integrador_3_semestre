@@ -36,11 +36,7 @@ const DriverProvider = ({ children }: IDefaultChildrenProp) => {
   const handleCreateDriver = async (newDriverData: ICreateDriverData) => {
     try {
       const newDriverResponse: AxiosResponse<ICreateDriverResponse> =
-        await api.post<ICreateDriverResponse>(
-          "/drivers/create",
-          newDriverData,
-          headersAuth
-        );
+        await api.post<ICreateDriverResponse>("/drivers/create", newDriverData);
 
       if (newDriverResponse.status === 201) {
         toast.success("Motorista criado com sucesso!");
