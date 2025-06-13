@@ -1,9 +1,5 @@
 import { RegInput } from "@components/InputForm";
 import { zodResolver } from "@hookform/resolvers/zod";
-import {
-  driverRegisterFormSchema,
-  type IDriverRegisterData,
-} from "@schemas/driverRegisterSchema";
 import { useForm, type FieldError, type SubmitHandler } from "react-hook-form";
 import { RegisterPageGeneric } from "@components/RegisterForm";
 import { Button } from "@styles/Buttons";
@@ -11,52 +7,65 @@ import { SelectInputForm } from "@components/Select";
 import { cnhCategories } from "@utils/Selects/cnhCategories";
 import { ContainerInputs } from "./styles";
 import { useDriver } from "@hooks/useDriver";
-import { MaskPhone } from "@utils/Mask/MaskPhone";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import { driverUpdateFormSchema } from "@schemas/driverUpdateSchema";
+import type { IUpdateDriverData } from "@interfaces/driver.interface";
+import { cpfMask, dateMask, phoneMask } from "@utils/reserve";
+import { userStatus } from "@utils/Selects/userStatus";
 
 const DriverUpdate = () => {
+  const [driverName, setDriverName] = useState<string>();
+  const [cpfValue, setcpfValue] = useState<string>();
+  const [phoneValue, setPhoneValue] = useState<string>();
+  const [birthYear, setBirthYear] = useState<string>();
+
   const {
-    handleCreateDriver,
-    inputDate,
-    inputValue,
-    handleDateMask,
-    handleInputMask,
+    updateDriver,
     getDriverByID,
     driverUnderEdition,
     setDriverUnderEdition,
   } = useDriver();
+
   const { id } = useParams();
-
-  useEffect(() => {
-    getDriverByID(id!);
-    return () => {
-      setDriverUnderEdition(null);
-    };
-  }, []);
-
-  console.log(driverUnderEdition);
-
-  const [phoneValue, setPhoneValue] = useState<string>("");
-
-  const maskPhone = new MaskPhone();
 
   const {
     register,
     handleSubmit,
+    setValue,
     formState: { errors },
   } = useForm({
-    resolver: zodResolver(driverRegisterFormSchema),
+    resolver: zodResolver(driverUpdateFormSchema),
   });
 
-  const submitDriver: SubmitHandler<IDriverRegisterData> = async (
-    registerForm: IDriverRegisterData
+  useEffect(() => {
+    if (id) {
+      getDriverByID(id);
+    }
+    return () => setDriverUnderEdition(null);
+  }, [id]);
+
+  useEffect(() => {
+    if (driverUnderEdition) {
+      setValue("name", driverUnderEdition.name);
+      setValue("cpf", cpfMask(driverUnderEdition.cpf));
+      setValue("licenseType", driverUnderEdition.licenseType);
+      setValue("licenseNumber", driverUnderEdition.licenseNumber);
+      setValue("phone", phoneMask(driverUnderEdition.phone));
+      setValue("birthYear", driverUnderEdition.birthYear);
+      setValue("performance", driverUnderEdition.performance);
+      setValue("isActive", driverUnderEdition.isActive);
+    }
+  }, [driverUnderEdition, setValue]);
+
+  const submitDriver: SubmitHandler<IUpdateDriverData> = async (
+    registerForm: IUpdateDriverData
   ) => {
-    registerForm.phone = registerForm.phone.replace(/\D/g, "");
-    registerForm.cpf = registerForm.cpf.replace(/\D/g, "");
-    handleCreateDriver(registerForm); // TROCAR PARA UPDATEDRIVER
+    updateDriver(id!, registerForm);
     console.log(registerForm);
   };
+
+  console.log(driverUnderEdition);
 
   return (
     <RegisterPageGeneric title="Editar motorista">
@@ -69,13 +78,16 @@ const DriverUpdate = () => {
             label={"Nome"}
             {...register("name")}
             error={errors.name}
-            defaultValue={driverUnderEdition?.name}
+            value={driverName}
+            onChange={(event) => {
+              setDriverName(event.target.value);
+            }}
           />
           <SelectInputForm
             optionsArray={cnhCategories}
             label={"Carteira de Habilitaçao"}
-            {...register("licenceType")}
-            error={errors.licenceType}
+            {...register("licenseType")}
+            error={errors.licenseType}
           />
           <RegInput
             type={"text"}
@@ -84,25 +96,28 @@ const DriverUpdate = () => {
             label={"CPF"}
             {...register("cpf")}
             error={errors.cpf}
-            value={inputValue}
-            onChange={handleInputMask}
+            value={cpfValue}
+            onChange={(event) => {
+              setcpfValue(cpfMask(event.target.value));
+            }}
           />
           <RegInput
             type={"number"}
             placeholder={"Numero da habilitação"}
             id={"licenceNumber"}
             label={"Número CNH"}
-            {...register("licenceNumber")}
-            error={errors.licenceNumber}
+            {...register("licenseNumber")}
+            error={errors.licenseNumber}
           />
-          <RegInput
+          {/* <RegInput
             type={"password"}
             placeholder={"Digite a senha do motorista"}
             id={"password"}
             label={"Senha"}
             {...register("password")}
             error={errors.password}
-          />
+            defaultValue={driverUnderEdition.}
+          /> */}
           <RegInput
             type={"number"}
             placeholder={"Ex: 5"}
@@ -120,7 +135,7 @@ const DriverUpdate = () => {
             error={errors.phone}
             value={phoneValue}
             onChange={(event) => {
-              setPhoneValue(maskPhone.mask(event.target.value));
+              setPhoneValue(phoneMask(event.target.value));
             }}
           />
           <RegInput
@@ -130,8 +145,19 @@ const DriverUpdate = () => {
             label={"Data de nascimento"}
             {...register("birthYear")}
             error={errors.birthYear}
-            value={inputDate}
-            onChange={handleDateMask}
+            value={birthYear}
+            onChange={(event) => {
+              setBirthYear(dateMask(event.target.value));
+            }}
+          />
+          <SelectInputForm
+            optionsArray={userStatus}
+            label={"Status"}
+            {...register("isActive", {
+              setValueAs: (v) => (v === "" ? undefined : v === "true"),
+            })}
+            error={errors.isActive}
+            defaultValue={driverUnderEdition?.isActive?.toString() ?? ""}
           />
         </ContainerInputs>
         <div className="form__sendButton">

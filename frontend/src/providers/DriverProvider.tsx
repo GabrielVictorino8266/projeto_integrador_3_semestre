@@ -9,10 +9,13 @@ import {
   type ICreateDriverResponse,
   type IDriver,
   type IGetDriversResponse,
+  type IUpdateDriverData,
 } from "@interfaces/driver.interface";
 import { useModal } from "@hooks/useModal";
+import { useNavigate } from "react-router-dom";
 
 const DriverProvider = ({ children }: IDefaultChildrenProp) => {
+  const navigate = useNavigate();
   const token = localStorage.getItem("token") || null;
   const { handleCloseModal } = useModal();
 
@@ -105,17 +108,19 @@ const DriverProvider = ({ children }: IDefaultChildrenProp) => {
     }
   };
 
-  // const updateDriver = async (id: string) => {
-  //   try {
-  //     const driverListResponse = await api.put(`/drivers/update/${id}`);
-  //     if (driverListResponse.status === 200) {
-  //       // Lógica aqui
-  //     }
-  //   } catch (error) {
-  //     console.log(error);
-  //     toast.error("Falha ao atualizar o motorista!");
-  //   }
-  // };
+  const updateDriver = async (id: string, driverData: IUpdateDriverData) => {
+    try {
+      const driverListResponse: AxiosResponse<IUpdateDriverData> =
+        await api.put<IUpdateDriverData>(`/drivers/update/${id}`, driverData);
+      if (driverListResponse.status === 200) {
+        toast.success("Motorista atualizado com sucesso");
+        navigate("/dashboard/motoristas");
+      }
+    } catch (error) {
+      console.log(error);
+      toast.error("Falha ao atualizar o motorista!");
+    }
+  };
 
   return (
     <DriverContext.Provider
@@ -123,8 +128,9 @@ const DriverProvider = ({ children }: IDefaultChildrenProp) => {
         driverList,
         handleCreateDriver,
         getDriverList,
-        deleteDriver,
         getDriverByID,
+        updateDriver,
+        deleteDriver,
         driverActive,
         driverInactive,
         driverQuantity,

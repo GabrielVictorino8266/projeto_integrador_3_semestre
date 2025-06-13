@@ -1,4 +1,5 @@
 import type { driverRegisterFormSchema } from "@schemas/driverRegisterSchema";
+import type { driverUpdateFormSchema } from "@schemas/driverUpdateSchema";
 import type { z } from "zod";
 
 export interface IDriver {
@@ -38,9 +39,7 @@ export interface IGetDriversResponse {
 
 export interface ICreateDriverResponse {
   id: string;
-  password: string; // REMOVER APÓS A RETIRADA DO CAMPO NO RETORNO DA API
   cpf: string;
-  email: string; // REMOVER APÓS A RETIRADA DO CAMPO NO RETORNO DA API
   name: string;
   birthYear: string;
   phone: string;
@@ -59,6 +58,8 @@ export interface ICreateDriverResponse {
 
 export type ICreateDriverData = z.output<typeof driverRegisterFormSchema>;
 
+export type IUpdateDriverData = z.output<typeof driverUpdateFormSchema>;
+
 export interface IDriverContextProps {
   handleCreateDriver: (newDriverData: ICreateDriverData) => Promise<void>;
   getDriverList: () => void;
@@ -69,6 +70,7 @@ export interface IDriverContextProps {
   getDriverByID: (id: string) => Promise<void>;
   driverUnderEdition: IDriver | null;
   setDriverUnderEdition: React.Dispatch<React.SetStateAction<IDriver | null>>;
+  updateDriver: (id: string, driverData: IUpdateDriverData) => Promise<void>;
   deleteDriver: (id: string) => Promise<void>;
 }
 

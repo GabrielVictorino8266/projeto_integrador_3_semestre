@@ -3,6 +3,7 @@ import type {
   ICreateDriverData,
   IDriver,
   IDriverContextProps,
+  IUpdateDriverData,
 } from "@interfaces/driver.interface";
 import { createContext, type SetStateAction } from "react";
 
@@ -28,7 +29,14 @@ const DriverContext = createContext<IDriverContextProps>({
   ): void {
     throw new Error("Function not implemented.");
   },
+
   deleteDriver: function (_id: string): Promise<void> {
+    throw new Error("Function not implemented.");
+  },
+  updateDriver: function (
+    _id: string,
+    _driverData: IUpdateDriverData
+  ): Promise<void> {
     throw new Error("Function not implemented.");
   },
 });
