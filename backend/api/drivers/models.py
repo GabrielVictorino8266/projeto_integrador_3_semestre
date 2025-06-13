@@ -2,7 +2,7 @@ from mongoengine import Document, StringField, IntField, ListField, DateField, B
 import datetime
 
 class Driver(Document):
-    password = StringField(required=True)
+    password = StringField(required=False)
     cpf = StringField(required=True, unique=True, regex=r'^\d{11}$', help_text='CPF must contain exactly 11 digits')
     email = StringField(required=False, default='')
     name =StringField(required=True)

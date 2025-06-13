@@ -54,15 +54,49 @@ def list_drivers(request):
 
 @api_view(['POST'])
 def create_driver(request):
-    """Create a new driver."""
-    serializer = DriverSerializer(data=request.data)
-    if serializer.is_valid():
-        password = request.data.get('password')
+    """
+    Create a new driver.
+    """
+    try:
+        serializer = DriverSerializer(data=request.data)
+        if not serializer.is_valid():
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+        name = request.data.get('name')
+        if not isinstance(name, str) or not name.strip():
+            return Response({
+                'error': 'Invalid name provided'
+            }, status=status.HTTP_400_BAD_REQUEST)
+
+        birth_year = request.data.get('birthYear')
+        if not birth_year:
+            return Response({
+                'error': 'Birth year is required'
+            }, status=status.HTTP_400_BAD_REQUEST)
+
+        try:
+            birth_year = datetime.strptime(birth_year, '%Y-%m-%d').year
+        except ValueError:
+            return Response({
+                'error': 'Invalid birth year format. Expected YYYY-MM-DD'
+            }, status=status.HTTP_400_BAD_REQUEST)
+
+        name = name.strip()
+        name_parts = [n.capitalize().strip() for n in name.split(' ') if n]
+        initials = ''.join([n[0] for n in name_parts])
+
+        password = f"{initials}{birth_year}"
         hashed_password = get_hash_password(password)
+        
         serializer.validated_data['password'] = hashed_password
         serializer.save()
+        
         return Response(serializer.data, status=status.HTTP_201_CREATED)
-    raise serializers.ValidationError(serializer.errors)
+        
+    except Exception as e:
+        return Response({
+            'error': f'An unexpected error occurred: {str(e)}'
+        }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 @api_view(['GET'])
 def get_driver(request, driver_id):
