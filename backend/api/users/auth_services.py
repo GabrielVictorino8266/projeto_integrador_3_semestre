@@ -1,6 +1,6 @@
 # users/auth_services.py - Sem Verificação de Usuário Ativo
 from passlib.context import CryptContext
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 from bson.objectid import ObjectId
 from jose import jwt, JWTError
 from django.conf import settings
@@ -70,11 +70,11 @@ def create_access_token(data: dict, expires_delta: timedelta = None):
     to_encode = data.copy()
 
     if expires_delta:
-        expire = datetime.utcnow() + expires_delta
+        expire = datetime.now(timezone.utc) + expires_delta
     else:
-        expire = datetime.utcnow() + timedelta(hours=1)
+        expire = datetime.now(timezone.utc) + timedelta(hours=1)
 
-    to_encode.update({"exp": expire})
+    to_encode.update({"exp": expire, "iat": datetime.now(timezone.utc), "token_type": "access"})
 
     encoded_jwt = jwt.encode(to_encode, settings.SECRET_KEY, algorithm=settings.SIMPLE_JWT['ALGORITHM'])
     return encoded_jwt
@@ -86,11 +86,11 @@ def create_refresh_token(data: dict, expires_delta: timedelta = None):
     to_encode = data.copy()
 
     if expires_delta:
-        expire = datetime.utcnow() + expires_delta
+        expire = datetime.now(timezone.utc) + expires_delta
     else:
-        expire = datetime.utcnow() + timedelta(days=1)
+        expire = datetime.now(timezone.utc) + timedelta(days=1)
     
-    to_encode.update({"exp": expire, "token_type": "refresh"})
+    to_encode.update({"exp": expire, "iat": datetime.now(timezone.utc), "token_type": "refresh"})
 
     encoded_jwt = jwt.encode(to_encode, settings.SECRET_KEY, algorithm=settings.SIMPLE_JWT['ALGORITHM'])
     return encoded_jwt
@@ -150,15 +150,15 @@ def store_refresh_token(user_id, refresh_token):
     try:
         refresh_tokens_collection().update_many(
             {"user_id": ObjectId(user_id)},
-            {"$set": {"is_active": False, "invalidated_at": datetime.utcnow()}}
+            {"$set": {"is_active": False, "invalidated_at": datetime.now(timezone.utc)}}
         )
         
         # Armazenar novo refresh token
         refresh_tokens_collection().insert_one({
             "user_id": ObjectId(user_id),
             "token": refresh_token,
-            "created_at": datetime.utcnow(),
-            "expires_at": datetime.utcnow() + timedelta(days=1),
+            "created_at": datetime.now(timezone.utc),
+            "expires_at": datetime.now(timezone.utc) + timedelta(days=1),
             "is_active": True
         })
         
@@ -184,7 +184,7 @@ def validate_refresh_token(refresh_token):
         token_record = refresh_tokens_collection().find_one({
             "token": refresh_token,
             "is_active": True,
-            "expires_at": {"$gt": datetime.utcnow()}
+            "expires_at": {"$gt": datetime.now(timezone.utc)}
         })
         
         if not token_record:
@@ -211,7 +211,7 @@ def invalidate_refresh_token(refresh_token):
     try:
         result = refresh_tokens_collection().update_one(
             {"token": refresh_token},
-            {"$set": {"is_active": False, "invalidated_at": datetime.utcnow()}}
+            {"$set": {"is_active": False, "invalidated_at": datetime.now(timezone.utc)}}
         )
         
         if result.modified_count > 0:
@@ -232,8 +232,8 @@ def blacklist_token(token):
     try:
         token_blacklist_collection().insert_one({
             "token": token,
-            "blacklisted_at": datetime.utcnow(),
-            "expires_at": datetime.utcnow() + timedelta(days=1)
+            "blacklisted_at": datetime.now(timezone.utc),
+            "expires_at": datetime.now(timezone.utc) + timedelta(days=1)
         })
         
         print("✅ [BLACKLIST] Token adicionado à blacklist")
@@ -250,7 +250,7 @@ def is_token_blacklisted(token):
     try:
         result = token_blacklist_collection().find_one({
             "token": token,
-            "expires_at": {"$gt": datetime.utcnow()}
+            "expires_at": {"$gt": datetime.now(timezone.utc)}
         })
         
         return result is not None
@@ -265,7 +265,7 @@ def cleanup_expired_tokens():
     Deve ser executado periodicamente via comando Django.
     """
     try:
-        now = datetime.utcnow()
+        now = datetime.now(timezone.utc)
         
         # Remover refresh tokens expirados
         refresh_result = refresh_tokens_collection().delete_many({
@@ -296,7 +296,7 @@ def get_user_refresh_tokens(user_id):
         tokens = list(refresh_tokens_collection().find({
             "user_id": ObjectId(user_id),
             "is_active": True,
-            "expires_at": {"$gt": datetime.utcnow()}
+            "expires_at": {"$gt": datetime.now(timezone.utc)}
         }))
         
         return tokens
@@ -314,7 +314,7 @@ def invalidate_all_user_tokens(user_id):
         # Invalidar todos os refresh tokens do usuário
         refresh_result = refresh_tokens_collection().update_many(
             {"user_id": ObjectId(user_id)},
-            {"$set": {"is_active": False, "invalidated_at": datetime.utcnow()}}
+            {"$set": {"is_active": False, "invalidated_at": datetime.now(timezone.utc)}}
         )
         
         print(f"✅ [LOGOUT] {refresh_result.modified_count} tokens invalidados para usuário {user_id}")
