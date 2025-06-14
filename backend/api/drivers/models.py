@@ -1,4 +1,4 @@
-from mongoengine import Document, StringField, IntField, ListField, DateField, BooleanField
+from mongoengine import Document, StringField, IntField, ListField, DateField, BooleanField, DateTimeField
 import datetime
 
 class Driver(Document):
@@ -14,6 +14,10 @@ class Driver(Document):
     incidents = ListField(default=[])
     isActive = BooleanField(default=True)
     type = StringField(default='Motorista', required=False)
+    deleted = BooleanField(default=False)
+    deletedAt = DateTimeField(required=False)
+    createdAt = DateTimeField(default=datetime.datetime.now)
+    updatedAt = DateTimeField(default=datetime.datetime.now)
 
     meta = {'collection': 'users'}
 
