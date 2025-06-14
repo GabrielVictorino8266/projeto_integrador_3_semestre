@@ -92,30 +92,6 @@ export const IconText = styled.span`
     }
 `;
 
-export const Submenu = styled.ul`
-    list-style: none;
-    margin-left: 40px;
-    color: white;
-    margin-top: 5px;
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-
-    @media (max-width: 768px) {
-        margin-left: 10px;
-        font-size: 12px;
-    }
-`;
-
-export const SubItem = styled.li`
-    cursor: pointer;
-    font-size: 13px;
-    margin: 5px 0px 5px 24px;
-    a {
-        color: white;
-        text-decoration: none;
-    }
-`;
 
 export const Baseboard = styled.div`
     display: flex;
