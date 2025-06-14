@@ -1,23 +1,7 @@
-from rest_framework.test import APITestCase
 from users.authentication import SimpleUser
 from vehicles.models import Vehicle, VehicleTypes
-from mongoengine import connection, connect, disconnect
-from mongoengine import connect, disconnect
-from mongomock import MongoClient
-
-class MongoTestCase(APITestCase):
-    @classmethod
-    def setUpClass(cls):
-        super().setUpClass()
-        # Conecta a uma instância MongoDB em memória usando mongomock
-        disconnect(alias='default')
-        connect(mongo_client_class=MongoClient)
-
-    @classmethod
-    def tearDownClass(cls):
-        # Desconecta da instância MongoDB mockada
-        disconnect(alias='testdb')
-        super().tearDownClass()
+from mongoengine import connection
+from core.utils.mongo_test_case import MongoTestCase
 
 
 class VehicleTestCase(MongoTestCase):
@@ -42,6 +26,8 @@ class VehicleTestCase(MongoTestCase):
             'warningKmLimit': 10000,
             'deletedAt': None
         }
+        
+        super().setUp()
 
     def tearDown(self) -> None:
         self.db[Vehicle._get_collection_name()].drop()
