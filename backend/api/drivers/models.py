@@ -10,7 +10,7 @@ class Driver(Document):
     phone = StringField(required=True)
     licenseType = StringField(required=True)
     licenseNumber = StringField(required=True)
-    performance = IntField(default=0)
+    performance = IntField(default=10)
     incidents = ListField(default=[])
     isActive = BooleanField(default=True)
     type = StringField(default='Motorista', required=False)
