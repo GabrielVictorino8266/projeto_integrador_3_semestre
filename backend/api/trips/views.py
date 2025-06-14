@@ -18,21 +18,25 @@ def list_trips(request):
     """List all trips."""
     pass
 
-@api_view(['POST'])
-def create_trip(request):
-    """Create a new trip."""
-    pass
 
 @api_view(['GET'])
 def get_trip(request, trip_id):
     """Get trip by id."""
     pass
 
+
 @api_view(['DELETE'])
 def delete_trip(request, trip_id):
     """Delete a trip."""
     pass
 
+# bruno
+@api_view(['POST'])
+def create_trip(request):
+    """Create a new trip."""
+    pass
+
+# bruno
 @api_view(['PUT', 'PATCH'])
 def update_trip(request, trip_id):
     """Update a trip."""
