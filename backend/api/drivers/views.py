@@ -62,10 +62,10 @@ def create_driver(request):
         if not serializer.is_valid():
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-        name = request.data.get('name')
-        if not isinstance(name, str) or not name.strip():
+        cpf = request.data.get('cpf')
+        if not isinstance(cpf, str) or not cpf.strip():
             return Response({
-                'error': 'Invalid name provided'
+                'error': 'Invalid cpf provided'
             }, status=status.HTTP_400_BAD_REQUEST)
 
         birth_year = request.data.get('birthYear')
@@ -81,11 +81,10 @@ def create_driver(request):
                 'error': 'Invalid birth year format. Expected YYYY-MM-DD'
             }, status=status.HTTP_400_BAD_REQUEST)
 
-        name = name.strip()
-        name_parts = [n.capitalize().strip() for n in name.split(' ') if n]
-        initials = ''.join([n[0] for n in name_parts])
+        cpf = cpf.strip()
 
-        password = f"{initials}{birth_year}"
+        password = f"{cpf[-2:]}{birth_year}"
+        print(password)
         hashed_password = get_hash_password(password)
         
         serializer.validated_data['password'] = hashed_password
