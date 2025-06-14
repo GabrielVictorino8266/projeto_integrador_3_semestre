@@ -10,8 +10,9 @@ const ModalHeader = ({ modalTitle }: IModalTitle) => {
 
   return (
     <ModalHeaderStyled>
-      <p>{modalTitle}</p>
+      <p className="modal__title">{modalTitle}</p>
       <button
+        className="closeButton"
         onClick={() => {
           handleCloseModal();
         }}
