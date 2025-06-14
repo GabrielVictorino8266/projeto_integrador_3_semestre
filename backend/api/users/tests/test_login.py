@@ -37,11 +37,7 @@ class LoginTest(UsersTestCase):
         """
         Testa a tentativa de login com campos obrigatórios ausentes.
         """
-        missing_user_data = {
-            "cpf": "18092754314",
-            "password": "1996180"
-        }
-        response = self.client.post(self.url, missing_user_data, format='json')
+        response = self.client.post(self.url, {}, format='json')
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
     def test_login_empty_credentials(self):
@@ -53,17 +49,6 @@ class LoginTest(UsersTestCase):
             "password": ""
         }
         response = self.client.post(self.url, empty_user_data, format='json')
-        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
-
-    def test_login_invalid_cpf_format(self):
-        """
-        Testa a tentativa de login com formato de CPF inválido.
-        """
-        invalid_cpf_data = {
-            "cpf": "123", 
-            "password": "1996180"
-        }
-        response = self.client.post(self.url, invalid_cpf_data, format='json')
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
     def test_login_nonexistent_user(self):

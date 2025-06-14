@@ -1,5 +1,6 @@
 from mongoengine import connection
 from core.utils.mongo_test_case import MongoTestCase
+from users.auth_services import get_hash_password
 
 class UsersTestCase(MongoTestCase):
     def setUp(self):
@@ -14,13 +15,16 @@ class UsersTestCase(MongoTestCase):
         # self.test_user = SimpleUser(self.mock_user_data)
         # self.client.force_authenticate(user=self.test_user)
 
+        cpf = '18092754314'
+        birth_year = '1996'
+        password = f"{cpf[-2:]}{birth_year}"
         self.valid_user_data = {
-            'cpf': '18092754314',
-            'password': '1996180',
+            'cpf': cpf,
+            'password': password,
             'name': 'Test User',
             'type': 'user'
         }
-        self.db.users.insert_one(self.valid_user_data)
+        self.db.users.insert_one({**self.valid_user_data, password: get_hash_password(password)})
         
         super().setUp()
 

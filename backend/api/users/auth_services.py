@@ -4,14 +4,19 @@ from datetime import datetime, timedelta
 from bson.objectid import ObjectId
 from jose import jwt, JWTError
 from django.conf import settings
+from mongoengine import connection
 import sys
 
 sys.path.append('/app')
-from api.settings import mongodb
 
-users_collection = mongodb['users']
-refresh_tokens_collection = mongodb['refresh_tokens']
-token_blacklist_collection = mongodb['token_blacklist']
+def users_collection():
+    return connection.get_db()['users']
+
+def refresh_tokens_collection():
+    return connection.get_db()['refresh_tokens']
+
+def token_blacklist_collection():
+    return connection.get_db()['token_blacklist']
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
@@ -44,7 +49,7 @@ def auth_user(cpf: str, password: str):
     """
     print(f"🔍 [AUTH] Tentando autenticar usuário com CPF: {cpf}")
     
-    user = users_collection.find_one({"cpf": cpf})
+    user = users_collection().find_one({"cpf": cpf})
 
     if not user:
         print(f"❌ [AUTH] Usuário com CPF {cpf} não encontrado")
@@ -126,7 +131,7 @@ def get_user_from_token(token: str):
         return None
     
     try:
-        user = users_collection.find_one({"_id": ObjectId(user_id)})
+        user = users_collection().find_one({"_id": ObjectId(user_id)})
         if not user:
             print(f"❌ [TOKEN] Usuário com ID {user_id} não encontrado")
             return None
@@ -143,13 +148,13 @@ def store_refresh_token(user_id, refresh_token):
     Invalida tokens anteriores do mesmo usuário.
     """
     try:
-        refresh_tokens_collection.update_many(
+        refresh_tokens_collection().update_many(
             {"user_id": ObjectId(user_id)},
             {"$set": {"is_active": False, "invalidated_at": datetime.utcnow()}}
         )
         
         # Armazenar novo refresh token
-        refresh_tokens_collection.insert_one({
+        refresh_tokens_collection().insert_one({
             "user_id": ObjectId(user_id),
             "token": refresh_token,
             "created_at": datetime.utcnow(),
@@ -176,7 +181,7 @@ def validate_refresh_token(refresh_token):
             print("❌ [REFRESH] Token está na blacklist")
             return None
             
-        token_record = refresh_tokens_collection.find_one({
+        token_record = refresh_tokens_collection().find_one({
             "token": refresh_token,
             "is_active": True,
             "expires_at": {"$gt": datetime.utcnow()}
@@ -186,7 +191,7 @@ def validate_refresh_token(refresh_token):
             print("❌ [REFRESH] Token não encontrado ou expirado")
             return None
             
-        user = users_collection.find_one({"_id": token_record["user_id"]})
+        user = users_collection().find_one({"_id": token_record["user_id"]})
         
         if not user:
             print("❌ [REFRESH] Usuário associado não encontrado")
@@ -204,7 +209,7 @@ def invalidate_refresh_token(refresh_token):
     Invalida um refresh token específico.
     """
     try:
-        result = refresh_tokens_collection.update_one(
+        result = refresh_tokens_collection().update_one(
             {"token": refresh_token},
             {"$set": {"is_active": False, "invalidated_at": datetime.utcnow()}}
         )
@@ -225,7 +230,7 @@ def blacklist_token(token):
     Adiciona token à blacklist (usado no logout).
     """
     try:
-        token_blacklist_collection.insert_one({
+        token_blacklist_collection().insert_one({
             "token": token,
             "blacklisted_at": datetime.utcnow(),
             "expires_at": datetime.utcnow() + timedelta(days=1)
@@ -243,7 +248,7 @@ def is_token_blacklisted(token):
     Verifica se um token está na blacklist.
     """
     try:
-        result = token_blacklist_collection.find_one({
+        result = token_blacklist_collection().find_one({
             "token": token,
             "expires_at": {"$gt": datetime.utcnow()}
         })
@@ -263,12 +268,12 @@ def cleanup_expired_tokens():
         now = datetime.utcnow()
         
         # Remover refresh tokens expirados
-        refresh_result = refresh_tokens_collection.delete_many({
+        refresh_result = refresh_tokens_collection().delete_many({
             "expires_at": {"$lt": now}
         })
         
         # Remover tokens da blacklist expirados
-        blacklist_result = token_blacklist_collection.delete_many({
+        blacklist_result = token_blacklist_collection().delete_many({
             "expires_at": {"$lt": now}
         })
         
@@ -288,7 +293,7 @@ def get_user_refresh_tokens(user_id):
     Útil para mostrar sessões ativas.
     """
     try:
-        tokens = list(refresh_tokens_collection.find({
+        tokens = list(refresh_tokens_collection().find({
             "user_id": ObjectId(user_id),
             "is_active": True,
             "expires_at": {"$gt": datetime.utcnow()}
@@ -307,7 +312,7 @@ def invalidate_all_user_tokens(user_id):
     """
     try:
         # Invalidar todos os refresh tokens do usuário
-        refresh_result = refresh_tokens_collection.update_many(
+        refresh_result = refresh_tokens_collection().update_many(
             {"user_id": ObjectId(user_id)},
             {"$set": {"is_active": False, "invalidated_at": datetime.utcnow()}}
         )
