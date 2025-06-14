@@ -5,17 +5,17 @@ from django.urls import reverse
 from mongoengine import connect, disconnect
 from bson import ObjectId
 import mongomock
+from datetime import datetime
 
 from .models import Driver
+from .views import get_hash_password
 
 @override_settings(MONGO_DATABASE_NAME='testdb')
 class DriverAPITests(APITestCase):
     @classmethod
     def setUpClass(cls):
         super().setUpClass()
-        # Desconecta se já houver conexão com o alias 'default'
         disconnect(alias='default')
-        # Conecta ao banco fake com mongomock
         cls.mock_connection = connect(
             db='testdb',
             host='mongodb://localhost',
@@ -23,37 +23,18 @@ class DriverAPITests(APITestCase):
             mongo_client_class=mongomock.MongoClient
         )
 
-        cls.driver = Driver.objects.create(
-            name='Teste',
-            email='teste@example.com',
-            password='Teste123',
-            birthYear="1990-01-01",
-            cpf='12345678901',
-            phone='+55 31 1234-5678',
-            licenseType='A',
-            licenseNumber='ABC1234',
-            performance=7,
-            isActive=True,
-            type='Motorista'
-        )
-
     @classmethod
     def tearDownClass(cls):
-        cls.driver.delete()
+        Driver.objects.delete()
         disconnect(alias='default')
         cls.mock_connection.close()
         super().tearDownClass()
 
-    def test_get_drivers(self):
-        url = reverse('drivers:list_drivers')
-        response = self.client.get(url)
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
-
-    def test_create_driver(self):
-        # Test POST /drivers/
-        data = {
-            'name': 'Jane Doe',
-            'email': 'jane@example.com',
+    def setUp(self):
+        self.valid_driver_data = {
+            'name': 'John Doe',
+            'email': 'john@example.com',
+            'birthYear': '1990-01-01',
             'password': 'password123',
             'cpf': '98765432109',
             'phone': '+55 31 8765-4321',
