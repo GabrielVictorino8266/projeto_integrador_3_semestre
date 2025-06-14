@@ -5,7 +5,9 @@ class VehicleTypes(TextChoices):
     MOTO = 'moto', 'Moto'
     CAMINHAO = 'caminhao', 'Caminhão'
     ONIBUS = 'onibus', 'Onibus'
+    VAN = 'van', 'Van'
 
 class VehicleStatus(TextChoices):
     ACTIVE = 'active', 'Ativo'
     INACTIVE = 'inactive', 'Inativo'
+    MAINTENANCE = 'maintenance', 'Manutenção'
