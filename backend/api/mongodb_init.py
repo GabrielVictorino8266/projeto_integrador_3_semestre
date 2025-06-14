@@ -23,10 +23,10 @@ def initialize_collections():
             {
                 'name': 'driver',
                 'indexes': [
-                    {'key': {'name': 1}, 'unique': True},
-                    {'key': {'email': 1}, 'unique': True},
+                    {'key': {'name': 1}, 'unique': False},
+                    {'key': {'email': 1}, 'unique': False},
                     {'key': {'cpf': 1}, 'unique': True},
-                    {'key': {'licenseNumber': 1}, 'unique': True}
+                    {'key': {'licenseNumber': 1}, 'unique': False}
                 ]
             },
             {
@@ -39,15 +39,16 @@ def initialize_collections():
             {
                 'name': 'token_blacklist',
                 'indexes': [
-                    {'key': {'token': 1}, 'unique': True},
+                    {'key': {'token': 1}, 'unique': False},
                     {'key': {'user_id': 1}}
                 ]
             },
             {
                 'name': 'users',
                 'indexes': [
-                    {'key': {'email': 1}, 'unique': True},
-                    {'key': {'username': 1}, 'unique': True}
+                    {'key': {'email': 1}, 'unique': False, 'sparse': True},
+                    {'key': {'username': 1}, 'unique': False, 'sparse': True},
+                    {'key': {'cpf': 1}, 'unique': True}
                 ]
             },
             {
@@ -65,7 +66,9 @@ def initialize_collections():
                 for index in collection['indexes']:
                     db[collection['name']].create_index(
                         index['key'],
-                        unique=index.get('unique', False)
+                        unique=index.get('unique', False),
+                        sparse=index.get('sparse', False),
+                        partialFilterExpression={'email': {'$ne': ''}} if index.get('key') == {'email': 1} else None
                     )
             except:
                 continue

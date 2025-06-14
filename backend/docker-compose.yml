@@ -19,12 +19,13 @@ services:
     #          python api/manage.py runserver 0.0.0.0:8000"
 
     # Command to run Django development server manually (uncomment to use)
-    command: tail -f /dev/null
+    command: >
+      sh -c "python api/mongodb_init.py && tail -f /dev/null"
 
   mongodb:
     image: mongo:latest
     ports:
-      - "27017:27017"
+      - "27018:27017"
     volumes:
       - mongodb_data:/data/db
     restart: unless-stopped
