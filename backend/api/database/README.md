@@ -23,14 +23,14 @@ Esse comando busca os arquivos de migração no diretório padrão (`database/mi
 Para criar um novo arquivo de migração, use o seguinte comando, passando uma **descrição resumida** da migração como argumento:
 
 ```bash
-python manage.py create_mongo_migration adicionar_nova_colecao
+python manage.py create_migration nome_da_migration
 ```
 
-* O argumento `adicionar_nova_colecao` será usado no nome do arquivo da migração.
+* O argumento `nome_da_migration` será usado no nome do arquivo da migração.
 * O arquivo será criado automaticamente no diretório `database/migrations` com um nome no formato:
 
 ```
-<timestamp>_adicionar_nova_colecao.py
+<timestamp>_nome_da_migration.py
 ```
 
 * Dentro do arquivo gerado, você encontrará a estrutura básica com os métodos `upgrade()` e `downgrade()`, que você deve preencher com a lógica necessária para aplicar ou reverter a migração.
