@@ -36,9 +36,8 @@ def list_drivers(request):
     limit = serializer.validated_data.get('limit')
     name = serializer.validated_data.get('name')
 
-    filters = {}
+    filters = {'deleted': False}
     if name:
-        # Using MongoDB/MongoEngine syntax for case-insensitive search
         filters['name__icontains'] = name
 
     pagination = Paginator(
@@ -84,7 +83,6 @@ def create_driver(request):
         cpf = cpf.strip()
 
         password = f"{cpf[-2:]}{birth_year}"
-        print(password)
         hashed_password = get_hash_password(password)
         
         serializer.validated_data['password'] = hashed_password
@@ -117,7 +115,7 @@ def delete_driver(request, driver_id):
         raise ParseError(f"Error deleting driver: {str(e)}")
     
     driver.deletedAt  = datetime.now()
-    driver.isActive = False
+    driver.deleted = True
     driver.save()
     return Response(status=status.HTTP_204_NO_CONTENT)
 
@@ -133,6 +131,12 @@ def update_driver(request, driver_id):
     
     serializer = DriverSerializer(driver, data=request.data, partial=True)
     if serializer.is_valid():
+        if 'cpf' in request.data:
+            cpf = request.data.get('cpf')
+            birth_year = request.data.get('birthYear') or driver.birthYear
+            password = f"{cpf[-2:]}{birth_year}"
+            hashed_password = get_hash_password(password)
+            serializer.validated_data['password'] = hashed_password
         if 'password' in request.data:
             password = request.data.get('password')
             hashed_password = get_hash_password(password)
