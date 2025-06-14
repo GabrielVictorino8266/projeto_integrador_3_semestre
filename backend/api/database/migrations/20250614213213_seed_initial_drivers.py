@@ -34,9 +34,14 @@ class Migration(BaseMigration):
                 "phone": "1111111111",
                 "licenseType": "C",
                 "licenseNumber": "111111",
-                "performance": 1,
+                "performance": 10,
                 "incidents": [],
-                "password": get_hash_password(f"12{1980}")
+                "password": get_hash_password(f"12{1980}"),
+                "type": "Motorista",
+                "isActive": True,
+                "deleted": False,
+                "createdAt": datetime.now(),
+                "updatedAt": datetime.now()
             },
             {
                 "cpf": "22222222223",
@@ -45,9 +50,14 @@ class Migration(BaseMigration):
                 "phone": "2222222222",
                 "licenseType": "C",
                 "licenseNumber": "222222",
-                "performance": 1,
+                "performance": 10,
                 "incidents": [],
-                "password": get_hash_password(f"23{1985}")
+                "password": get_hash_password(f"23{1985}"),
+                "type": "Motorista",
+                "isActive": True,
+                "deleted": False,
+                "createdAt": datetime.now(),
+                "updatedAt": datetime.now()
             },
             {
                 "cpf": "33333333334",
@@ -56,9 +66,14 @@ class Migration(BaseMigration):
                 "phone": "3333333333",
                 "licenseType": "C",
                 "licenseNumber": "333333",
-                "performance": 1,
+                "performance": 10,
                 "incidents": [],
-                "password": get_hash_password(f"34{1990}")
+                "password": get_hash_password(f"34{1990}"),
+                "type": "Motorista",
+                "isActive": True,
+                "deleted": False,
+                "createdAt": datetime.now(),
+                "updatedAt": datetime.now()
             },
             {
                 "cpf": "44444444445",
@@ -67,9 +82,14 @@ class Migration(BaseMigration):
                 "phone": "4444444444",
                 "licenseType": "C",
                 "licenseNumber": "444444",
-                "performance": 1,
+                "performance": 10,
                 "incidents": [],
-                "password": get_hash_password(f"45{1995}")
+                "password": get_hash_password(f"45{1995}"),
+                "type": "Motorista",
+                "isActive": True,
+                "deleted": False,
+                "createdAt": datetime.now(),
+                "updatedAt": datetime.now()
             },
             {
                 "cpf": "55555555556",
@@ -78,9 +98,14 @@ class Migration(BaseMigration):
                 "phone": "5555555555",
                 "licenseType": "C",
                 "licenseNumber": "555555",
-                "performance": 1,
+                "performance": 10,
                 "incidents": [],
-                "password": get_hash_password(f"56{2000}")
+                "password": get_hash_password(f"56{2000}"),
+                "type": "Motorista",
+                "isActive": True,
+                "deleted": False,
+                "createdAt": datetime.now(),
+                "updatedAt": datetime.now()
             },
             {
                 "cpf": "66666666667",
@@ -89,9 +114,14 @@ class Migration(BaseMigration):
                 "phone": "6666666666",
                 "licenseType": "C",
                 "licenseNumber": "666666",
-                "performance": 1,
+                "performance": 10,
                 "incidents": [],
-                "password": get_hash_password(f"67{2000}")
+                "password": get_hash_password(f"67{2000}"),
+                "type": "Motorista",
+                "isActive": True,
+                "deleted": False,
+                "createdAt": datetime.now(),
+                "updatedAt": datetime.now()
             }
         ]
         
