@@ -15,12 +15,12 @@ services:
     depends_on:
       - mongodb
     # command: >
-    #   sh -c "python api/mongodb_init.py &&
+    #   sh -c "python api/manage.py migrate_mongo &&
     #          python api/manage.py runserver 0.0.0.0:8000"
 
     # Command to run Django development server manually (uncomment to use)
     command: >
-      sh -c "python api/mongodb_init.py && tail -f /dev/null"
+      sh -c "python api/manage.py migrate_mongo && tail -f /dev/null"
 
   mongodb:
     image: mongo:latest
