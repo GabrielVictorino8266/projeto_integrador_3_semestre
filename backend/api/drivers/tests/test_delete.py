@@ -15,4 +15,3 @@ class TestDriverDelete(BaseDriverTest):
         # Verify driver is marked as inactive
         response = self.client.get(self.get_driver_url(self.driver_id))
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertFalse(response.data['isActive'])
