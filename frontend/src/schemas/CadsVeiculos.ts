@@ -4,20 +4,14 @@ const currentYear = new Date().getFullYear();
 
 export const schemaCadVeiculo = z
     .object({
-        vehicleNumber: z.string().min(1, "Adicione um número par ao veículo"),
+        vehicleNumber: z.string(),
         licensePlate: z
-            .string()
-            .min(8, "Formato de placa inválido")
-            .max(8, "Máximo de 8 caracteres")
-            .transform((val) => val.toUpperCase().replace(/[^A-Z0-9]/g, ""))
-            .refine(
-                (val) =>
-                    /^[A-Z]{3}[0-9]{3,4}$|^[A-Z]{3}[0-9][A-Z][0-9]{2}$/.test(
-                        val
-                    ),
-                { message: "Formato de placa inválido" }
-            ),
-
+          .string()
+          .transform((val) => val.replace("-", "").toUpperCase())
+          .refine(
+            (val) => /^[A-Z]{3}[0-9][0-9A-Z][0-9]{2}$/.test(val),
+            { message: "Formato de placa inválido" }
+          ),
         vehicleType: z.string().min(1, "Escolha uma opção"),
         manufacturingYear: z.coerce
             .number()
@@ -29,9 +23,9 @@ export const schemaCadVeiculo = z
                     currentYear + 1
                 }`,
             }),
-        brand: z.string().min(1, "Adicione uma marca para o veículo"),
-        currentKm: z.string().min(1, "Adicione uma quilometragem"),
-        warningKmLimit: z.string().min(1, "Adicione uma quilometragem limite"),
+        brand: z.string(),
+        currentKm: z.string().min(1, "Adiciona um KM"),
+        warningKmLimit: z.string().min(1, "Adicione um KM"),
         status: z.string().min(1, "Escolha uma opção"),
     })
     .required();

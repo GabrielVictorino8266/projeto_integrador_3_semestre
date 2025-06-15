@@ -8,6 +8,9 @@ api.interceptors.request.use((config) => {
     if (config.url?.includes("/users/login/")) {
         return config;
     }
+    if (config.url?.includes("/drivers/list")) {
+        return config;
+    }
     const token = localStorage.getItem("token");
 
     if (token) {

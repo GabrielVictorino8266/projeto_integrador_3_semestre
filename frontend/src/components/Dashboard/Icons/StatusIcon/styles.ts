@@ -15,6 +15,10 @@ const IconContainer = styled.i`
   .green {
     color: var(--colorStatus-available);
   }
+
+  .orange {
+    color: #ca8a29;
+  }
 `;
 
 export { IconContainer };

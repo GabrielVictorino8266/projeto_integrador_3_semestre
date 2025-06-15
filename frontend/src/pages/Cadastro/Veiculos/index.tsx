@@ -42,7 +42,7 @@ export function CadastroVeiculo() {
             reset();
         }
         if (id && sucess) {
-            setTimeout(() => navigate("/dashboard"), 1800);
+            setTimeout(() => navigate("/dashboard/veiculos"), 900);
         }
     };
 

@@ -21,7 +21,6 @@ export async function getVehiclesId(id: string): Promise<DataProps | null> {
         return newData;
     } catch (error: any) {
         const status = error.response?.status;
-        console.log("Erro detalhado", error.response?.data);
 
         switch (status) {
             case 401:

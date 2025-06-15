@@ -29,7 +29,6 @@ export function Login() {
         handleSubmit,
         formState: { errors },
     } = useForm<DataProps>({
-        mode: "onBlur",
         resolver: zodResolver(LoginSchema),
     });
 
