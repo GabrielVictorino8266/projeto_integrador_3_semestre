@@ -14,7 +14,7 @@ import { useFetchVeiculos } from "@hooks/useFetchVeiculos/index";
 // Schemas
 import { schemaCadVeiculo, type DataProps } from "@schemas/CadsVeiculos";
 // Service
-import { VehiclesRegistration } from "@services/Api/Registration/VehiclesRegistration";
+import { VehiclesRegistration } from "@services/Api/Vehicles/VehiclesRegistration";
 // Styles
 import { ButtonWrapper, Container, ContainerInputs } from "./styles";
 

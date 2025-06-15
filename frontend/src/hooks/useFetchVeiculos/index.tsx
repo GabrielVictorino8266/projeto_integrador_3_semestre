@@ -1,6 +1,6 @@
 import type { DataProps } from "@schemas/CadsVeiculos";
 import { useEffect, useState } from "react";
-import { getVehiclesId } from "@services/Api/Registration/GetVehiclesId";
+import { getVehiclesId } from "@services/Api/Vehicles/GetVehiclesId";
 
 export function useFetchVeiculos(
     id: string | undefined,
