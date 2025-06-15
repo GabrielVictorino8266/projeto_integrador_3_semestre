@@ -16,6 +16,7 @@ from .serializers import (
     DriverSerializer
 )
 from bson import ObjectId
+from bson.errors import InvalidId
 from datetime import datetime
 
 """
@@ -99,10 +100,14 @@ def create_driver(request):
 def get_driver(request, driver_id):
     """Get driver by id"""
     try:
-        driver = Driver.objects.get(id=ObjectId(driver_id))
+        # Validate the ID format first
+        _ = ObjectId(driver_id)
+        driver = Driver.objects.get(id=driver_id)
+        return Response(DriverSerializer(driver).data)
+    except InvalidId:
+        raise ParseError("Invalid driver ID format. Must be a 24-character hex string")
     except Driver.DoesNotExist:
         raise NotFound("Driver not found")
-    return Response(DriverSerializer(driver).data)
 
 @api_view(['DELETE'])
 def delete_driver(request, driver_id):
@@ -121,7 +126,7 @@ def delete_driver(request, driver_id):
 
 @api_view(['PUT'])
 def update_driver(request, driver_id):
-    """Update driver by id"""
+    """Update all driver fields (PUT)"""
     try:
         driver = Driver.objects.get(id=ObjectId(driver_id))
     except Driver.DoesNotExist:
@@ -129,16 +134,35 @@ def update_driver(request, driver_id):
     except Exception as e:
         raise ParseError(f"Error updating driver: {e}")
     
-    serializer = DriverSerializer(driver, data=request.data, partial=True)
+    # For PUT, we expect all fields to be provided
+    serializer = DriverSerializer(driver, data=request.data)
     if serializer.is_valid():
-        if 'cpf' in request.data:
-            cpf = request.data.get('cpf')
-            birth_year = request.data.get('birthYear') or driver.birthYear
-            password = f"{cpf[-2:]}{birth_year}"
+        # Handle password update only if provided
+        if 'password' in request.data:
+            password = request.data['password']
             hashed_password = get_hash_password(password)
             serializer.validated_data['password'] = hashed_password
+        serializer.save()
+        driver_data = convert_objectids(serializer.data)
+        return Response(driver_data)
+    raise serializers.ValidationError(serializer.errors)
+
+@api_view(['PATCH'])
+def partial_update_driver(request, driver_id):
+    """Partial update of driver fields (PATCH)"""
+    try:
+        driver = Driver.objects.get(id=ObjectId(driver_id))
+    except Driver.DoesNotExist:
+        raise NotFound("Driver not found")
+    except Exception as e:
+        raise ParseError(f"Error updating driver: {e}")
+    
+    # For PATCH, we only update provided fields
+    serializer = DriverSerializer(driver, data=request.data, partial=True)
+    if serializer.is_valid():
+        # Handle password update only if provided
         if 'password' in request.data:
-            password = request.data.get('password')
+            password = request.data['password']
             hashed_password = get_hash_password(password)
             serializer.validated_data['password'] = hashed_password
         serializer.save()
