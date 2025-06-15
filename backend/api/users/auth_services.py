@@ -1,14 +1,16 @@
-# users/auth_services.py - Sem Verificação de Usuário Ativo
+# users/auth_services.py
 from passlib.context import CryptContext
-from datetime import datetime, timedelta, timezone
+from datetime import datetime, timezone
 from bson.objectid import ObjectId
 from jose import jwt, JWTError
 from django.conf import settings
 from mongoengine import connection
-import sys
+import logging
+from datetime import timedelta
 
-sys.path.append('/app')
+logger = logging.getLogger(__name__)
 
+# Database collections
 def users_collection():
     return connection.get_db()['users']
 
@@ -18,217 +20,122 @@ def refresh_tokens_collection():
 def token_blacklist_collection():
     return connection.get_db()['token_blacklist']
 
+# Password handling
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
 def verify_password(plain_password, hashed_password):
-    """
-    Verifica se uma senha em texto puro corresponde ao hash armazenado.
-    Suporta tanto senhas em texto puro (compatibilidade) quanto hashes bcrypt.
-    """
+    """Verify password against hash"""
     if plain_password == hashed_password:
         return True
-    
     try:
         if hashed_password and hashed_password.startswith('$2'):
             return pwd_context.verify(plain_password, hashed_password)
         return False
     except Exception as e:
-        print(f"❌ Erro na verificação de senha: {e}")
+        logger.error(f"Error verifying password: {e}")
         return False
 
 def get_hash_password(password: str):
-    """
-    Gera um hash bcrypt para uma senha.
-    """
+    """Generate bcrypt hash for password"""
     return pwd_context.hash(password)
 
+# Authentication
 def auth_user(cpf: str, password: str):
-    """
-    Autentica um usuário verificando CPF e senha.
-    REMOVIDA VERIFICAÇÃO DE USUÁRIO ATIVO.
-    """
-    print(f"🔍 [AUTH] Tentando autenticar usuário com CPF: {cpf}")
+    """Authenticate user with CPF and password"""
+    logger.info(f"Authenticating user with CPF: {cpf}")
     
     user = users_collection().find_one({"cpf": cpf})
-
     if not user:
-        print(f"❌ [AUTH] Usuário com CPF {cpf} não encontrado")
+        logger.error(f"User with CPF {cpf} not found")
         return None
     
-    stored_password = user.get("password")
-    if not verify_password(password, stored_password):
-        print("❌ [AUTH] Verificação de senha falhou")
+    if not verify_password(password, user.get("password")):
+        logger.error("Password verification failed")
         return None
     
-    print(f"✅ [AUTH] Usuário {user.get('nome')} autenticado com sucesso")
+    logger.info(f"User {user.get('name')} authenticated successfully")
     return user
 
-def create_access_token(data: dict, expires_delta: timedelta = None):
-    """
-    Cria um token JWT de acesso.
-    """
-    to_encode = data.copy()
-
-    if expires_delta:
-        expire = datetime.now(timezone.utc) + expires_delta
-    else:
-        expire = datetime.now(timezone.utc) + timedelta(hours=1)
-
-    to_encode.update({"exp": expire, "iat": datetime.now(timezone.utc), "token_type": "access"})
-
-    encoded_jwt = jwt.encode(to_encode, settings.SECRET_KEY, algorithm=settings.SIMPLE_JWT['ALGORITHM'])
-    return encoded_jwt
-
-def create_refresh_token(data: dict, expires_delta: timedelta = None):
-    """
-    Cria um token JWT de refresh.
-    """
-    to_encode = data.copy()
-
-    if expires_delta:
-        expire = datetime.now(timezone.utc) + expires_delta
-    else:
-        expire = datetime.now(timezone.utc) + timedelta(days=1)
-    
-    to_encode.update({"exp": expire, "iat": datetime.now(timezone.utc), "token_type": "refresh"})
-
-    encoded_jwt = jwt.encode(to_encode, settings.SECRET_KEY, algorithm=settings.SIMPLE_JWT['ALGORITHM'])
-    return encoded_jwt
+# Token handling
+def create_token(data: dict, token_type: str = 'access', expires_hours: int = 1):
+    """Create JWT token"""
+    expire = datetime.now(timezone.utc) + timedelta(hours=expires_hours)
+    to_encode = {
+        **data,
+        "exp": expire,
+        "iat": datetime.now(timezone.utc),
+        "token_type": token_type
+    }
+    return jwt.encode(to_encode, settings.SECRET_KEY, algorithm=settings.SIMPLE_JWT['ALGORITHM'])
 
 def decode_token(token: str):
-    """
-    Decodifica um token JWT.
-    """
+    """Decode JWT token"""
     try:
-        payload = jwt.decode(token, settings.SECRET_KEY, algorithms=[settings.SIMPLE_JWT['ALGORITHM']])
-        return payload
+        return jwt.decode(
+            token,
+            settings.SECRET_KEY,
+            algorithms=[settings.SIMPLE_JWT['ALGORITHM']],
+            options={'verify_exp': True}
+        )
     except JWTError as e:
-        print(f"❌ [TOKEN] Erro JWT ao decodificar: {e}")
-        return None
+        logger.error(f"Error decoding token: {e}")
     except Exception as e:
-        print(f"❌ [TOKEN] Erro inesperado ao decodificar: {e}")
-        return None
-    
+        logger.error(f"Unexpected error decoding token: {e}")
+    return None
+
+# User token management
 def get_user_from_token(token: str):
-    """
-    Obtém um usuário a partir de um token JWT.
-    REMOVIDA VERIFICAÇÃO DE USUÁRIO ATIVO.
-    """
-    print(f"🔍 [TOKEN] Processando token...")
+    """Get user from JWT token"""
+    logger.info("Processing token...")
     
     if is_token_blacklisted(token):
-        print("❌ [TOKEN] Token está na blacklist")
+        logger.error("Token is blacklisted")
         return None
     
     payload = decode_token(token)
-    if not payload: 
-        print("❌ [TOKEN] Payload vazio ou inválido")
+    if not payload:
+        logger.error("Payload is empty or invalid")
         return None
     
     user_id = payload.get("user_id")
     if not user_id:
-        print("❌ [TOKEN] user_id não encontrado no payload")
+        logger.error("user_id not found in payload")
         return None
     
-    try:
-        user = users_collection().find_one({"_id": ObjectId(user_id)})
-        if not user:
-            print(f"❌ [TOKEN] Usuário com ID {user_id} não encontrado")
-            return None
-            
-        print(f"✅ [TOKEN] Usuário encontrado: {user.get('name')} - {user.get('cpf')}")
-        return user
-    except Exception as e:
-        print(f"❌ [TOKEN] Erro ao buscar usuário: {e}")
+    user = users_collection().find_one({"_id": ObjectId(user_id)})
+    if not user:
+        logger.error(f"User with ID {user_id} not found")
         return None
+    
+    logger.info(f"User found: {user.get('name')} - {user.get('cpf')}")
+    return user
 
-def store_refresh_token(user_id, refresh_token):
-    """
-    Armazena refresh token no banco de dados.
-    Invalida tokens anteriores do mesmo usuário.
-    """
+def store_refresh_token(user_id, token):
+    """Store refresh token and invalidate old ones"""
     try:
+        # Invalidate old tokens
         refresh_tokens_collection().update_many(
             {"user_id": ObjectId(user_id)},
-            {"$set": {"is_active": False, "invalidated_at": datetime.now(timezone.utc)}}
+            {"$set": {"is_active": False}}
         )
         
-        # Armazenar novo refresh token
+        # Store new token
         refresh_tokens_collection().insert_one({
             "user_id": ObjectId(user_id),
-            "token": refresh_token,
+            "token": token,
             "created_at": datetime.now(timezone.utc),
             "expires_at": datetime.now(timezone.utc) + timedelta(days=1),
             "is_active": True
         })
         
-        print(f"✅ [REFRESH] Token armazenado para usuário {user_id}")
+        logger.info(f"Token stored for user {user_id}")
         return True
-        
     except Exception as e:
-        print(f"❌ [REFRESH] Erro ao armazenar token: {e}")
-        return False
-
-def validate_refresh_token(refresh_token):
-    """
-    Valida se refresh token existe e está ativo no banco.
-    REMOVIDA VERIFICAÇÃO DE USUÁRIO ATIVO.
-    """
-    try:
-        print(f"🔍 [REFRESH] Validando refresh token...")
-        
-        if is_token_blacklisted(refresh_token):
-            print("❌ [REFRESH] Token está na blacklist")
-            return None
-            
-        token_record = refresh_tokens_collection().find_one({
-            "token": refresh_token,
-            "is_active": True,
-            "expires_at": {"$gt": datetime.now(timezone.utc)}
-        })
-        
-        if not token_record:
-            print("❌ [REFRESH] Token não encontrado ou expirado")
-            return None
-            
-        user = users_collection().find_one({"_id": token_record["user_id"]})
-        
-        if not user:
-            print("❌ [REFRESH] Usuário associado não encontrado")
-            return None
-            
-        print(f"✅ [REFRESH] Token válido para usuário: {user.get('name')}")
-        return user
-        
-    except Exception as e:
-        print(f"❌ [REFRESH] Erro ao validar token: {e}")
-        return None
-
-def invalidate_refresh_token(refresh_token):
-    """
-    Invalida um refresh token específico.
-    """
-    try:
-        result = refresh_tokens_collection().update_one(
-            {"token": refresh_token},
-            {"$set": {"is_active": False, "invalidated_at": datetime.now(timezone.utc)}}
-        )
-        
-        if result.modified_count > 0:
-            print("✅ [REFRESH] Token invalidado com sucesso")
-            return True
-        else:
-            print("⚠️ [REFRESH] Token não encontrado para invalidar")
-            return False
-            
-    except Exception as e:
-        print(f"❌ [REFRESH] Erro ao invalidar token: {e}")
+        logger.error(f"Error storing token: {e}")
         return False
 
 def blacklist_token(token):
-    """
-    Adiciona token à blacklist (usado no logout).
-    """
+    """Add token to blacklist"""
     try:
         token_blacklist_collection().insert_one({
             "token": token,
@@ -236,90 +143,51 @@ def blacklist_token(token):
             "expires_at": datetime.now(timezone.utc) + timedelta(days=1)
         })
         
-        print("✅ [BLACKLIST] Token adicionado à blacklist")
+        logger.info("Token added to blacklist")
         return True
-        
     except Exception as e:
-        print(f"❌ [BLACKLIST] Erro ao adicionar token: {e}")
+        logger.error(f"Error adding token to blacklist: {e}")
+        return False
+
+def invalidate_user_tokens(user_id):
+    """Invalidate all user's tokens"""
+    try:
+        result = refresh_tokens_collection().update_many(
+            {"user_id": ObjectId(user_id)},
+            {"$set": {"is_active": False}}
+        )
+        logger.info(f"{result.modified_count} tokens invalidated for user {user_id}")
+        return True
+    except Exception as e:
+        logger.error(f"Error invalidating tokens: {e}")
         return False
 
 def is_token_blacklisted(token):
-    """
-    Verifica se um token está na blacklist.
-    """
+    """Check if token is blacklisted"""
     try:
-        result = token_blacklist_collection().find_one({
+        return token_blacklist_collection().find_one({
             "token": token,
             "expires_at": {"$gt": datetime.now(timezone.utc)}
-        })
-        
-        return result is not None
-        
+        }) is not None
     except Exception as e:
-        print(f"❌ [BLACKLIST] Erro ao verificar blacklist: {e}")
+        logger.error(f"Error checking blacklist: {e}")
         return False
 
 def cleanup_expired_tokens():
-    """
-    Remove tokens expirados das collections.
-    Deve ser executado periodicamente via comando Django.
-    """
+    """Cleanup expired tokens"""
     try:
         now = datetime.now(timezone.utc)
-        
-        # Remover refresh tokens expirados
         refresh_result = refresh_tokens_collection().delete_many({
             "expires_at": {"$lt": now}
         })
-        
-        # Remover tokens da blacklist expirados
         blacklist_result = token_blacklist_collection().delete_many({
             "expires_at": {"$lt": now}
         })
         
-        print(f"🧹 [CLEANUP] Limpeza concluída:")
-        print(f"   • Refresh tokens removidos: {refresh_result.deleted_count}")
-        print(f"   • Blacklist tokens removidos: {blacklist_result.deleted_count}")
-        
+        logger.info(f"Cleanup completed:")
+        logger.info(f"   • Refresh tokens removed: {refresh_result.deleted_count}")
+        logger.info(f"   • Blacklist tokens removed: {blacklist_result.deleted_count}")
         return True
-        
     except Exception as e:
-        print(f"❌ [CLEANUP] Erro na limpeza: {e}")
-        return False
-
-def get_user_refresh_tokens(user_id):
-    """
-    Obtém todos os refresh tokens ativos de um usuário.
-    Útil para mostrar sessões ativas.
-    """
-    try:
-        tokens = list(refresh_tokens_collection().find({
-            "user_id": ObjectId(user_id),
-            "is_active": True,
-            "expires_at": {"$gt": datetime.now(timezone.utc)}
-        }))
-        
-        return tokens
-        
-    except Exception as e:
-        print(f"❌ [REFRESH] Erro ao buscar tokens do usuário: {e}")
-        return []
-
-def invalidate_all_user_tokens(user_id):
-    """
-    Invalida todos os tokens de um usuário específico.
-    Útil para logout de todas as sessões.
-    """
-    try:
-        # Invalidar todos os refresh tokens do usuário
-        refresh_result = refresh_tokens_collection().update_many(
-            {"user_id": ObjectId(user_id)},
-            {"$set": {"is_active": False, "invalidated_at": datetime.now(timezone.utc)}}
-        )
-        
-        print(f"✅ [LOGOUT] {refresh_result.modified_count} tokens invalidados para usuário {user_id}")
-        return True
-        
-    except Exception as e:
-        print(f"❌ [LOGOUT] Erro ao invalidar tokens do usuário: {e}")
+        logger.error(f"Error during cleanup: {e}")
         return False

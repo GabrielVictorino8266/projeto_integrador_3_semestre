@@ -1,7 +1,5 @@
 from rest_framework import status
-from rest_framework.test import APITestCase
-from django.urls import reverse
-from users.tests.users_test_case import UsersTestCase
+from .test_setup import UsersTestCase
 
 class LoginTest(UsersTestCase):
     def setUp(self):
@@ -9,19 +7,20 @@ class LoginTest(UsersTestCase):
         Configura o ambiente de teste, preparando a URL para login e dados de teste.
         """
         super().setUp()
-        self.url = reverse('users:login')
 
     def test_login_success(self):
         """
         Testa o login bem-sucedido com credenciais válidas.
         """
-        response = self.client.post(self.url, {
+        response = self.client.post(self.get_login_url(), {
             'cpf': self.valid_user_data['cpf'],
             'password': self.valid_user_data['password']
         }, format='json')
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertIn('access_token', response.data)
-
+        self.assertIn('refresh_token', response.data)
+        self.assertIn('user', response.data)
+        
     def test_login_invalid_credentials(self):
         """
         Testa a tentativa de login com credenciais inválidas.
@@ -30,16 +29,16 @@ class LoginTest(UsersTestCase):
             "cpf": "18092754314",
             "password": "1996180"
         }
-        response = self.client.post(self.url, invalid_user_data, format='json')
+        response = self.client.post(self.get_login_url(), invalid_user_data, format='json')
         self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
-
+        
     def test_login_missing_required_fields(self):
         """
         Testa a tentativa de login com campos obrigatórios ausentes.
         """
-        response = self.client.post(self.url, {}, format='json')
+        response = self.client.post(self.get_login_url(), {}, format='json')
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
-
+        
     def test_login_empty_credentials(self):
         """
         Testa a tentativa de login com credenciais vazias.
@@ -48,9 +47,9 @@ class LoginTest(UsersTestCase):
             "cpf": "",
             "password": ""
         }
-        response = self.client.post(self.url, empty_user_data, format='json')
+        response = self.client.post(self.get_login_url(), empty_user_data, format='json')
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
-
+        
     def test_login_nonexistent_user(self):
         """
         Testa a tentativa de login com usuário que não existe.
@@ -59,5 +58,5 @@ class LoginTest(UsersTestCase):
             "cpf": "12345678901", 
             "password": "somepassword"
         }
-        response = self.client.post(self.url, nonexistent_user_data, format='json')
+        response = self.client.post(self.get_login_url(), nonexistent_user_data, format='json')
         self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
