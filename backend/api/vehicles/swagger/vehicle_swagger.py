@@ -100,6 +100,7 @@ list_vehicles_swagger = swagger_auto_schema(
             enum=VehicleStatus.choices,
             type=openapi.TYPE_STRING,
             required=False,
+            explode=True,
         ),
         openapi.Parameter(
             'licensePlate',

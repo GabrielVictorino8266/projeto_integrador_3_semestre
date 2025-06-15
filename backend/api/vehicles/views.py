@@ -20,7 +20,7 @@ Classe de serialização para os parâmetros de paginação.
 class ListVehicleParamsSerializer(serializers.Serializer):
     page = serializers.IntegerField(min_value=1, required=False)
     limit = serializers.IntegerField(min_value=1, max_value=100, required=False, default=50)
-    status = serializers.ChoiceField(choices=VehicleStatus.choices, default=VehicleStatus.ACTIVE, required=False)
+    status = serializers.ListField(child=serializers.ChoiceField(choices=VehicleStatus.choices), required=False)
     licensePlate = serializers.CharField(max_length=8, required=False)
 
 @api_view(['GET'])
@@ -40,7 +40,7 @@ def list_vehicles(request):
     # Cria um dicionário de filtros
     filters = {}
     if status:
-        filters['status'] = status
+        filters['status__in'] = status
     if licensePlate:
         filters['licensePlate__icontains'] = licensePlate
 
