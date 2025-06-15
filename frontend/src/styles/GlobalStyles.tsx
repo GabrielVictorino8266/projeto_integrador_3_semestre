@@ -7,6 +7,8 @@ export const GlobalStyles = () => (
         --color-brand-1: #071425;
         --color-brand-2: #006fdd;
 
+        --color-background-dashboard: #dde8f0;
+
         --color-white: #ffffff;
 
         --color-success: #15670a;
@@ -14,9 +16,12 @@ export const GlobalStyles = () => (
         --color-error: #ef4444;
         --color-error-2: #d0aaaa;
 
-        --colorStatus-ok: #15670a;
+        --colorStatus-available: #15670a;
         --colorStatus-maintenance: #0073e6;
         --colorStatus-unavailable: #b31010;
+
+        --color-edit: #0073e6;
+        --color-delete: #b31010;
 
         --color-grey-0: #f8f9fa;
         --color-grey-1: #868e96;
@@ -42,6 +47,7 @@ export const GlobalStyles = () => (
         --font-size-20: 1.25rem; // 20px
         --font-size-24: 1.5rem; // 24px
         --font-size-28: 1.75rem; //28px
+        --font-size-36: 2.25rem; //36px
         --font-size-40: 2.5rem; //40px
 
         --font-inter: "Inter", sans-serif;

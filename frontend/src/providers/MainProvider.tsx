@@ -1,15 +1,18 @@
 import type { IDefaultChildrenProp } from "@interfaces/default.interface";
 import { DriverProvider } from "./DriverProvider";
 import { ModalProvider } from "./ModalProvider";
+import { VehicleProvider } from "./VehicleProvider"; 
 
 const MainProvider = ({ children }: IDefaultChildrenProp) => {
-  return <>
+  return (
     <ModalProvider>
       <DriverProvider>
-        {children}
+        <VehicleProvider>
+          {children}
+        </VehicleProvider>
       </DriverProvider>
     </ModalProvider>
-  </>
+  );
 };
 
 export { MainProvider };

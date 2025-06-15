@@ -12,14 +12,10 @@ export async function VehiclesRegistration(
         const newData = {
             ...data,
             manufacturingYear: Number(data.manufacturingYear),
-            currentKm: Number(data.currentKm),
-            warningKmLimit: Number(data.warningKmLimit),
-            status: data.status.trim(),
+            currentKm: Number(data.currentKm.replace(/\D/g, "")),
+            warningKmLimit: Number(data.warningKmLimit.replace(/\D/g, "")),
         };
 
-        console.log("newDta", newData);
-
-        console.log(newData);
         const response = id
             ? await api.put(`/vehicles/update/${id}/`, newData)
             : await api.post("/vehicles/create/", newData);
@@ -27,8 +23,8 @@ export async function VehiclesRegistration(
         if (response.status === 200 || response.status === 201) {
             toast.success(
                 id
-                    ? "Veículo registrado com sucesso!"
-                    : "Veículos atualizado com seucesso!"
+                    ? "Veículo atualizado com sucesso!"
+                    : "Veículos registrado com seucesso!"
             );
             return true;
         } else {

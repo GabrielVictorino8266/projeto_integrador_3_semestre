@@ -1,23 +1,36 @@
 import { Route, Routes } from "react-router-dom";
-import Dashboard from "../pages/Dashboard";
 import HomePage from "../pages/HomePage";
 import { CadastroVeiculo } from "../pages/Cadastro/Veiculos";
 import { Login } from "../pages/Login";
-import { DriverRegister } from "../pages/Cadastro/Driver";
+import { DriverRegister } from "@components/Dashboard/Driver/CreateDriver";
+import { DriverDashboard } from "@components/Dashboard/Driver/ListDrivers";
+import { DriverUpdate } from "@components/Dashboard/Driver/UpdateDriver";
+import DashboardLayout from "@pages/Dashboard/Layout";
+import { TripRegister } from "@components/Dashboard/Trips/listTrips";
+import { VehicleDashboard } from "@components/Dashboard/Vehicles/listVehicles";
 
 const RoutesMain = () => {
-    return (
-        <Routes>
-            <Route path="/" element={<HomePage />} />
-            <Route path="/login" element={<Login />} />
-            <Route path="/dashboard" element={<Dashboard />} />
-            <Route path="/veiculos">
-                <Route index element={<CadastroVeiculo />} />
-                <Route path=":id" element={<CadastroVeiculo />} />
-            </Route>
-            <Route path="/motorista" element={<DriverRegister />} />
-        </Routes>
-    );
+  return (
+    <Routes>
+      <Route path="/" element={<HomePage />} />
+      <Route path="/login" element={<Login />} />
+      <Route path="/dashboard" element={<DashboardLayout />}>
+        <Route index element={<HomePage />} />
+        <Route path="/dashboard/motoristas" element={<DriverDashboard />} />
+        <Route path="/dashboard/veiculos" element={<VehicleDashboard />} />
+        <Route
+          path="/dashboard/cadastrar-motorista"
+          element={<DriverRegister />}
+        />
+        <Route path="/dashboard/motorista/:id" element={<DriverUpdate />} />
+        <Route path="/dashboard/cadastrar-viagem" element={<TripRegister />} />
+      </Route>
+      <Route path="/veiculos">
+        <Route index element={<CadastroVeiculo />} />
+        <Route path=":id" element={<CadastroVeiculo />} />
+      </Route>
+    </Routes>
+  );
 };
 
 export default RoutesMain;

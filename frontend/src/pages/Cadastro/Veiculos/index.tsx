@@ -14,7 +14,7 @@ import { useFetchVeiculos } from "@hooks/useFetchVeiculos/index";
 // Schemas
 import { schemaCadVeiculo, type DataProps } from "@schemas/CadsVeiculos";
 // Service
-import { VehiclesRegistration } from "@services/Api/Registration/VehiclesRegistration";
+import { VehiclesRegistration } from "@services/Api/Vehicles/VehiclesRegistration";
 // Styles
 import { ButtonWrapper, Container, ContainerInputs } from "./styles";
 
@@ -29,7 +29,6 @@ export function CadastroVeiculo() {
         formState: { errors },
         reset,
     } = useForm<DataProps>({
-        mode: "onBlur",
         resolver: zodResolver(schemaCadVeiculo),
     });
 
@@ -43,7 +42,7 @@ export function CadastroVeiculo() {
             reset();
         }
         if (id && sucess) {
-            setTimeout(() => navigate("/dashboard"), 1800);
+            setTimeout(() => navigate("/dashboard/veiculos"), 900);
         }
     };
 
@@ -56,8 +55,9 @@ export function CadastroVeiculo() {
                         <InputComponent
                             label="Placa"
                             {...register("licensePlate")}
-                            placeholder="Placa do veículo"
-                            maxLength={7}
+                            placeholder="ABC-1234"
+                            mask="licensePlate"
+                            maxLength={8}
                             errorMessage={errors.licensePlate?.message}
                         />
                         <InputComponent
@@ -83,14 +83,14 @@ export function CadastroVeiculo() {
                             label="KM do veículo"
                             {...register("currentKm")}
                             placeholder="Km do veículo"
-                            maxLength={4}
+                            mask="km"
                             errorMessage={errors.currentKm?.message}
                         />
                         <InputComponent
                             label="Limte de KM para aviso"
                             {...register("warningKmLimit")}
                             placeholder="KM limite"
-                            maxLength={4}
+                            mask="km"
                             errorMessage={errors.warningKmLimit?.message}
                         />
                         <SelectInputForm

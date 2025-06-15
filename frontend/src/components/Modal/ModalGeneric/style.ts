@@ -1,5 +1,9 @@
 import styled from "@emotion/styled";
 
+/* ------------------------------------ - ----------------------------------- */
+//  TODOS OS DEMAIS ESTILOS CSS SÃO FEITOS DENTRO DO STYLES.TS DO MODALBODY, NÃO AQUI.
+/* ------------------------------------ - ----------------------------------- */
+
 const ModalStyledContainer = styled.section`
   min-width: 100%;
   min-height: 100%;
