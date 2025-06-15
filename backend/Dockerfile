@@ -15,10 +15,10 @@ COPY . .
 # Expor a porta 8000
 EXPOSE 8000
 
-# Comando para executar o Django na porta 8000
-# CMD ["sh", "-c", "python api/manage.py migrate_mongo && tail -f /dev/null"]
+# Comando para modo de desenvolvimento (comentado)
+CMD ["sh", "-c", "python api/manage.py migrate_mongo && tail -f /dev/null"]
 
-# Comando para manter o container em execução (sem executar comandos adicionais)
+# Comando para produção (descomentado)
 # CMD ["sh", "-c", "python api/manage.py migrate_mongo && python api/manage.py runserver 0.0.0.0:8000"]
 
 # descomentar para rodar em modo de desenvolvimento
