@@ -3,13 +3,13 @@ from rest_framework.decorators import api_view, authentication_classes, permissi
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.permissions import AllowAny, IsAuthenticated
-from bson.json_util import dumps
 from .auth_services import (
     auth_user, create_token, store_refresh_token, 
     get_user_from_token, invalidate_user_tokens
 )
 from .authentication import MongoJWTAuthentication
 import logging
+from bson import ObjectId
 
 logger = logging.getLogger(__name__)
 
@@ -44,13 +44,13 @@ def login(request):
             "cpf": user.get("cpf")
         },
         token_type="access",
-        expires_hours=2  # Matches settings.py
+        expires_hours=2
     )
     
     refresh_token = create_token(
         {"user_id": str(user["_id"])},
         token_type="refresh",
-        expires_hours=24  # 1 day
+        expires_hours=24
     )
 
     # Store refresh token
@@ -127,7 +127,7 @@ def logout(request):
     """
     try:
         # Get user ID from request
-        user_id = str(request.user.id)
+        user_id = request.user.get("_id")
         
         # Invalidate all user's tokens
         if invalidate_user_tokens(user_id):
@@ -141,6 +141,7 @@ def logout(request):
                 status=status.HTTP_500_INTERNAL_SERVER_ERROR
             )
     except Exception as e:
+        logger.error(f"Error processing logout: {str(e)}")
         return Response(
             {"detail": "Error processing logout."},
             status=status.HTTP_500_INTERNAL_SERVER_ERROR
@@ -155,17 +156,16 @@ def user_profile(request):
     """
     try:
         # Get user ID from request
-        user_id = str(request.user.id)
+        user_id = request.user.get("_id")
         
-        # Get user data from MongoDB
-        user = users_collection().find_one({"_id": ObjectId(user_id)})
+        # Get user data from auth_services
+        user = get_user_from_token(request.auth)
         if not user:
             return Response(
                 {"detail": "User not found."},
                 status=status.HTTP_404_NOT_FOUND
             )
-
-        # Prepare response data
+            
         profile_data = {
             "id": str(user["_id"]),
             "name": user.get("name"),
@@ -178,14 +178,14 @@ def user_profile(request):
             "performance": user.get("performance"),
             "isActive": user.get("isActive")
         }
-
-        return Response({
-            "user": profile_data,
-            "message": "Profile obtained successfully."
-        }, status=status.HTTP_200_OK)
-
+        
+        return Response(
+            {"user": profile_data, "message": "Profile obtained successfully."},
+            status=status.HTTP_200_OK
+        )
+        
     except Exception as e:
-        logger.error(f"Error getting profile: {e}")
+        logger.error(f"Error getting profile: {str(e)}")
         return Response(
             {"detail": "Error getting profile."},
             status=status.HTTP_500_INTERNAL_SERVER_ERROR
