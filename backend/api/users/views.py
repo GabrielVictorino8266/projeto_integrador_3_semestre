@@ -3,13 +3,13 @@ from rest_framework.decorators import api_view, authentication_classes, permissi
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.permissions import AllowAny, IsAuthenticated
-from .auth_services import (
-    auth_user, create_token, store_refresh_token, 
-    get_user_from_token, invalidate_user_tokens
-)
-from .authentication import MongoJWTAuthentication
+from django.conf import settings
+from users.auth_services import auth_user, create_token, store_refresh_token, get_user_from_token, invalidate_user_tokens
+from users.auth_services import is_token_blacklisted, blacklist_token
+from users.auth_services import cleanup_expired_tokens
+from mongoengine import connection
 import logging
-from bson import ObjectId
+from users.authentication import MongoJWTAuthentication
 
 logger = logging.getLogger(__name__)
 
@@ -125,9 +125,26 @@ def logout(request):
     """
     Logout - invalidates all user's tokens.
     """
+    refresh_token = request.data.get('refresh_token')
+    
+    if not refresh_token:
+        return Response(
+            {"detail": "Refresh token is required."},
+            status=status.HTTP_400_BAD_REQUEST
+        )
+    
     try:
         # Get user ID from request
         user_id = request.user.get("_id")
+        
+        # Check if refresh token exists in database
+        db = connection.get_db()
+        refresh_token_doc = db['refresh_tokens'].find_one({"token": refresh_token})
+        if not refresh_token_doc:
+            return Response(
+                {"detail": "Invalid refresh token."},
+                status=status.HTTP_401_UNAUTHORIZED
+            )
         
         # Invalidate all user's tokens
         if invalidate_user_tokens(user_id):

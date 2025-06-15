@@ -132,6 +132,12 @@ def invalidate_user_tokens(user_id: str):
         db = connection.get_db()
         # Remove refresh token
         db['refresh_tokens'].delete_one({"user_id": user_id})
+        
+        # Get all access tokens for this user and blacklist them
+        tokens = db['blacklisted_tokens'].find({"user_id": user_id})
+        for token in tokens:
+            blacklist_token(token['token'])
+        
         return True
     except Exception as e:
         logger.error(f"Error invalidating tokens: {e}")

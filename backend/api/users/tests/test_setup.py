@@ -54,15 +54,28 @@ class UsersTestCase(APITestCase):
         # URLs comuns
         self.base_url = '/api/users/'
         self.login_url = f'{self.base_url}login/'
-        self.refresh_url = f'{self.base_url}refresh/'
+        self.refresh_url = f'{self.base_url}refresh-token/'
         self.logout_url = f'{self.base_url}logout/'
         self.profile_url = f'{self.base_url}profile/'
+
+    def get_login_url(self):
+        return self.login_url
+
+    def get_refresh_url(self):
+        return self.refresh_url
+
+    def get_logout_url(self):
+        return self.logout_url
+
+    def get_profile_url(self):
+        return self.profile_url
 
     def tearDown(self):
         # Limpar banco de teste
         self.db.users.delete_many({})
         self.db.refresh_tokens.delete_many({})
         self.db.blacklisted_tokens.delete_many({})
+        self.db.users.delete_one({'cpf': self.valid_user_data['cpf']})
 
     def get_login_url(self):
         return self.login_url
