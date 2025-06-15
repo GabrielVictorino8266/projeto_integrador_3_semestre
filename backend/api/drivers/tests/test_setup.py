@@ -31,10 +31,13 @@ class BaseDriverTest(APITestCase):
         super().tearDownClass()
 
     def setUp(self):
+        # Delete all existing drivers to start fresh
+        Driver.objects.delete()
+        
         self.valid_driver_data = {
             'name': 'John Doe',
             'birthYear': '1990-01-01',
-            'cpf': '98765432109',
+            'cpf': '12345678901',  # CPF válido
             'phone': '+55 31 8765-4321',
             'licenseType': 'B',
             'licenseNumber': '987654',
@@ -42,12 +45,9 @@ class BaseDriverTest(APITestCase):
             'isActive': True,
             'type': 'Motorista'
         }
-        response = self.client.post(reverse('drivers:create_driver'), self.valid_driver_data, format='json')
-        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
-        self.driver_id = response.data['id']
-        self.driver = Driver.objects.get(id=self.driver_id)
 
     def tearDown(self):
+        # Delete all drivers including the test driver
         Driver.objects.delete()
 
     def get_driver_url(self, driver_id):

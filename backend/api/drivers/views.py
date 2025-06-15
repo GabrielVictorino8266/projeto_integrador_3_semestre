@@ -124,9 +124,9 @@ def delete_driver(request, driver_id):
     driver.save()
     return Response(status=status.HTTP_204_NO_CONTENT)
 
-@api_view(['PUT'])
+@api_view(['PUT', 'PATCH'])
 def update_driver(request, driver_id):
-    """Update all driver fields (PUT)"""
+    """Update driver fields. PUT requires all fields, PATCH allows partial updates."""
     try:
         driver = Driver.objects.get(id=ObjectId(driver_id))
     except Driver.DoesNotExist:
@@ -134,31 +134,32 @@ def update_driver(request, driver_id):
     except Exception as e:
         raise ParseError(f"Error updating driver: {e}")
     
-    # For PUT, we expect all fields to be provided
-    serializer = DriverSerializer(driver, data=request.data)
-    if serializer.is_valid():
-        # Handle password update only if provided
-        if 'password' in request.data:
-            password = request.data['password']
-            hashed_password = get_hash_password(password)
-            serializer.validated_data['password'] = hashed_password
-        serializer.save()
-        driver_data = convert_objectids(serializer.data)
-        return Response(driver_data)
-    raise serializers.ValidationError(serializer.errors)
-
-@api_view(['PATCH'])
-def partial_update_driver(request, driver_id):
-    """Partial update of driver fields (PATCH)"""
-    try:
-        driver = Driver.objects.get(id=ObjectId(driver_id))
-    except Driver.DoesNotExist:
-        raise NotFound("Driver not found")
-    except Exception as e:
-        raise ParseError(f"Error updating driver: {e}")
+    # Define allowed fields that can be updated
+    allowed_fields = ['name', 'cpf', 'phone', 'licenseType', 'licenseNumber', 'performance', 'type', 'birthYear']
     
-    # For PATCH, we only update provided fields
-    serializer = DriverSerializer(driver, data=request.data, partial=True)
+    # Validate that only allowed fields are being updated
+    provided_fields = set(request.data.keys())
+    invalid_fields = provided_fields - set(allowed_fields)
+    if invalid_fields:
+        raise serializers.ValidationError({
+            'error': f"Invalid fields: {', '.join(invalid_fields)}. Allowed fields are: {', '.join(allowed_fields)}"
+        })
+    
+    if request.method == 'PUT':
+        # For PUT, we expect all fields to be provided
+        # if len(provided_fields) != len(allowed_fields):
+        #     raise serializers.ValidationError({
+        #         'error': f"PUT request requires all fields. Missing fields: {', '.join(set(allowed_fields) - provided_fields)}"
+        #     }) # temporary
+        serializer = DriverSerializer(driver, data=request.data, partial=True)
+    else:  # PATCH
+        # For PATCH, we only update provided fields
+        if not provided_fields:
+            raise serializers.ValidationError({
+                'error': "PATCH request requires at least one field to update"
+            })
+        serializer = DriverSerializer(driver, data=request.data, partial=True)
+    
     if serializer.is_valid():
         # Handle password update only if provided
         if 'password' in request.data:
