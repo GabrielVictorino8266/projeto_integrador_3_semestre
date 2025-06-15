@@ -15,9 +15,9 @@ services:
     depends_on:
       - mongodb
     # Modo de produção (descomentado)
-    # command: >
-    #   sh -c "python api/manage.py migrate_mongo &&
-    #          python api/manage.py runserver 0.0.0.0:8000"
+    command: >
+      sh -c "python api/manage.py migrate_mongo &&
+             python api/manage.py runserver 0.0.0.0:8000"
 
     # Modo de desenvolvimento (comentado)
     # command: >
