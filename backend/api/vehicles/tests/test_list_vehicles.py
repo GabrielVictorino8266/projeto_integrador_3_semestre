@@ -73,6 +73,34 @@ class ListVehiclesTest(VehicleTestCase):
         response_ids = [v['id'] for v in response.data['items']]
         for vehicle in self.vehicles:
             self.assertIn(str(vehicle.id), response_ids)
+            
+    def test_list_vehicles_filter_by_multiple_status(self):
+        """
+        Testa a filtragem de veículos por múltiplos status.
+        """
+        # Adiciona veículos com status adicionais
+        Vehicle.objects.create(**(self.valid_vehicle_data | {'status': VehicleStatus.INACTIVE}))
+        Vehicle.objects.create(**(self.valid_vehicle_data | {'status': VehicleStatus.MAINTENANCE}))
+
+        # Requisição com múltiplos valores de status
+        response = self.client.get(self.url, [
+            ('status', VehicleStatus.ACTIVE),
+            ('status', VehicleStatus.MAINTENANCE),
+        ])
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertIn('items', response.data)
+
+        # Deve incluir apenas veículos com status ACTIVE e MAINTENANCE
+        expected_statuses = {VehicleStatus.ACTIVE, VehicleStatus.MAINTENANCE}
+        actual_statuses = {v['status'] for v in response.data['items']}
+        self.assertTrue(actual_statuses.issubset(expected_statuses))
+
+        # Garante que pelo menos um veículo de cada status solicitado esteja presente
+        response_statuses = [v['status'] for v in response.data['items']]
+        self.assertIn(VehicleStatus.ACTIVE, response_statuses)
+        self.assertIn(VehicleStatus.MAINTENANCE, response_statuses)
+
 
     def test_list_vehicles_filter_by_license_plate(self):
         """

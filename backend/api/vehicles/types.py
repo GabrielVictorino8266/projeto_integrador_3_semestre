@@ -9,5 +9,6 @@ class VehicleTypes(TextChoices):
 
 class VehicleStatus(TextChoices):
     ACTIVE = 'active', 'Ativo'
-    INACTIVE = 'inactive', 'Inativo'
+    INACTIVE = 'excluido', 'Excluído'
     MAINTENANCE = 'maintenance', 'Manutenção'
+    NOT_AVAILABLE = 'indisponivel', 'Indisponível'
