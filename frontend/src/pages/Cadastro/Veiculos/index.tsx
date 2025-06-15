@@ -29,7 +29,6 @@ export function CadastroVeiculo() {
         formState: { errors },
         reset,
     } = useForm<DataProps>({
-        mode: "onBlur",
         resolver: zodResolver(schemaCadVeiculo),
     });
 
@@ -56,8 +55,9 @@ export function CadastroVeiculo() {
                         <InputComponent
                             label="Placa"
                             {...register("licensePlate")}
-                            placeholder="Placa do veículo"
-                            maxLength={7}
+                            placeholder="ABC-1234"
+                            mask="licensePlate"
+                            maxLength={8}
                             errorMessage={errors.licensePlate?.message}
                         />
                         <InputComponent
@@ -83,14 +83,14 @@ export function CadastroVeiculo() {
                             label="KM do veículo"
                             {...register("currentKm")}
                             placeholder="Km do veículo"
-                            maxLength={4}
+                            mask="km"
                             errorMessage={errors.currentKm?.message}
                         />
                         <InputComponent
                             label="Limte de KM para aviso"
                             {...register("warningKmLimit")}
                             placeholder="KM limite"
-                            maxLength={4}
+                            mask="km"
                             errorMessage={errors.warningKmLimit?.message}
                         />
                         <SelectInputForm

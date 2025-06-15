@@ -1,5 +1,6 @@
 import type { DataProps } from "@schemas/CadsVeiculos";
 import { api } from "@services/api";
+import { ClearMask } from "@utils/Mask/ClearMask";
 import { toast } from "react-toastify";
 
 export async function VehiclesRegistration(
@@ -12,13 +13,9 @@ export async function VehiclesRegistration(
         const newData = {
             ...data,
             manufacturingYear: Number(data.manufacturingYear),
-            currentKm: Number(data.currentKm),
-            warningKmLimit: Number(data.warningKmLimit),
-            status: data.status.trim(),
+            currentKm: Number(ClearMask(data.currentKm)),
+            warningKmLimit: Number(ClearMask(data.warningKmLimit)),
         };
-
-        console.log("newDta", newData);
-
         console.log(newData);
         const response = id
             ? await api.put(`/vehicles/update/${id}/`, newData)
@@ -27,8 +24,8 @@ export async function VehiclesRegistration(
         if (response.status === 200 || response.status === 201) {
             toast.success(
                 id
-                    ? "Veículo registrado com sucesso!"
-                    : "Veículos atualizado com seucesso!"
+                    ? "Veículo atualizado com sucesso!"
+                    : "Veículos registrado com seucesso!"
             );
             return true;
         } else {
@@ -36,12 +33,17 @@ export async function VehiclesRegistration(
             return false;
         }
     } catch (error: any) {
-        const status = error.resposne?.status;
+        const status = error.response?.status; 
+
         console.log("Erro detalhado", error.response?.data);
+        console.log("status", status);
 
         switch (status) {
+            case 400:
+                toast.error("Erro com a requisição");
+                break;
             case 401:
-                toast.error("Veículos não encontrado");
+                toast.error("Requisição não autorizada");
                 break;
             case 500:
                 toast.error(
