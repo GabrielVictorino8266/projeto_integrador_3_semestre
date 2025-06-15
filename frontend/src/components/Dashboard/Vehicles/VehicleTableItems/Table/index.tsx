@@ -3,59 +3,61 @@ import { useModal } from "@hooks/useModal";
 import { StatusIcon } from "@components/Dashboard/Icons/StatusIcon";
 import { GoToDriverEdit, IconButton } from "@styles/Buttons";
 import { ActionIcon } from "@components/Dashboard/Icons/ActionIcon";
+import type { VehicleStatus } from "@interfaces/vehicles.interface";   // ← novo
 
 interface IVehicleListItemProps {
-    id: string;
-    licensePlate: string;
-    vehicleType: string;
-    manufacturingYear: number;
-    brand: string;
-    status: "active" | "inactive";
+  id: string;
+  licensePlate: string;
+  vehicleType: string;
+  manufacturingYear: number;
+  brand: string;
+  status: VehicleStatus;       
 }
 
-const VehicleListItem = ({
-    id,
-    licensePlate,
-    vehicleType,
-    manufacturingYear,
-    brand,
-    status,
+export const VehicleListItem = ({
+  id,
+  licensePlate,
+  vehicleType,
+  manufacturingYear,
+  brand,
+  status,
 }: IVehicleListItemProps) => {
-    const { handleOpenModal } = useModal();
+  const { handleOpenModal } = useModal();
 
-    return (
-        <StyledTableRow>
-            <td scope="row">{licensePlate}</td>
-            <td>{vehicleType}</td>
-            <td>{manufacturingYear}</td>
-            <td>{brand}</td>
-            <td>
-                <button>
-                    {status === "active" ? (
-                        <StatusIcon option="blue" />
-                    ) : (
-                        <StatusIcon option="red" />
-                    )}
-                </button>
-            </td>
-            <td>
-                <GoToDriverEdit to={`/veiculos/${id}`}>
-                    <ActionIcon type="edit" />
-                </GoToDriverEdit>
+  const iconOption =
+    status === "active"
+      ? "blue"
+      : status === "maintenance"
+      ? "orange"
+      : "red"; 
 
-                <IconButton
-                    onClick={() =>
-                        handleOpenModal({
-                            modalType: "vehicleDeleteConfirmation",
-                            id,
-                        })
-                    }
-                >
-                    <ActionIcon type="delete" />
-                </IconButton>
-            </td>
-        </StyledTableRow>
-    );
+  return (
+    <StyledTableRow>
+      <td scope="row">{licensePlate}</td>
+      <td>{vehicleType}</td>
+      <td>{manufacturingYear}</td>
+      <td>{brand}</td>
+      <td>
+        <button>
+          <StatusIcon option={iconOption} />
+        </button>
+      </td>
+      <td>
+        <GoToDriverEdit to={`/veiculos/${id}`}>
+          <ActionIcon type="edit" />
+        </GoToDriverEdit>
+
+        <IconButton
+          onClick={() =>
+            handleOpenModal({
+              modalType: "vehicleDeleteConfirmation",
+              id,
+            })
+          }
+        >
+          <ActionIcon type="delete" />
+        </IconButton>
+      </td>
+    </StyledTableRow>
+  );
 };
-
-export { VehicleListItem };

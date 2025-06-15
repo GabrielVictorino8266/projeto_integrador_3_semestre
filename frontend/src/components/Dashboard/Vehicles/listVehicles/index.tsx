@@ -1,27 +1,27 @@
-import { Container } from "./styles";
+import { Container, ContainerList } from "./styles";
 import { DashboardHeader } from "@components/Dashboard/Title";
 import { GoToDriverRegister } from "@styles/Buttons";
 import { CardWithRightBorder } from "@components/Dashboard/Cards";
 import { RegInput } from "@components/InputForm";
-import { useVehicle } from "@hooks/useVehicle";
-import { useEffect } from "react";
 import { StatusIcon } from "@components/Dashboard/Icons/StatusIcon";
 import { DashboardTable } from "@components/Dashboard/Table";
 import { ChartComponent, DoughnutChart } from "@components/Dashboard/Chart";
-import {VehicleList} from "@components/Dashboard/Vehicles/VehicleTableItems/"
+import { VehicleList } from "@components/Dashboard/Vehicles/VehicleTableItems/";
+import { useVehicleStats } from "@hooks/Vehicle/useVehocleStats";
+import { useVehicleList } from "@hooks/Vehicle/useVehicleList";
+
+import { Select } from "@components/Select2";
+import { Pagination } from "@components/Pagination";
 
 const VehicleDashboard = () => {
-    const { vehicleActive, vehicleInactive, vehicleQuantity, getVehicleList } =
-        useVehicle();
-
-    useEffect(() => {
-        getVehicleList();
-    }, []);
+    const { total, active, inactive, maintenance } = useVehicleStats();
+    const { data, page, setPage, status, setStatus, totalPages } =
+        useVehicleList();
 
     const datatochart = [
-        { value: vehicleActive, label: "Disponível" },
-        { value: vehicleInactive, label: "Em manutenção" },
-        { value: vehicleInactive, label: "Indisponível" },
+        { value: active, label: "Disponível" },
+        { value: maintenance, label: "Em manutenção" },
+        { value: inactive, label: "Indisponível" },
     ];
 
     const doughnutChartDriverData = {
@@ -55,39 +55,33 @@ const VehicleDashboard = () => {
                         <CardWithRightBorder>
                             <div className="card__values">
                                 <p className="card__text">Total de veículos</p>
-                                <p className="card__number">
-                                    {vehicleQuantity}
-                                </p>
+                                <p className="card__number">{total}</p>
                             </div>
                         </CardWithRightBorder>
 
                         <CardWithRightBorder>
                             <div className="card__values">
                                 <p className="card__text">
-                                    <StatusIcon option={"blue"} />
+                                    <StatusIcon option="blue" />
                                     Veículos Ativos
                                 </p>
-                                <p className="card__number">{vehicleActive}</p>
+                                <p className="card__number">{active}</p>
                             </div>
 
                             <div className="card__values">
                                 <p className="card__text">
-                                    <StatusIcon option={"orange"} />
+                                    <StatusIcon option="orange" />
                                     Em manutenção
                                 </p>
-                                <p className="card__number">
-                                    {vehicleInactive}
-                                </p>
+                                <p className="card__number">{maintenance}</p>
                             </div>
 
                             <div className="card__values">
                                 <p className="card__text">
-                                    <StatusIcon option={"red"} />
+                                    <StatusIcon option="red" />
                                     Veículos Inativos
                                 </p>
-                                <p className="card__number">
-                                    {vehicleInactive}
-                                </p>
+                                <p className="card__number">{inactive}</p>
                             </div>
                         </CardWithRightBorder>
 
@@ -101,28 +95,36 @@ const VehicleDashboard = () => {
                         </CardWithRightBorder>
                     </div>
 
-                    <div>
+                    <div className="filters__container">
                         <RegInput
                             id="vehicleSearch"
                             type="text"
                             placeholder="Pesquisar"
-                            label={""}
+                            label=""
                         />
                     </div>
 
-                    <DashboardTable
-                        title="LISTA DE VEÍCULOS"
-                        thTitles={[
-                            "PLACA",
-                            "TIPO",
-                            "ANO",
-                            "MARCA",
-                            "STATUS",
-                            "AÇÕES",
-                        ]}
-                    >
-                        <VehicleList />
-                    </DashboardTable>
+                    <ContainerList>
+                        <DashboardTable
+                            title="LISTA DE VEÍCULOS"
+                            thTitles={[
+                                "PLACA",
+                                "TIPO",
+                                "ANO",
+                                "MARCA",
+                                "STATUS",
+                                "AÇÕES",
+                            ]}
+                        >
+                            <VehicleList data={data} />
+                        </DashboardTable>
+                    </ContainerList>
+
+                    <Pagination
+                        totalPages={totalPages}
+                        current={page}
+                        onChange={(p: number) => setPage(p)}
+                    />
                 </section>
             </Container>
         </div>
