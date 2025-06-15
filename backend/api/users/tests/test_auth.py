@@ -7,7 +7,7 @@ class TestTokenExpiration(UsersTestCase):
     @freeze_time("2025-06-15 08:30:00")  # Define um ponto de partida fixo
     def test_access_token_expiration(self):
         """
-        Testa se o token de acesso expira após 1 hora
+        Testa se o token de acesso expira após 2 horas
         """
         # Faz login para obter tokens
         login_response = self.client.post(self.get_login_url(), {
@@ -18,7 +18,7 @@ class TestTokenExpiration(UsersTestCase):
         
         access_token = login_response.data['access_token']
         
-        # Avança o tempo em 1 hora e 1 minuto
+        # Avança o tempo em 2 hora e 1 minuto
         with freeze_time("2025-06-15 10:31:00"):
             # Tenta usar o token expirado
             self.client.credentials(HTTP_AUTHORIZATION=f'Bearer {access_token}')

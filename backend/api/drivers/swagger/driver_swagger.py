@@ -95,7 +95,7 @@ list_drivers_swagger = swagger_auto_schema(
     method="get",
     operation_id='list_drivers',
     operation_summary='List all drivers',
-    operation_description='List all drivers with pagination',
+    operation_description='List all drivers with pagination. Drivers marked as deleted are excluded by default.',
     manual_parameters=[
         openapi.Parameter(
             'page',
@@ -107,8 +107,15 @@ list_drivers_swagger = swagger_auto_schema(
         openapi.Parameter(
             'limit',
             openapi.IN_QUERY,
-            description='Number of items per page (optional)',
+            description='Number of items per page (optional, default: 50, max: 100)',
             type=openapi.TYPE_INTEGER,
+            required=False,
+        ),
+        openapi.Parameter(
+            'name',
+            openapi.IN_QUERY,
+            description='Filter drivers by name (case-insensitive)',
+            type=openapi.TYPE_STRING,
             required=False,
         ),
         openapi.Parameter(
@@ -154,12 +161,17 @@ create_driver_swagger = swagger_auto_schema(
     method="post",
     operation_id='create_driver',
     operation_summary='Create driver',
-    operation_description='Create a new driver with the provided data',
+    operation_description='''Create a new driver with the provided data. 
+    
+    **Note:** Password is automatically generated based on CPF and birth year.
+    Format: last 2 digits of CPF + birth year (YYYY)
+    ''',
     request_body=driver_schema,
     responses={
-        201: openapi.Response(description='Driver created successfully'),
+        201: openapi.Response(description='Driver created successfully', schema=driver_schema),
         400: openapi.Response(description='Invalid request', schema=validation_error_schema),
         401: openapi.Response(description='Unauthorized', schema=error_response_schema),
+        500: openapi.Response(description='Internal server error', schema=error_response_schema),
     },
     tags=['Drivers'],
     security=[{'Bearer': []}]
@@ -192,22 +204,57 @@ update_driver_swagger = swagger_auto_schema(
     method="put",
     operation_id='update_driver',
     operation_summary='Update driver',
-    operation_description='Update driver information',
+    operation_description='''Update all fields of a driver. 
+    
+    **Allowed fields:** name, cpf, phone, licenseType, licenseNumber, performance, type, birthYear
+    
+    **Note:** Password updates are handled separately and require the current password.
+    ''',
     request_body=driver_schema,
     manual_parameters=[
         openapi.Parameter(
             'driver_id',
             openapi.IN_PATH,
-            description='Driver ID',
+            description='Driver ID (24-character hex string)',
             type=openapi.TYPE_STRING,
             required=True,
         )
     ],
     responses={
         200: openapi.Response(description='Driver updated successfully', schema=driver_schema),
-        400: openapi.Response(description='Invalid request', schema=validation_error_schema),
-        404: openapi.Response(description='Driver not found', schema=error_response_schema),
+        400: openapi.Response(description='Invalid request or validation error', schema=validation_error_schema),
         401: openapi.Response(description='Unauthorized', schema=error_response_schema),
+        404: openapi.Response(description='Driver not found', schema=error_response_schema),
+    },
+    tags=['Drivers'],
+    security=[{'Bearer': []}]
+)
+
+partial_update_driver_swagger = swagger_auto_schema(
+    method="patch",
+    operation_id='partial_update_driver',
+    operation_summary='Partially update driver',
+    operation_description='''Update specific fields of a driver.
+    
+    **Allowed fields:** name, cpf, phone, licenseType, licenseNumber, performance, type, birthYear
+    
+    **Note:** At least one field must be provided.
+    ''',
+    request_body=driver_schema,
+    manual_parameters=[
+        openapi.Parameter(
+            'driver_id',
+            openapi.IN_PATH,
+            description='Driver ID (24-character hex string)',
+            type=openapi.TYPE_STRING,
+            required=True,
+        )
+    ],
+    responses={
+        200: openapi.Response(description='Driver updated successfully', schema=driver_schema),
+        400: openapi.Response(description='Invalid request or validation error', schema=validation_error_schema),
+        401: openapi.Response(description='Unauthorized', schema=error_response_schema),
+        404: openapi.Response(description='Driver not found', schema=error_response_schema),
     },
     tags=['Drivers'],
     security=[{'Bearer': []}]
@@ -217,20 +264,24 @@ delete_driver_swagger = swagger_auto_schema(
     method="delete",
     operation_id='delete_driver',
     operation_summary='Delete driver',
-    operation_description='Delete a driver by ID',
+    operation_description='''Mark a driver as deleted (soft delete).
+    
+    **Note:** This is a soft delete operation. The driver record will be marked as deleted but not removed from the database.
+    ''',
     manual_parameters=[
         openapi.Parameter(
             'driver_id',
             openapi.IN_PATH,
-            description='Driver ID',
+            description='Driver ID (24-character hex string)',
             type=openapi.TYPE_STRING,
             required=True,
         )
     ],
     responses={
-        204: openapi.Response(description='Driver deleted successfully'),
-        404: openapi.Response(description='Driver not found', schema=error_response_schema),
+        204: openapi.Response(description='Driver successfully marked as deleted'),
         401: openapi.Response(description='Unauthorized', schema=error_response_schema),
+        404: openapi.Response(description='Driver not found', schema=error_response_schema),
+        500: openapi.Response(description='Internal server error', schema=error_response_schema),
     },
     tags=['Drivers'],
     security=[{'Bearer': []}]

@@ -14,15 +14,25 @@ logger = logging.getLogger(__name__)
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
 def verify_password(plain_password, hashed_password):
-    """Verify password against hash"""
-    if plain_password == hashed_password:
-        return True
-    try:
-        if hashed_password and hashed_password.startswith('$2'):
-            return pwd_context.verify(plain_password, hashed_password)
+    """Verify password against hash (supports both bcrypt and legacy SHA-256)"""
+    if not hashed_password:
         return False
+    
+    # Try bcrypt first
+    try:
+        if hashed_password.startswith('$2'):  # bcrypt hash starts with $2
+            return pwd_context.verify(plain_password, hashed_password)
     except Exception as e:
-        logger.error(f"Error verifying password: {e}")
+        logger.error(f"Error verifying bcrypt password: {e}")
+        return False
+    
+    # If not bcrypt, try legacy SHA-256
+    try:
+        import hashlib
+        sha256_hash = hashlib.sha256(plain_password.encode()).hexdigest()
+        return sha256_hash == hashed_password
+    except Exception as e:
+        logger.error(f"Error verifying legacy password: {e}")
         return False
 
 def get_hash_password(password: str):
@@ -104,7 +114,13 @@ def get_user_from_token(token: str):
         "_id": str(user["_id"]),
         "name": user.get("name"),
         "cpf": user.get("cpf"),
-        "type": user.get("type")
+        "type": user.get("type"),
+        "phone": user.get("phone"),
+        "licenseType": user.get("licenseType"),
+        "licenseNumber": user.get("licenseNumber"),
+        "birthYear": user.get("birthYear"),
+        "performance": user.get("performance"),
+        "isActive": user.get("isActive")
     }
 
 def store_refresh_token(user_id: str, token: str):

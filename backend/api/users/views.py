@@ -67,7 +67,8 @@ def login(request):
             "user": {
                 "id": str(user["_id"]),
                 "name": user.get("name"),
-                "cpf": user.get("cpf")
+                "cpf": user.get("cpf"),
+                "type": user.get("type")
             }
         },
         status=status.HTTP_200_OK
@@ -103,7 +104,7 @@ def refresh(request):
             "cpf": user.get("cpf")
         },
         token_type="access",
-        expires_hours=2
+        expires_hours=1
     )
 
     return Response(
