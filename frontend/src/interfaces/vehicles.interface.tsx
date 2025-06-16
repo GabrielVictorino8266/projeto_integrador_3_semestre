@@ -26,4 +26,4 @@ export interface IGetVehiclesResponse {
   items: IVehicle[];
 }
 
-export type VehicleStatus = "active" | "indisponivel" | "maintenance";
+export type VehicleStatus = ""| "active" | "indisponivel" | "maintenance";

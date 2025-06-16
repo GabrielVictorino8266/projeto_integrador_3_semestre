@@ -1,22 +1,22 @@
-import { Container, ContainerList } from "./styles";
+import { Container, ContainerFilter, ContainerList, InputWrapper } from "./styles";
 import { DashboardHeader } from "@components/Dashboard/Title";
 import { GoToDriverRegister } from "@styles/Buttons";
 import { CardWithRightBorder } from "@components/Dashboard/Cards";
-import { RegInput } from "@components/InputForm";
 import { StatusIcon } from "@components/Dashboard/Icons/StatusIcon";
 import { DashboardTable } from "@components/Dashboard/Table";
 import { ChartComponent, DoughnutChart } from "@components/Dashboard/Chart";
 import { VehicleList } from "@components/Dashboard/Vehicles/VehicleTableItems/";
 import { useVehicleStats } from "@hooks/Vehicle/useVehocleStats";
 import { useVehicleList } from "@hooks/Vehicle/useVehicleList";
-
-import { Select } from "@components/Select2";
 import { Pagination } from "@components/Pagination";
+import { InputComponent } from "@components/Input";
+import { SelectStatus } from "@components/SelectFilter";
+import { StatusOptions } from "@utils/Selects/SelectVehicleStatus";
+import type { VehicleStatus } from "@interfaces/vehicles.interface";
 
 const VehicleDashboard = () => {
     const { total, active, inactive, maintenance } = useVehicleStats();
-    const { data, page, setPage, status, setStatus, totalPages } =
-        useVehicleList();
+    const { data, page, setPage, setStatus, status, totalPages } = useVehicleList();
 
     const datatochart = [
         { value: active, label: "Disponível" },
@@ -44,9 +44,7 @@ const VehicleDashboard = () => {
         <div className="dashboardItems_container">
             <DashboardHeader>
                 <p>LISTAGEM DE VEÍCULOS</p>
-                <GoToDriverRegister to={"/veiculos"}>
-                    CADASTRAR
-                </GoToDriverRegister>
+                <GoToDriverRegister to={"/veiculos"}>CADASTRAR</GoToDriverRegister>
             </DashboardHeader>
 
             <Container>
@@ -88,43 +86,34 @@ const VehicleDashboard = () => {
                         <CardWithRightBorder>
                             <p className="card__text">DISPONIBILIDADE</p>
                             <ChartComponent>
-                                <DoughnutChart
-                                    chartData={doughnutChartDriverData}
-                                />
+                                <DoughnutChart chartData={doughnutChartDriverData} />
                             </ChartComponent>
                         </CardWithRightBorder>
                     </div>
 
-                    <div className="filters__container">
-                        <RegInput
-                            id="vehicleSearch"
-                            type="text"
-                            placeholder="Pesquisar"
-                            label=""
+                    <ContainerFilter>
+                        <InputWrapper>
+                            <InputComponent placeholder="PESQUISAR POR PLACA.." lupa />
+                        </InputWrapper>
+
+                        <SelectStatus 
+                            onChange={(val) => setStatus(val as VehicleStatus|| null)}
+                            value={status}
+                            options={StatusOptions}
+
                         />
-                    </div>
+                    </ContainerFilter>
 
                     <ContainerList>
                         <DashboardTable
                             title="LISTA DE VEÍCULOS"
-                            thTitles={[
-                                "PLACA",
-                                "TIPO",
-                                "ANO",
-                                "MARCA",
-                                "STATUS",
-                                "AÇÕES",
-                            ]}
+                            thTitles={["PLACA", "TIPO", "ANO", "MARCA", "STATUS", "AÇÕES"]}
                         >
                             <VehicleList data={data} />
                         </DashboardTable>
                     </ContainerList>
 
-                    <Pagination
-                        totalPages={totalPages}
-                        current={page}
-                        onChange={(p: number) => setPage(p)}
-                    />
+                    <Pagination totalPages={totalPages} current={page} onChange={(p: number) => setPage(p)} />
                 </section>
             </Container>
         </div>
