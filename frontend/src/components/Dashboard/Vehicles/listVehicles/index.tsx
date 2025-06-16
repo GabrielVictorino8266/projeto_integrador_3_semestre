@@ -100,7 +100,6 @@ const VehicleDashboard = () => {
                             onChange={(val) => setStatus(val as VehicleStatus|| null)}
                             value={status}
                             options={StatusOptions}
-
                         />
                     </ContainerFilter>
 

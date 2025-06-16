@@ -4,8 +4,9 @@ import { useModal } from "@hooks/useModal";
 import type { IGenericModalProps } from "@interfaces/modal.interface";
 import { ModalHeader } from "../ModalHeader";
 import { DriverDelete } from "../DriverDelete";
+import { VehicleDeleted } from "../VehicleDelete";
 
-export const Modal = ({ type }: IGenericModalProps) => {
+export const Modal = ({ type,  }: IGenericModalProps) => {
   const { modalRef } = useModal();
 
   return (
@@ -20,7 +21,13 @@ export const Modal = ({ type }: IGenericModalProps) => {
                   <DriverDelete />
                 </>
               );
-
+            case "vehicleDeleteConfirmation":
+                return(
+                  <>
+                    <ModalHeader modalTitle="CONFIRMAR DELEÇÃO:" />
+                    <VehicleDeleted />
+                  </>
+                )
             default:
               return <></>;
           }
