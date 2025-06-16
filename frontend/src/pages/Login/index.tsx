@@ -2,7 +2,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useNavigate } from "react-router-dom";
 // Assets
-import Logo from "@assets/Logo.png";
+import Logo from "@assets/IconeUniao.png";
 // Componentes
 import { InputComponent } from "@components/Input";
 // Schemas
