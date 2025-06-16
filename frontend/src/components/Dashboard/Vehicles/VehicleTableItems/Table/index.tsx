@@ -22,7 +22,6 @@ export const VehicleListItem = ({
     manufacturingYear,
     brand,
     status,
-    onDeleted,
 }: IVehicleListItemProps) => {
     const { handleOpenModal } = useModal();
 
