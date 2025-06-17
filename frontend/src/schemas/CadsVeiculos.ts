@@ -18,7 +18,7 @@ export const schemaCadVeiculo = z
             .int("Apenas números inteiros")
             .gte(1000, "Deve conter 4 dígitos")
             .lte(9999, "Deve conter 4 dígitos")
-            .refine((ano) => ano >= 1900 && ano <= currentYear + 1, {
+            .refine((ano) => ano >= 1900 && ano <= currentYear, {
                 message: `Ano do veículo deve estar entre 1900 e ${
                     currentYear + 1
                 }`,

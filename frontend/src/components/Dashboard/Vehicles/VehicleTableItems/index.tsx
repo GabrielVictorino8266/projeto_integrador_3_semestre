@@ -1,23 +1,30 @@
-import { useVehicle } from "@hooks/useVehicle";
+// @components/Dashboard/Vehicles/VehicleTableItems/index.tsx
+import type { IVehicle } from "@interfaces/vehicles.interface";
 import { VehicleListItem } from "./Table";
-import { StyledDriverList } from "./styles"; // pode renomear se quiser
+import { StyledDriverList } from "./styles";
+import { MaskLicensePlate } from "@utils/Mask/MaskLicensePlate";
 
-export const VehicleList = () => {
-  const { vehicleList } = useVehicle();
+interface Props {
+    data: IVehicle[];
+}
 
-  return (
-    <StyledDriverList>
-      {vehicleList.map((v) => (
-        <VehicleListItem
-          key={v.id}
-          id={v.id}
-          licensePlate={v.licensePlate}
-          vehicleType={v.vehicleType}
-          manufacturingYear={v.manufacturingYear}
-          brand={v.brand}
-          status={v.status as "active" | "inactive"}
-        />
-      ))}
-    </StyledDriverList>
-  );
+export const VehicleList = ({ data }: Props) => {
+
+    const plateMask = new MaskLicensePlate()
+
+    return (
+        <StyledDriverList>
+            {data.map((v) => (
+                <VehicleListItem
+                    key={v.id}
+                    id={v.id}
+                    licensePlate={plateMask.mask(v.licensePlate)}
+                    vehicleType={v.vehicleType}
+                    manufacturingYear={v.manufacturingYear}
+                    brand={v.brand}
+                    status={v.status}
+                />
+            ))}
+        </StyledDriverList>
+    );
 };

@@ -1,27 +1,27 @@
-import { Container } from "./styles";
+import { Container, ContainerFilter, ContainerList, InputWrapper } from "./styles";
 import { DashboardHeader } from "@components/Dashboard/Title";
 import { GoToDriverRegister } from "@styles/Buttons";
 import { CardWithRightBorder } from "@components/Dashboard/Cards";
-import { RegInput } from "@components/InputForm";
-import { useVehicle } from "@hooks/useVehicle";
-import { useEffect } from "react";
 import { StatusIcon } from "@components/Dashboard/Icons/StatusIcon";
 import { DashboardTable } from "@components/Dashboard/Table";
 import { ChartComponent, DoughnutChart } from "@components/Dashboard/Chart";
-import {VehicleList} from "@components/Dashboard/Vehicles/VehicleTableItems/"
+import { VehicleList } from "@components/Dashboard/Vehicles/VehicleTableItems/";
+import { useVehicleStats } from "@hooks/Vehicle/useVehocleStats";
+import { useVehicleList } from "@hooks/Vehicle/useVehicleList";
+import { Pagination } from "@components/Pagination";
+import { InputComponent } from "@components/Input";
+import { SelectStatus } from "@components/SelectFilter";
+import { StatusOptions } from "@utils/Selects/SelectVehicleStatus";
+import type { VehicleStatus } from "@interfaces/vehicles.interface";
 
 const VehicleDashboard = () => {
-    const { vehicleActive, vehicleInactive, vehicleQuantity, getVehicleList } =
-        useVehicle();
-
-    useEffect(() => {
-        getVehicleList();
-    }, []);
+    const { total, active, inactive, maintenance } = useVehicleStats();
+    const { data, page, setPage, setStatus, status, totalPages } = useVehicleList();
 
     const datatochart = [
-        { value: vehicleActive, label: "Disponível" },
-        { value: vehicleInactive, label: "Em manutenção" },
-        { value: vehicleInactive, label: "Indisponível" },
+        { value: active, label: "Disponível" },
+        { value: maintenance, label: "Em manutenção" },
+        { value: inactive, label: "Indisponível" },
     ];
 
     const doughnutChartDriverData = {
@@ -44,9 +44,7 @@ const VehicleDashboard = () => {
         <div className="dashboardItems_container">
             <DashboardHeader>
                 <p>LISTAGEM DE VEÍCULOS</p>
-                <GoToDriverRegister to={"/veiculos"}>
-                    CADASTRAR
-                </GoToDriverRegister>
+                <GoToDriverRegister to={"/veiculos"}>CADASTRAR</GoToDriverRegister>
             </DashboardHeader>
 
             <Container>
@@ -55,74 +53,66 @@ const VehicleDashboard = () => {
                         <CardWithRightBorder>
                             <div className="card__values">
                                 <p className="card__text">Total de veículos</p>
-                                <p className="card__number">
-                                    {vehicleQuantity}
-                                </p>
+                                <p className="card__number">{total}</p>
                             </div>
                         </CardWithRightBorder>
 
                         <CardWithRightBorder>
                             <div className="card__values">
                                 <p className="card__text">
-                                    <StatusIcon option={"blue"} />
+                                    <StatusIcon option="blue" />
                                     Veículos Ativos
                                 </p>
-                                <p className="card__number">{vehicleActive}</p>
+                                <p className="card__number">{active}</p>
                             </div>
 
                             <div className="card__values">
                                 <p className="card__text">
-                                    <StatusIcon option={"orange"} />
+                                    <StatusIcon option="orange" />
                                     Em manutenção
                                 </p>
-                                <p className="card__number">
-                                    {vehicleInactive}
-                                </p>
+                                <p className="card__number">{maintenance}</p>
                             </div>
 
                             <div className="card__values">
                                 <p className="card__text">
-                                    <StatusIcon option={"red"} />
+                                    <StatusIcon option="red" />
                                     Veículos Inativos
                                 </p>
-                                <p className="card__number">
-                                    {vehicleInactive}
-                                </p>
+                                <p className="card__number">{inactive}</p>
                             </div>
                         </CardWithRightBorder>
 
                         <CardWithRightBorder>
                             <p className="card__text">DISPONIBILIDADE</p>
                             <ChartComponent>
-                                <DoughnutChart
-                                    chartData={doughnutChartDriverData}
-                                />
+                                <DoughnutChart chartData={doughnutChartDriverData} />
                             </ChartComponent>
                         </CardWithRightBorder>
                     </div>
 
-                    <div>
-                        <RegInput
-                            id="vehicleSearch"
-                            type="text"
-                            placeholder="Pesquisar"
-                            label={""}
-                        />
-                    </div>
+                    <ContainerFilter>
+                        <InputWrapper>
+                            <InputComponent placeholder="PESQUISAR POR PLACA.." lupa />
+                        </InputWrapper>
 
-                    <DashboardTable
-                        title="LISTA DE VEÍCULOS"
-                        thTitles={[
-                            "PLACA",
-                            "TIPO",
-                            "ANO",
-                            "MARCA",
-                            "STATUS",
-                            "AÇÕES",
-                        ]}
-                    >
-                        <VehicleList />
-                    </DashboardTable>
+                        <SelectStatus 
+                            onChange={(val) => setStatus(val as VehicleStatus|| null)}
+                            value={status}
+                            options={StatusOptions}
+                        />
+                    </ContainerFilter>
+
+                    <ContainerList>
+                        <DashboardTable
+                            title="LISTA DE VEÍCULOS"
+                            thTitles={["PLACA", "TIPO", "ANO", "MARCA", "STATUS", "AÇÕES"]}
+                        >
+                            <VehicleList data={data} />
+                        </DashboardTable>
+                    </ContainerList>
+
+                    <Pagination totalPages={totalPages} current={page} onChange={(p: number) => setPage(p)} />
                 </section>
             </Container>
         </div>

@@ -1,0 +1,22 @@
+import { useEffect, useState } from "react";
+import { getVehicles } from "@services/Api/Vehicles/getVehicle";
+import type { IVehicle, VehicleStatus } from "@interfaces/vehicles.interface";
+
+export const useVehicleList = () => {
+    const [data, setData] = useState<IVehicle[]>([]);
+    const [page, setPage] = useState(1);
+    const [status, setStatus] = useState<VehicleStatus | null>(null);
+    const [totalPages, setTotalPages] = useState(1);
+
+    async function fetchList() {
+        const res = await getVehicles({ page, status: status ?? undefined });
+        setData(res?.items ?? []);
+        setTotalPages(res?.last_page ?? 1)
+    }
+
+    useEffect(() => {
+        fetchList();
+    }, [page, status]);
+
+    return { data, page, setPage, status, setStatus, refetch: fetchList, totalPages };
+};

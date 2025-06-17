@@ -14,12 +14,11 @@ services:
     stdin_open: true
     depends_on:
       - mongodb
-    # Modo de produção (descomentado)
     command: >
       sh -c "python api/manage.py migrate_mongo &&
              python api/manage.py runserver 0.0.0.0:8000"
 
-    # Modo de desenvolvimento (comentado)
+    # Command to run Django development server manually (uncomment to use)
     # command: >
     #   sh -c "python api/manage.py migrate_mongo && tail -f /dev/null"
 

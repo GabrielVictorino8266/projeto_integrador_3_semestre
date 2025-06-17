@@ -3,6 +3,7 @@ import { useModal } from "@hooks/useModal";
 import { StatusIcon } from "@components/Dashboard/Icons/StatusIcon";
 import { GoToDriverEdit, IconButton } from "@styles/Buttons";
 import { ActionIcon } from "@components/Dashboard/Icons/ActionIcon";
+import type { VehicleStatus } from "@interfaces/vehicles.interface";
 
 interface IVehicleListItemProps {
     id: string;
@@ -10,10 +11,11 @@ interface IVehicleListItemProps {
     vehicleType: string;
     manufacturingYear: number;
     brand: string;
-    status: "active" | "inactive";
+    status: VehicleStatus;
+    onDeleted: () => void;
 }
 
-const VehicleListItem = ({
+export const VehicleListItem = ({
     id,
     licensePlate,
     vehicleType,
@@ -23,6 +25,8 @@ const VehicleListItem = ({
 }: IVehicleListItemProps) => {
     const { handleOpenModal } = useModal();
 
+    const iconOption = status === "active" ? "blue" : status === "maintenance" ? "orange" : "red";
+
     return (
         <StyledTableRow>
             <td scope="row">{licensePlate}</td>
@@ -31,11 +35,7 @@ const VehicleListItem = ({
             <td>{brand}</td>
             <td>
                 <button>
-                    {status === "active" ? (
-                        <StatusIcon option="blue" />
-                    ) : (
-                        <StatusIcon option="red" />
-                    )}
+                    <StatusIcon option={iconOption} />
                 </button>
             </td>
             <td>
@@ -48,6 +48,7 @@ const VehicleListItem = ({
                         handleOpenModal({
                             modalType: "vehicleDeleteConfirmation",
                             id,
+                            
                         })
                     }
                 >
@@ -57,5 +58,3 @@ const VehicleListItem = ({
         </StyledTableRow>
     );
 };
-
-export { VehicleListItem };

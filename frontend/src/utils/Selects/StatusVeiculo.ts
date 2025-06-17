@@ -1,5 +1,6 @@
+
 export const status = [
-    { value: "active", label: "Disponível" },
-    { value: "inactive", label: "Indisponível" },
-    { value: "manutencao", label: "Em manutenção" },
-];
+  { value: "active"       , label: "Disponível"   },
+  { value: "indisponivel" , label: "Indisponível" },
+  { value: "maintenance"  , label: "Em manutenção"},
+]

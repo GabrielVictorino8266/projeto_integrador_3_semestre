@@ -1,23 +1,41 @@
-import type { IGetVehiclesResponse } from "@interfaces/vehicles.interface";
+import type { IGetVehiclesResponse, VehicleStatus } from "@interfaces/vehicles.interface";
 import { api } from "@services/api";
 import { toast } from "react-toastify";
 
-export async function getVehicles(): Promise<IGetVehiclesResponse | null> {
-    try {
-        const { data } = await api.get("/vehicles/");
-        return data;
-    } catch (error: any) {
-        const status = error.response?.status;
+export interface GetVehiclesParams {
+    page?: number;
+    limit?: number;
+    status?: VehicleStatus;
+    licensePlate?: string;
+}
 
-        switch (status) {
+
+export async function getVehicles({
+    limit = 6,
+    page,
+    licensePlate,
+    status,
+}: GetVehiclesParams = {}): Promise<IGetVehiclesResponse | null> {
+    try {
+        const params: any = { limit, page, licensePlate };
+        if (status) params.status = status;
+
+        const response = await api.get("/vehicles/", { params });
+        return response.data;
+    } catch (error: any) {
+        const statusCode = error.response?.status;
+
+
+
+        switch (statusCode) {
             case 400:
-                toast.error("Requisição inválida");
+                toast.error(`Requisição inválida`);
                 break;
             case 401:
                 toast.error("Não autorizado");
                 break;
             default:
-                toast.error("Erro inesperado");
+                toast.error("Erro inesperado, verifique sua conexão");
         }
     }
     return null;

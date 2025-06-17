@@ -4,6 +4,24 @@ import type { DataProps } from "@schemas/CadsVeiculos";
 import { MaskKm } from "@utils/Mask/MaskKm";
 import { MaskLicensePlate } from "@utils/Mask/MaskLicensePlate";
 
+export interface IVehicle {
+    id: string;
+    vehicleNumber: string;
+    licensePlate: string;
+    vehicleType: VehicleType;
+    manufacturingYear: number;
+    brand: string;
+    currentKm: number;
+    warningKmLimit: number;
+    deletedAt?: string | null;
+    status: VehicleStatus;
+}
+
+export type VehicleType = "car" | "motorcycle" | "truck" | "van" | "bus";
+
+export type VehicleStatus = "active" | "maintenance" | "indisponivel" | "excluido";
+
+
 export async function getVehiclesId(id: string): Promise<DataProps | null> {
     try {
         const { data } = await api.get(`/vehicles/${id}/`);
@@ -15,7 +33,7 @@ export async function getVehiclesId(id: string): Promise<DataProps | null> {
             ...data,
             currentKm: kmMask.mask(String(data.currentKm)),
             warningKmLimit: kmMask.mask(String(data.warningKmLimit)),
-            licensePlate: plate.mask(data.licensePlate)
+            licensePlate: plate.mask(data.licensePlate),
         };
 
         return newData;
