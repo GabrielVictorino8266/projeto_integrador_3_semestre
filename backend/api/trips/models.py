@@ -1,9 +1,25 @@
-from mongoengine import Document, StringField, DateTimeField, BooleanField
-from datetime import datetime
+from mongoengine import StringField, DateTimeField, BooleanField, EmbeddedDocument, FloatField
+from datetime import datetime, timezone
+from .types import TripStatus
+from mongoengine.errors import ValidationError
+from mongoengine import ObjectIdField
 
-class Trip(Document):
-    """Trip document class with common fields."""
-    created_at = DateTimeField(default=datetime.utcnow)
-    updated_at = DateTimeField(default=datetime.utcnow)
-    deleted = BooleanField(default=False)
-    deleted_at = DateTimeField(required=False)
+class Trip(EmbeddedDocument):
+    """Modelo de viagem."""
+    driverId = ObjectIdField(required=True)
+    startDateTime = DateTimeField(required=True)
+    endDateTime = DateTimeField(default=None)
+    origin = StringField(required=True)
+    destination = StringField(required=True)
+    initialKm = FloatField(required=True)
+    finalKm = FloatField(default=None)
+    completed = BooleanField(required=True, default=False)
+    status = StringField(choices=TripStatus.values, required=True, default=TripStatus.ACTIVE)
+    createdAt = DateTimeField(required=True, default=datetime.now(timezone.utc))
+    updatedAt = DateTimeField(required=True, default=datetime.now(timezone.utc))
+    deletedAt = DateTimeField(default=None)
+
+    def clean(self):
+        """Garantir que endDateTime seja maior que startDateTime"""
+        if self.endDateTime and self.startDateTime and self.endDateTime < self.startDateTime:
+            raise ValidationError('Data final deve ser maior que a data inicial')
