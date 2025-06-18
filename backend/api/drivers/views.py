@@ -18,6 +18,7 @@ from .serializers import (
 from bson import ObjectId
 from bson.errors import InvalidId
 from datetime import datetime
+from users.authentication import MongoJWTAuthentication
 
 """
 Classe de serialização para os parâmetros de paginação.
@@ -29,6 +30,8 @@ class PaginationParamsSerializer(serializers.Serializer):
 
 
 @api_view(['GET'])
+@authentication_classes([MongoJWTAuthentication])
+@permission_classes([IsAuthenticated])
 def list_drivers(request):
     """List all drivers."""
     serializer = PaginationParamsSerializer(data=request.query_params)
@@ -53,6 +56,8 @@ def list_drivers(request):
     return Response(pagination)
 
 @api_view(['POST'])
+@authentication_classes([MongoJWTAuthentication])
+@permission_classes([IsAuthenticated])
 def create_driver(request):
     """
     Create a new driver.
@@ -97,6 +102,8 @@ def create_driver(request):
         }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 @api_view(['GET'])
+@authentication_classes([MongoJWTAuthentication])
+@permission_classes([IsAuthenticated])
 def get_driver(request, driver_id):
     """Get driver by id"""
     try:
@@ -110,6 +117,8 @@ def get_driver(request, driver_id):
         raise NotFound("Driver not found")
 
 @api_view(['DELETE'])
+@authentication_classes([MongoJWTAuthentication])
+@permission_classes([IsAuthenticated])
 def delete_driver(request, driver_id):
     """Delte driver by id"""
     try:
@@ -124,7 +133,10 @@ def delete_driver(request, driver_id):
     driver.save()
     return Response(status=status.HTTP_204_NO_CONTENT)
 
+
 @api_view(['PUT', 'PATCH'])
+@authentication_classes([MongoJWTAuthentication])
+@permission_classes([IsAuthenticated])
 def update_driver(request, driver_id):
     """Update driver fields. PUT requires all fields, PATCH allows partial updates."""
     try:
@@ -170,6 +182,7 @@ def update_driver(request, driver_id):
         driver_data = convert_objectids(serializer.data)
         return Response(driver_data)
     raise serializers.ValidationError(serializer.errors)
+
 
 def convert_objectids(data):
     """Convert ObjectId fields in a dictionary to strings."""
