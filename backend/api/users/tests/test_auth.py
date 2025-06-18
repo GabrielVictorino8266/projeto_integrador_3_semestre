@@ -4,7 +4,7 @@ from freezegun import freeze_time
 import time
 
 class TestTokenExpiration(UsersTestCase):
-    @freeze_time("2025-06-15 08:30:00")  # Define um ponto de partida fixo
+    @freeze_time("2025-06-17 20:00:00")  # Define um ponto de partida fixo
     def test_access_token_expiration(self):
         """
         Testa se o token de acesso expira após 2 horas
@@ -12,14 +12,14 @@ class TestTokenExpiration(UsersTestCase):
         # Faz login para obter tokens
         login_response = self.client.post(self.get_login_url(), {
             'cpf': self.valid_user_data['cpf'],
-            'password': self.valid_user_data['password']
+            'password': self.plain_password
         }, format='json')
         self.assertEqual(login_response.status_code, status.HTTP_200_OK)
         
         access_token = login_response.data['access_token']
         
         # Avança o tempo em 2 hora e 1 minuto
-        with freeze_time("2025-06-15 10:31:00"):
+        with freeze_time("2025-06-17 22:31:00"):
             # Tenta usar o token expirado
             self.client.credentials(HTTP_AUTHORIZATION=f'Bearer {access_token}')
             response = self.client.get(self.get_profile_url())
