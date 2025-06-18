@@ -43,8 +43,7 @@ class TripsTestCase(MongoTestCase):
         )
 
         self.valid_trip_data = {
-            'vehicleId': self.test_vehicle.id,
-            'driverId': self.test_driver.id,
+            'driverId': str(self.test_driver.id),
             'startDateTime': datetime.now(timezone.utc),
             'endDateTime': datetime.now(timezone.utc),
             'origin': 'Origin',
@@ -57,4 +56,5 @@ class TripsTestCase(MongoTestCase):
 
     def tearDown(self) -> None:
         super().tearDown()
-        Vehicle.objects.update(set__trips=[])
+        Vehicle.drop_collection()
+        Driver.drop_collection()

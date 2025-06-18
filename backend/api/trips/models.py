@@ -3,17 +3,20 @@ from datetime import datetime, timezone
 from .types import TripStatus
 from mongoengine.errors import ValidationError
 from mongoengine import ObjectIdField
+from bson import ObjectId
 
 class Trip(EmbeddedDocument):
     """Modelo de viagem."""
+    id = ObjectIdField(primary_key=True, default=ObjectId, unique=True, required=True)
     driverId = ObjectIdField(required=True)
     startDateTime = DateTimeField(required=True)
     endDateTime = DateTimeField(default=None)
     origin = StringField(required=True)
     destination = StringField(required=True)
-    initialKm = FloatField(required=True)
-    finalKm = FloatField(default=None)
+    initialKm = FloatField(min_value=0, required=True)
+    finalKm = FloatField(min_value=0, default=None)
     completed = BooleanField(required=True, default=False)
+    deleted = BooleanField(default=False)
     status = StringField(choices=TripStatus.values, required=True, default=TripStatus.ACTIVE)
     createdAt = DateTimeField(required=True, default=datetime.now(timezone.utc))
     updatedAt = DateTimeField(required=True, default=datetime.now(timezone.utc))
