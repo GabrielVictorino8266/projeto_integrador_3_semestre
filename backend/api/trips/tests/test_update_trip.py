@@ -1,7 +1,7 @@
 from rest_framework import status
 from django.urls import reverse
 from .trips_test_case import TripsTestCase
-from datetime import timedelta
+from datetime import datetime, timezone, timedelta
 from bson import ObjectId
 from trips.models import Trip
 
@@ -18,15 +18,22 @@ class UpdateTripTest(TripsTestCase):
         """
         Testa a atualização bem-sucedida de uma viagem existente.
         """
+        end_time = datetime.now(timezone.utc) + timedelta(hours=1)
         new_data = {
             'destination': 'Novo Destino',
             'completed': True,
-            'endDateTime': (self.trip.startDateTime + timedelta(hours=1)).isoformat()
+            'endDateTime': end_time.isoformat()
         }
         response = self.client.put(self.url, new_data, format='json')
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        for field, value in new_data.items():
-            self.assertEqual(response.data[field], value)
+
+        self.assertEqual(response.data.get('destination'), new_data['destination'])
+        self.assertEqual(response.data.get('completed'), new_data['completed'])
+        self.assertAlmostEqual(
+            datetime.fromisoformat(response.data.get('endDateTime')),
+            datetime.fromisoformat(new_data['endDateTime']), 
+            delta=timedelta(seconds=1)
+        )
 
     def test_update_trip_unauthenticated(self):
         """

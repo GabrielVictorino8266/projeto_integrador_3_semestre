@@ -23,6 +23,12 @@ class Trip(EmbeddedDocument):
     deletedAt = DateTimeField(default=None)
 
     def clean(self):
-        """Garantir que endDateTime seja maior que startDateTime"""
-        if self.endDateTime and self.startDateTime and self.endDateTime < self.startDateTime:
-            raise ValidationError('Data final deve ser maior que a data inicial')
+        # Converte datetimes sem timezone (naive) para com timezone (UTC) se necessário
+        if self.startDateTime and not self.startDateTime.tzinfo:
+            self.startDateTime = self.startDateTime.replace(tzinfo=timezone.utc)
+        if self.endDateTime and not self.endDateTime.tzinfo:
+            self.endDateTime = self.endDateTime.replace(tzinfo=timezone.utc)
+            
+        # Valida a ordem das datas
+        if self.startDateTime and self.endDateTime and self.endDateTime < self.startDateTime:
+            raise ValidationError('A data/hora final deve ser posterior à data/hora inicial')

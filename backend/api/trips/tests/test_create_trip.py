@@ -13,7 +13,10 @@ class CreateTripTest(TripsTestCase):
         """
         Testa a criação bem-sucedida de uma viagem.
         """
-        response = self.client.post(self.url, self.valid_trip_data, format='json')
+        valid_data = self.valid_trip_data.copy()
+        valid_data['vehicleId'] = str(self.test_vehicle.id)
+        
+        response = self.client.post(self.url, valid_data, format='json')
 
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         updated_vehicle = Vehicle.objects.get(id=self.test_vehicle.id)
@@ -50,6 +53,7 @@ class CreateTripTest(TripsTestCase):
         Testa criação de viagem com dados inválidos (ex: destino vazio).
         """
         invalid_data = self.valid_trip_data.copy()
+        invalid_data['vehicleId'] = str(self.test_vehicle.id)
         invalid_data['destination'] = ''
 
         response = self.client.post(self.url, invalid_data, format='json')
