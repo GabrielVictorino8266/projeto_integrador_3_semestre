@@ -150,15 +150,6 @@ get_vehicle_swagger = swagger_auto_schema(
     operation_id='get_vehicle',
     operation_summary='Obter veículo',
     operation_description='Obtém um veículo pelo ID',
-    manual_parameters=[
-        openapi.Parameter(
-            'id',
-            openapi.IN_PATH,
-            description="ID do veículo",
-            type=openapi.TYPE_STRING,
-            required=True,
-        )
-    ],
     responses={
         200: openapi.Response(description='Detalhes do veículo', schema=VehicleSerializer()),
         400: openapi.Response(description='Requisição inválida', schema=validation_error_schema),
