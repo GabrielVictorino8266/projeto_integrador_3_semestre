@@ -49,7 +49,7 @@ export function CadastroVeiculo() {
     return (
         <Container>
             <Sidebar />
-            <RegisterPageGeneric title="Cadastro de veículo">
+            <RegisterPageGeneric title={id? "Atualização de veículo" : "Cadastro de veículo"}>
                 <form onSubmit={handleSubmit(Submit)}>
                     <ContainerInputs>
                         <InputComponent
