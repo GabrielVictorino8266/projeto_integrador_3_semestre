@@ -16,7 +16,6 @@ import { useNavigate } from "react-router-dom";
 
 const DriverProvider = ({ children }: IDefaultChildrenProp) => {
   const navigate = useNavigate();
-  const token = localStorage.getItem("token") || null;
   const { handleCloseModal } = useModal();
 
   const [driverList, setDriverList] = useState<Array<IDriver>>([]);
@@ -26,12 +25,6 @@ const DriverProvider = ({ children }: IDefaultChildrenProp) => {
   const [driverUnderEdition, setDriverUnderEdition] = useState<IDriver | null>(
     null
   );
-
-  const headersAuth = {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-  };
 
   const handleCreateDriver = async (newDriverData: ICreateDriverData) => {
     try {
