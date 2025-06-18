@@ -29,9 +29,9 @@ class PaginationParamsSerializer(serializers.Serializer):
     name = serializers.CharField(required=False)
 
 
+@api_view(['GET'])
 @authentication_classes([MongoJWTAuthentication])
 @permission_classes([IsAuthenticated])
-@api_view(['GET'])
 def list_drivers(request):
     """List all drivers."""
     serializer = PaginationParamsSerializer(data=request.query_params)
@@ -55,9 +55,9 @@ def list_drivers(request):
 
     return Response(pagination)
 
+@api_view(['POST'])
 @authentication_classes([MongoJWTAuthentication])
 @permission_classes([IsAuthenticated])
-@api_view(['POST'])
 def create_driver(request):
     """
     Create a new driver.
@@ -101,9 +101,9 @@ def create_driver(request):
             'error': f'An unexpected error occurred: {str(e)}'
         }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
+@api_view(['GET'])
 @authentication_classes([MongoJWTAuthentication])
 @permission_classes([IsAuthenticated])
-@api_view(['GET'])
 def get_driver(request, driver_id):
     """Get driver by id"""
     try:
@@ -116,9 +116,9 @@ def get_driver(request, driver_id):
     except Driver.DoesNotExist:
         raise NotFound("Driver not found")
 
+@api_view(['DELETE'])
 @authentication_classes([MongoJWTAuthentication])
 @permission_classes([IsAuthenticated])
-@api_view(['DELETE'])
 def delete_driver(request, driver_id):
     """Delte driver by id"""
     try:
@@ -134,9 +134,9 @@ def delete_driver(request, driver_id):
     return Response(status=status.HTTP_204_NO_CONTENT)
 
 
+@api_view(['PUT', 'PATCH'])
 @authentication_classes([MongoJWTAuthentication])
 @permission_classes([IsAuthenticated])
-@api_view(['PUT', 'PATCH'])
 def update_driver(request, driver_id):
     """Update driver fields. PUT requires all fields, PATCH allows partial updates."""
     try:
