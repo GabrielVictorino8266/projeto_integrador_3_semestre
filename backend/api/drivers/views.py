@@ -135,7 +135,7 @@ def update_driver(request, driver_id):
         raise ParseError(f"Error updating driver: {e}")
     
     # Define allowed fields that can be updated
-    allowed_fields = ['name', 'cpf', 'phone', 'licenseType', 'licenseNumber', 'performance', 'type', 'birthYear']
+    allowed_fields = ['name', 'cpf', 'phone', 'licenseType', 'licenseNumber', 'performance', 'type', 'birthYear', 'isActive']
     
     # Validate that only allowed fields are being updated
     provided_fields = set(request.data.keys())
