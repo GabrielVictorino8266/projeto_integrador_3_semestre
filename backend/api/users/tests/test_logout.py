@@ -17,7 +17,7 @@ class LogoutTest(UsersTestCase):
         # Primeiro faz login para obter refresh token
         login_response = self.client.post(self.login_url, {
             'cpf': self.valid_user_data['cpf'],
-            'password': self.valid_user_data['password']
+            'password': self.plain_password
         }, format='json')
         self.assertEqual(login_response.status_code, status.HTTP_200_OK)
         
@@ -54,7 +54,7 @@ class LogoutTest(UsersTestCase):
         # First get a valid token
         login_response = self.client.post(self.login_url, {
             'cpf': self.valid_user_data['cpf'],
-            'password': self.valid_user_data['password']
+            'password': self.plain_password
         }, format='json')
         self.assertEqual(login_response.status_code, status.HTTP_200_OK)
         access_token = login_response.data['access_token']
@@ -72,7 +72,7 @@ class LogoutTest(UsersTestCase):
         # Primeiro faz login para obter um token válido
         login_response = self.client.post(self.login_url, {
             'cpf': self.valid_user_data['cpf'],
-            'password': self.valid_user_data['password']
+            'password': self.plain_password
         }, format='json')
         self.assertEqual(login_response.status_code, status.HTTP_200_OK)
         
@@ -89,7 +89,7 @@ class LogoutTest(UsersTestCase):
         # Primeiro faz login para obter refresh token
         login_response = self.client.post(self.login_url, {
             'cpf': self.valid_user_data['cpf'],
-            'password': self.valid_user_data['password']
+            'password': self.plain_password
         }, format='json')
         self.assertEqual(login_response.status_code, status.HTTP_200_OK)
         

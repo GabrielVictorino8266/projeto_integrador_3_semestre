@@ -33,7 +33,7 @@ class TestTokenExpiration(UsersTestCase):
         # Faz login para obter tokens
         login_response = self.client.post(self.get_login_url(), {
             'cpf': self.valid_user_data['cpf'],
-            'password': self.valid_user_data['password']
+            'password': self.plain_password
         }, format='json')
         self.assertEqual(login_response.status_code, status.HTTP_200_OK)
         
@@ -55,7 +55,7 @@ class TestTokenExpiration(UsersTestCase):
         # Faz login para obter tokens
         login_response = self.client.post(self.get_login_url(), {
             'cpf': self.valid_user_data['cpf'],
-            'password': self.valid_user_data['password']
+            'password': self.plain_password
         }, format='json')
         self.assertEqual(login_response.status_code, status.HTTP_200_OK)
         
