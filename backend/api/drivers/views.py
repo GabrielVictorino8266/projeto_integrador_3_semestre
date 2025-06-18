@@ -18,6 +18,7 @@ from .serializers import (
 from bson import ObjectId
 from bson.errors import InvalidId
 from datetime import datetime
+from users.authentication import MongoJWTAuthentication
 
 """
 Classe de serialização para os parâmetros de paginação.
@@ -28,6 +29,8 @@ class PaginationParamsSerializer(serializers.Serializer):
     name = serializers.CharField(required=False)
 
 
+@authentication_classes([MongoJWTAuthentication])
+@permission_classes([IsAuthenticated])
 @api_view(['GET'])
 def list_drivers(request):
     """List all drivers."""
@@ -52,6 +55,8 @@ def list_drivers(request):
 
     return Response(pagination)
 
+@authentication_classes([MongoJWTAuthentication])
+@permission_classes([IsAuthenticated])
 @api_view(['POST'])
 def create_driver(request):
     """
@@ -96,6 +101,8 @@ def create_driver(request):
             'error': f'An unexpected error occurred: {str(e)}'
         }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
+@authentication_classes([MongoJWTAuthentication])
+@permission_classes([IsAuthenticated])
 @api_view(['GET'])
 def get_driver(request, driver_id):
     """Get driver by id"""
@@ -109,6 +116,8 @@ def get_driver(request, driver_id):
     except Driver.DoesNotExist:
         raise NotFound("Driver not found")
 
+@authentication_classes([MongoJWTAuthentication])
+@permission_classes([IsAuthenticated])
 @api_view(['DELETE'])
 def delete_driver(request, driver_id):
     """Delte driver by id"""
@@ -124,6 +133,9 @@ def delete_driver(request, driver_id):
     driver.save()
     return Response(status=status.HTTP_204_NO_CONTENT)
 
+
+@authentication_classes([MongoJWTAuthentication])
+@permission_classes([IsAuthenticated])
 @api_view(['PUT', 'PATCH'])
 def update_driver(request, driver_id):
     """Update driver fields. PUT requires all fields, PATCH allows partial updates."""
@@ -170,6 +182,7 @@ def update_driver(request, driver_id):
         driver_data = convert_objectids(serializer.data)
         return Response(driver_data)
     raise serializers.ValidationError(serializer.errors)
+
 
 def convert_objectids(data):
     """Convert ObjectId fields in a dictionary to strings."""
