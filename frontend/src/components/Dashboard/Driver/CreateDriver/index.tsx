@@ -11,6 +11,7 @@ import { useDriver } from "@hooks/useDriver";
 import { useState } from "react";
 import type { ICreateDriverData } from "@interfaces/driver.interface";
 import { cpfMask, dateMask, phoneMask } from "@utils/reserve";
+import { FaUser } from "react-icons/fa";
 
 const DriverRegister = () => {
   const { handleCreateDriver } = useDriver();
@@ -34,7 +35,10 @@ const DriverRegister = () => {
   };
 
   return (
-    <RegisterPageGeneric title="CADASTRO DE MOTORISTA">
+    <RegisterPageGeneric
+      icon={<FaUser className="headerIcon" />}
+      title="CADASTRO DE MOTORISTA"
+    >
       <form onSubmit={handleSubmit(submitDriver)}>
         <ContainerInputs>
           <RegInput

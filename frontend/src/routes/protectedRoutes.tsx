@@ -5,7 +5,7 @@ import { Outlet, Navigate } from "react-router-dom";
 import { toast } from "react-toastify";
 
 interface IRefreshToken {
-  token: string;
+  access_token: string;
 }
 
 const ProtectedRoutes = () => {
@@ -14,10 +14,17 @@ const ProtectedRoutes = () => {
   const refreshTokenBody = { refresh_token: refreshToken };
   const [isAuthorized, setIsAuthorized] = useState<boolean | null>(null);
 
+  useEffect(() => {
+    verifyToken();
+    console.log("oi");
+  }, []);
+
   const verifyToken = async () => {
     if (!token) {
       setIsAuthorized(false);
       return;
+    } else {
+      userAuthToken();
     }
   };
 
@@ -29,7 +36,7 @@ const ProtectedRoutes = () => {
       );
 
       if (refreshTokenResponse.status === 200) {
-        localStorage.setItem("token", refreshTokenResponse.data.token);
+        localStorage.setItem("token", refreshTokenResponse.data.access_token);
         setIsAuthorized(true);
       }
     } catch (error) {
@@ -39,10 +46,9 @@ const ProtectedRoutes = () => {
     }
   };
 
-  useEffect(() => {
-    verifyToken();
-    userAuthToken();
-  }, [token]);
+  if (isAuthorized === null) {
+    return null;
+  }
 
   return isAuthorized ? <Outlet /> : <Navigate to="/login" />;
 };

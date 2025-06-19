@@ -13,6 +13,7 @@ import { driverUpdateFormSchema } from "@schemas/driverUpdateSchema";
 import type { IUpdateDriverData } from "@interfaces/driver.interface";
 import { cpfMask, dateMask, phoneMask } from "@utils/reserve";
 import { userStatus } from "@utils/Selects/userStatus";
+import { TbEdit } from "react-icons/tb";
 
 const DriverUpdate = () => {
   const [driverName, setDriverName] = useState<string>();
@@ -68,7 +69,10 @@ const DriverUpdate = () => {
   console.log(driverUnderEdition);
 
   return (
-    <RegisterPageGeneric title="Editar motorista">
+    <RegisterPageGeneric
+      icon={<TbEdit className="headerIcon" />}
+      title="EDITAR MOTORISTA"
+    >
       <form onSubmit={handleSubmit(submitDriver)}>
         <ContainerInputs>
           <RegInput

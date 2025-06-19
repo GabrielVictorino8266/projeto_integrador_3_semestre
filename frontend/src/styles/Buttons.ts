@@ -25,6 +25,11 @@ const DarkBlueButton = styled(Button)`
   color: var(--color-white);
 `;
 
+const BorderedButton = styled(Button)`
+  border: 2px solid var(--color-brand-1);
+  background-color: transparent;
+`;
+
 const LinkStyled = styled(Link)`
   ${genericButton}
   background-color: var(--color-brand-1);
@@ -52,6 +57,7 @@ export {
   Button,
   DeleteButton,
   DarkBlueButton,
+  BorderedButton,
   GoToDriverRegister,
   GoToDriverEdit,
   IconButton,

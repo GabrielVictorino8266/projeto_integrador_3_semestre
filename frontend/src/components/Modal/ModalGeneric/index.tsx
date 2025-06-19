@@ -6,7 +6,7 @@ import { ModalHeader } from "../ModalHeader";
 import { DriverDelete } from "../DriverDelete";
 import { VehicleDeleted } from "../VehicleDelete";
 
-export const Modal = ({ type,  }: IGenericModalProps) => {
+export const Modal = ({ type }: IGenericModalProps) => {
   const { modalRef } = useModal();
 
   return (
@@ -17,17 +17,17 @@ export const Modal = ({ type,  }: IGenericModalProps) => {
             case "driverDeleteConfirmation":
               return (
                 <>
-                  <ModalHeader modalTitle="CONFIRMAR DELEÇÃO:" />
+                  <ModalHeader modalTitle="CONFIRMAR EXCLUSÃO:" />
                   <DriverDelete />
                 </>
               );
             case "vehicleDeleteConfirmation":
-                return(
-                  <>
-                    <ModalHeader modalTitle="CONFIRMAR DELEÇÃO:" />
-                    <VehicleDeleted />
-                  </>
-                )
+              return (
+                <>
+                  <ModalHeader modalTitle="CONFIRMAR EXCLUSÃO:" />
+                  <VehicleDeleted />
+                </>
+              );
             default:
               return <></>;
           }

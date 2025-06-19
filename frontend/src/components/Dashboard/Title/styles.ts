@@ -14,6 +14,8 @@ const StyledDashboardHeader = styled.section`
   p {
     font-size: var(--font-size-40);
     font-weight: var(--font-weight-800);
+    display: flex;
+    gap: 16px;
   }
 `;
 

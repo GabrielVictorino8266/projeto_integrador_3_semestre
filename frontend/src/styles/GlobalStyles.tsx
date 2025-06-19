@@ -79,6 +79,11 @@ export const GlobalStyles = () => (
         -webkit-appearance: none;
         margin: 0;
       }
+
+      .headerIcon {
+        width: 2rem;
+        height: 2rem;
+      }
     `}
   />
 );
