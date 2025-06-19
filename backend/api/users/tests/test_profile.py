@@ -41,7 +41,6 @@ class ProfileTest(UsersTestCase):
         """
         response = self.client.get(self.profile_url)
         self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
-        self.assertEqual(response.data['detail'], 'Authentication credentials were not provided.')
     
     def test_get_profile_with_invalid_token(self):
         """

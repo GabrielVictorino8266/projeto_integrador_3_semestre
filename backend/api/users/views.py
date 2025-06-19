@@ -25,14 +25,14 @@ def login(request):
 
     if not cpf or not password:
         return Response(
-            {"detail": "CPF and password are required."},
+            {"detail": "CPF e Senha são necessários para a requisição"},
             status=status.HTTP_400_BAD_REQUEST
         )
     
     user = auth_user(cpf, password)
     if not user:
         return Response(
-            {"detail": "CPF or password are invalid."},
+            {"detail": "CPF ou Senha não são válidos, verifique os e tente novamente."},
             status=status.HTTP_401_UNAUTHORIZED
         )
 
@@ -84,7 +84,7 @@ def refresh(request):
     
     if not refresh_token:
         return Response(
-            {"detail": "Refresh token is required."},
+            {"detail": "Refresh Token é necessário, verifique-o e envie novamente."},
             status=status.HTTP_400_BAD_REQUEST
         )
 
@@ -92,7 +92,7 @@ def refresh(request):
     user = get_user_from_token(refresh_token)
     if not user:
         return Response(
-            {"detail": "Refresh token is invalid or expired."},
+            {"detail": "Refresh Token é inválido ou está expirado, verifique-o e tente novamente."},
             status=status.HTTP_401_UNAUTHORIZED
         )
 
@@ -130,7 +130,7 @@ def logout(request):
     
     if not refresh_token:
         return Response(
-            {"detail": "Refresh token is required."},
+            {"detail": "Refresh Token é necessário, verifique-o e envie novamente."},
             status=status.HTTP_400_BAD_REQUEST
         )
     
@@ -143,14 +143,14 @@ def logout(request):
         refresh_token_doc = db['refresh_tokens'].find_one({"token": refresh_token})
         if not refresh_token_doc:
             return Response(
-                {"detail": "Invalid refresh token."},
+                {"detail": "Refresh Token não é válido, verifque-o"},
                 status=status.HTTP_401_UNAUTHORIZED
             )
         
         # Invalidate all user's tokens
         if invalidate_user_tokens(user_id):
             return Response(
-                {"detail": "Logout successful."},
+                {"detail": "Logout realizado com sucesso."},
                 status=status.HTTP_200_OK
             )
         else:
@@ -180,7 +180,7 @@ def user_profile(request):
         user = get_user_from_token(request.auth)
         if not user:
             return Response(
-                {"detail": "User not found."},
+                {"detail": "User usuário não encontrado ao tentar recuperar o user_profile."},
                 status=status.HTTP_404_NOT_FOUND
             )
             

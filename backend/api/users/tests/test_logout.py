@@ -31,7 +31,7 @@ class LogoutTest(UsersTestCase):
         }, format='json')
         
         self.assertEqual(logout_response.status_code, status.HTTP_200_OK)
-        self.assertEqual(logout_response.data['detail'], 'Logout successful.')
+        self.assertEqual(logout_response.data['detail'], 'Logout realizado com sucesso.')
         
         # Verifica que o refresh token foi invalidado
         refresh_response = self.client.post(self.refresh_url, {
@@ -63,7 +63,7 @@ class LogoutTest(UsersTestCase):
         self.client.credentials(HTTP_AUTHORIZATION=f'Bearer {access_token}')
         response = self.client.post(self.logout_url, {}, format='json')
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
-        self.assertEqual(response.data['detail'], 'Refresh token is required.')
+        self.assertEqual(response.data['detail'], 'Refresh Token é necessário, verifique-o e envie novamente.')
 
     def test_logout_invalid_token(self):
         """

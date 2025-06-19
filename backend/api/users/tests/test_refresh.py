@@ -46,7 +46,7 @@ class RefreshTokenTest(UsersTestCase):
         """
         response = self.client.post(self.url, {}, format='json')
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
-        self.assertEqual(response.data['detail'], 'Refresh token is required.')
+        self.assertEqual(response.data['detail'], 'Refresh Token é necessário, verifique-o e envie novamente.')
         
     def test_refresh_invalid_token(self):
         """
@@ -56,7 +56,7 @@ class RefreshTokenTest(UsersTestCase):
             'refresh_token': 'invalid_token'
         }, format='json')
         self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
-        self.assertEqual(response.data['detail'], 'Refresh token is invalid or expired.')
+        self.assertEqual(response.data['detail'], 'Refresh Token é inválido ou está expirado, verifique-o e tente novamente.')
     
     def test_refresh_expired_token(self):
         """
@@ -80,4 +80,4 @@ class RefreshTokenTest(UsersTestCase):
             }, format='json')
             
             self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
-            self.assertEqual(response.data['detail'], 'Refresh token is invalid or expired.')
+            self.assertEqual(response.data['detail'], 'Refresh Token é inválido ou está expirado, verifique-o e tente novamente.')
