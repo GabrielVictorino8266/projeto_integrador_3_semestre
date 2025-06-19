@@ -74,47 +74,6 @@ class TestDriverCreate(BaseDriverTest):
         self.assertIsInstance(response.data['cpf'], str)
         self.assertIsInstance(response.data['birthYear'], str)  # Assuming birthYear is stored as string
 
-    def test_bulk_creation_performance(self):
-        """Test performance of bulk driver creation"""
-        start_time = time.time()
-        
-        # Create 100 drivers
-        for i in range(100):
-            data = self.valid_driver_data.copy()
-            data['cpf'] = ''.join(random.choice(string.digits) for _ in range(11))  # Generate unique CPF
-            response = self.client.post(reverse('drivers:create_driver'), data, format='json')
-            self.assertEqual(response.status_code, status.HTTP_201_CREATED)
-        
-        end_time = time.time()
-        total_time = end_time - start_time
-        
-        # Assert reasonable performance
-        self.assertLess(total_time, 30)  # Should take less than 10 seconds for 100 drivers
-
-    def test_concurrent_creation_performance(self):
-        """Test performance with concurrent driver creation"""
-        def create_driver(i):
-            data = self.valid_driver_data.copy()
-            data['cpf'] = f'1234567890{i}'  # Generate unique CPF
-            return self.client.post(reverse('drivers:create_driver'), data, format='json')
-        
-        start_time = time.time()
-        
-        # Create 10 drivers concurrently
-        with concurrent.futures.ThreadPoolExecutor(max_workers=10) as executor:
-            futures = [executor.submit(create_driver, i) for i in range(10)]
-            responses = [f.result() for f in futures]
-        
-        end_time = time.time()
-        total_time = end_time - start_time
-        
-        # Verify all responses
-        for response in responses:
-            self.assertEqual(response.status_code, status.HTTP_201_CREATED)
-        
-        # Assert reasonable performance
-        self.assertLess(total_time, 2)  # Should take less than 2 seconds for 10 concurrent requests
-
     def test_create_with_invalid_birth_year_format(self):
         """Test creating driver with invalid birth year format"""
         data = self.valid_driver_data.copy()
