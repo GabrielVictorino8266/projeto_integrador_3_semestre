@@ -17,7 +17,7 @@ class RefreshTokenTest(UsersTestCase):
         with freeze_time("2025-06-15 08:00:00"):
             login_response = self.client.post(reverse('users:login'), {
                 'cpf': self.valid_user_data['cpf'],
-                'password': self.valid_user_data['password']
+                'password': self.plain_password
             }, format='json')
             self.assertEqual(login_response.status_code, status.HTTP_200_OK)
             
@@ -66,7 +66,7 @@ class RefreshTokenTest(UsersTestCase):
         with freeze_time("2025-06-15 08:00:00"):
             login_response = self.client.post(reverse('users:login'), {
                 'cpf': self.valid_user_data['cpf'],
-                'password': self.valid_user_data['password']
+                'password': self.plain_password
             }, format='json')
             self.assertEqual(login_response.status_code, status.HTTP_200_OK)
             

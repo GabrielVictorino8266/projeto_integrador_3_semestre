@@ -1,6 +1,7 @@
-from mongoengine import DateTimeField, Document, StringField, IntField
+from mongoengine import DateTimeField, Document, StringField, IntField, EmbeddedDocumentListField
 from .types import VehicleTypes, VehicleStatus
 import datetime
+from trips.models import Trip
 
 class Vehicle(Document):
     vehicleNumber = StringField(max_length=10, required=True)
@@ -12,5 +13,5 @@ class Vehicle(Document):
     warningKmLimit = IntField(min_value=0, required=True)
     deletedAt = DateTimeField(null=True)
     status = StringField(choices=VehicleStatus.values, default=VehicleStatus.ACTIVE)
-
+    trips = EmbeddedDocumentListField(Trip)
 

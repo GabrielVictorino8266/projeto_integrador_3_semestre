@@ -5,6 +5,7 @@ from mongoengine import connect, disconnect
 import mongomock
 import json
 import os
+from users.auth_services import get_hash_password
 
 @override_settings(
     MONGO_DATABASE_NAME='testdb',
@@ -36,7 +37,7 @@ class UsersTestCase(APITestCase):
         # Dados de usuário válido para testes
         self.valid_user_data = {
             "cpf": "12345678901",
-            "password": "senha123",
+            "password": "012000",
             "name": "Test User",
             "type": "Motorista",
             "phone": "11999999999",
@@ -48,6 +49,8 @@ class UsersTestCase(APITestCase):
         }
         
         # Criar usuário de teste
+        self.plain_password = self.valid_user_data['password']
+        self.valid_user_data['password'] = get_hash_password(self.plain_password)
         self.db = self.mock_connection.testdb
         self.db.users.insert_one(self.valid_user_data)
         

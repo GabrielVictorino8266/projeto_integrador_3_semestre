@@ -14,7 +14,7 @@ class LoginTest(UsersTestCase):
         """
         response = self.client.post(self.get_login_url(), {
             'cpf': self.valid_user_data['cpf'],
-            'password': self.valid_user_data['password']
+            'password': self.plain_password
         }, format='json')
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertIn('access_token', response.data)
