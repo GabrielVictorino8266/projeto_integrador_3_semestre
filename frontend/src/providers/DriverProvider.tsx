@@ -16,7 +16,6 @@ import { useNavigate } from "react-router-dom";
 
 const DriverProvider = ({ children }: IDefaultChildrenProp) => {
   const navigate = useNavigate();
-  const token = localStorage.getItem("token") || null;
   const { handleCloseModal } = useModal();
 
   const [driverList, setDriverList] = useState<Array<IDriver>>([]);
@@ -26,12 +25,6 @@ const DriverProvider = ({ children }: IDefaultChildrenProp) => {
   const [driverUnderEdition, setDriverUnderEdition] = useState<IDriver | null>(
     null
   );
-
-  const headersAuth = {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-  };
 
   const handleCreateDriver = async (newDriverData: ICreateDriverData) => {
     try {
@@ -54,7 +47,6 @@ const DriverProvider = ({ children }: IDefaultChildrenProp) => {
 
       if (driverListResponse.status === 200) {
         const driverListApi: Array<IDriver> = driverListResponse.data.items;
-        toast.success("Lista de motoristas carregada!");
         setDriverList(driverListApi);
         const quantity = driverListApi.length;
         const active = driverListApi.filter((driver) => driver.isActive).length;
@@ -75,7 +67,6 @@ const DriverProvider = ({ children }: IDefaultChildrenProp) => {
         `/drivers/${id}`
       );
 
-      console.log(driverResponse);
       if (driverResponse.status === 200) {
         const driverFound: IDriver = driverResponse.data;
         toast.success("Motorista encontrado");

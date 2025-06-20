@@ -1,6 +1,6 @@
 import { useDriver } from "@hooks/useDriver";
 import { useModal } from "@hooks/useModal";
-import { DarkBlueButton, DeleteButton } from "@styles/Buttons";
+import { BorderedButton, DeleteButton } from "@styles/Buttons";
 
 const DriverDelete = () => {
   const { modalContentID, handleCloseModal } = useModal();
@@ -9,10 +9,21 @@ const DriverDelete = () => {
   return (
     <>
       <p>
-        <strong>ID do usuário: {modalContentID}</strong>
+        <strong>
+          Tem certeza que deseja realizar a exclusão do motorista?
+        </strong>
       </p>
-      <p className="warningMessage">Esta ação não pode ser desfeita!</p>
+      <p className="warningMessage">
+        <strong>Esta ação não pode ser desfeita!</strong>
+      </p>
       <div className="modal_buttonsContainer">
+        <BorderedButton
+          onClick={() => {
+            handleCloseModal();
+          }}
+        >
+          Cancelar
+        </BorderedButton>
         <DeleteButton
           onClick={() => {
             deleteDriver(modalContentID!);
@@ -20,13 +31,6 @@ const DriverDelete = () => {
         >
           DELETAR
         </DeleteButton>
-        <DarkBlueButton
-          onClick={() => {
-            handleCloseModal();
-          }}
-        >
-          Cancelar
-        </DarkBlueButton>
       </div>
     </>
   );

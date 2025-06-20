@@ -3,15 +3,19 @@ import type { ReactNode } from "react";
 
 export interface IChildrenProp {
   children: ReactNode;
-  title: string
+  title: string;
+  icon: ReactNode;
 }
 
-const RegisterPageGeneric = ({ children, title }: IChildrenProp) => {
+const RegisterPageGeneric = ({ children, title, icon }: IChildrenProp) => {
   return (
     <>
       <StyledRegisterContainer>
         <div className={"title"}>
-          <h1>{title}</h1>
+          <h1>
+            <i>{icon}</i>
+            {title}
+          </h1>
         </div>
 
         <StyledRegisterFormContainer>{children}</StyledRegisterFormContainer>

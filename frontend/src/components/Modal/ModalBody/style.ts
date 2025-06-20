@@ -34,9 +34,9 @@ const ModalBodyStyled = styled.section`
     display: flex;
     flex-direction: row;
     width: 100%;
-    align-items: center;
+    align-items: end;
     gap: 16px;
-    justify-content: center;
+    justify-content: end;
   }
 
   form {

@@ -9,6 +9,7 @@ import { useEffect } from "react";
 import { StatusIcon } from "@components/Dashboard/Icons/StatusIcon";
 import { DashboardTable } from "@components/Dashboard/Table";
 import { ChartComponent, DoughnutChart } from "@components/Dashboard/Chart";
+import { FaUser } from "react-icons/fa";
 
 const DriverDashboard = () => {
   const { driverActive, driverInactive, driverQuantity, getDriverList } =
@@ -46,7 +47,10 @@ const DriverDashboard = () => {
     <>
       <div className="dashboardItems_container">
         <DashboardHeader>
-          <p>LISTAGEM DE MOTORISTAS</p>
+          <p>
+            <FaUser />
+            LISTAGEM DE MOTORISTAS
+          </p>
           <GoToDriverRegister to={"/dashboard/cadastrar-motorista"}>
             CADASTRAR
           </GoToDriverRegister>
@@ -58,7 +62,7 @@ const DriverDashboard = () => {
               <CardWithRightBorder>
                 <div className="card__values">
                   <p className="card__text">Total de motoristas</p>
-                  <p className="card__number">{driverQuantity}</p>
+                  <span className="card__number">{driverQuantity}</span>
                 </div>
               </CardWithRightBorder>
 
@@ -66,17 +70,17 @@ const DriverDashboard = () => {
                 <div className="card__values">
                   <p className="card__text">
                     <StatusIcon option={"blue"} />
+                    <span className="card__number">{driverActive}</span>
                     Motoristas Ativos
                   </p>
-                  <p className="card__number">{driverActive}</p>
                 </div>
 
                 <div className="card__values">
                   <p className="card__text">
                     <StatusIcon option={"red"} />
+                    <span className="card__number">{driverInactive}</span>
                     Motoristas Inativos
                   </p>
-                  <p className="card__number">{driverInactive}</p>
                 </div>
               </CardWithRightBorder>
 

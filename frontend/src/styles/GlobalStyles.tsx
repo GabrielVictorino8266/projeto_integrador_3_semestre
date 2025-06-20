@@ -29,9 +29,12 @@ export const GlobalStyles = () => (
         --color-grey-3: #212529;
         --color-grey-4: #121214;
 
+        --color-input-background: #f2f2f2;
+
         --border-radius-8: 8px;
         --border-radius-16: 16px;
         --border-radius-20: 20px;
+        --border-radius-24: 24px;
 
         --font-weight-400: 400;
         --font-weight-500: 500;
@@ -78,6 +81,11 @@ export const GlobalStyles = () => (
       input[type="number"]::-webkit-outer-spin-button {
         -webkit-appearance: none;
         margin: 0;
+      }
+
+      .headerIcon {
+        width: 2rem;
+        height: 2rem;
       }
     `}
   />

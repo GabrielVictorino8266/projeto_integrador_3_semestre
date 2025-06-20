@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 const genericButton = css`
   width: 200px;
   height: 48px;
-  border-radius: var(--border-radius-16);
+  border-radius: var(--border-radius-24);
   font-size: var(--font-size-20);
   font-weight: var(--font-weight-500);
   border: none;
@@ -23,6 +23,16 @@ const DeleteButton = styled(Button)`
 const DarkBlueButton = styled(Button)`
   background-color: var(--color-brand-1);
   color: var(--color-white);
+  transition: background-color 0.3s ease;
+
+  :hover {
+    background-color: var(--color-brand-2);
+  }
+`;
+
+const BorderedButton = styled(Button)`
+  border: 2px solid var(--color-brand-1);
+  background-color: transparent;
 `;
 
 const LinkStyled = styled(Link)`
@@ -32,6 +42,11 @@ const LinkStyled = styled(Link)`
   display: flex;
   align-items: center;
   justify-content: center;
+  transition: background-color 0.3s ease;
+
+  :hover {
+    background-color: var(--color-brand-2);
+  }
 `;
 
 const GoToDriverRegister = styled(LinkStyled)``;
@@ -52,6 +67,7 @@ export {
   Button,
   DeleteButton,
   DarkBlueButton,
+  BorderedButton,
   GoToDriverRegister,
   GoToDriverEdit,
   IconButton,
