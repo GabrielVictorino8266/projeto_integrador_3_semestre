@@ -24,6 +24,7 @@ const DarkBlueButton = styled(Button)`
   background-color: var(--color-brand-1);
   color: var(--color-white);
   transition: background-color 0.3s ease;
+  width: 18rem;
 
   :hover {
     background-color: var(--color-brand-2);

@@ -44,6 +44,7 @@ const StyledRegisterFormContainer = styled.div`
     align-items: center;
     justify-content: center;
     overflow: auto;
+    box-shadow: 8px 8px 16px rgba(0, 0, 0, 0.25);
   }
 
   .form__sendButton {
