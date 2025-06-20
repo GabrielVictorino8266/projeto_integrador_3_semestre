@@ -17,7 +17,7 @@ from datetime import timedelta
 from mongoengine import connect
 import os
 
-load_dotenv()
+load_dotenv(override=True)
 
 
 MONGO_URI = os.environ.get('MONGO_URI')
