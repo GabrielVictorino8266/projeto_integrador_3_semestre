@@ -33,11 +33,14 @@ def list_trips(request):
     page = params_serializer.validated_data['page']
     limit = params_serializer.validated_data['limit']
     destination = params_serializer.validated_data.get('destination')
+    status = params_serializer.validated_data.get('status')
 
     # Construir a query
     query = {'trips__deleted': False}
     if destination:
         query['trips__destination__icontains'] = destination
+    if status:
+        query['trips__status'] = status
     
     # Buscar os veículos que contêm viagens que atendem aos filtros
     vehicles = Vehicle.objects(**query)
@@ -48,6 +51,8 @@ def list_trips(request):
         trips = [t for t in vehicle.trips if not t.deleted]
         if destination:
             trips = [t for t in trips if destination.lower() in t.destination.lower()]
+        if status:
+            trips = [t for t in trips if t.status == status]
         all_trips.extend(trips)
     
     # Ordenar as viagens por data (mais recentes primeiro)

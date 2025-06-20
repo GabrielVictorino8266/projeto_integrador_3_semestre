@@ -7,6 +7,7 @@ class TripListParamsSerializer(serializers.Serializer):
     page = serializers.IntegerField(min_value=1, default=1)
     limit = serializers.IntegerField(min_value=1, max_value=100, default=10)
     destination = serializers.CharField(required=False, allow_blank=True)
+    status = serializers.CharField(required=False, allow_blank=True)
 
 class TripSerializer(EmbeddedDocumentSerializer):
     class Meta:
