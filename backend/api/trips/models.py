@@ -7,7 +7,7 @@ from bson import ObjectId
 
 class Trip(EmbeddedDocument):
     """Modelo de viagem."""
-    id = ObjectIdField(primary_key=True, default=ObjectId, unique=True, required=True)
+    id = ObjectIdField(primary_key=True, default=ObjectId, required=True)
     driverId = ObjectIdField(required=True)
     startDateTime = DateTimeField(required=True)
     endDateTime = DateTimeField(default=None)
