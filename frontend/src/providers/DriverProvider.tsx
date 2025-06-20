@@ -67,7 +67,6 @@ const DriverProvider = ({ children }: IDefaultChildrenProp) => {
         `/drivers/${id}`
       );
 
-      console.log(driverResponse);
       if (driverResponse.status === 200) {
         const driverFound: IDriver = driverResponse.data;
         toast.success("Motorista encontrado");

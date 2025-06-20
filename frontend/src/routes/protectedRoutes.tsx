@@ -16,7 +16,6 @@ const ProtectedRoutes = () => {
 
   useEffect(() => {
     verifyToken();
-    console.log("oi");
   }, []);
 
   const verifyToken = async () => {

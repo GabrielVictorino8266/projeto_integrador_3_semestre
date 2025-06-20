@@ -63,10 +63,7 @@ const DriverUpdate = () => {
     registerForm: IUpdateDriverData
   ) => {
     updateDriver(id!, registerForm);
-    console.log(registerForm);
   };
-
-  console.log(driverUnderEdition);
 
   return (
     <RegisterPageGeneric

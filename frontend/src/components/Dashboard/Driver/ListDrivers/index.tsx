@@ -9,7 +9,6 @@ import { useEffect } from "react";
 import { StatusIcon } from "@components/Dashboard/Icons/StatusIcon";
 import { DashboardTable } from "@components/Dashboard/Table";
 import { ChartComponent, DoughnutChart } from "@components/Dashboard/Chart";
-import { TbSteeringWheelFilled } from "react-icons/tb";
 import { FaUser } from "react-icons/fa";
 
 const DriverDashboard = () => {
