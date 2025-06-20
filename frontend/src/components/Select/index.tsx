@@ -3,7 +3,7 @@ import type { FieldError } from "react-hook-form";
 import { StyledSelectFieldSet } from "./styles";
 
 interface ICNHCategories {
-  value: string | boolean;
+  value: string;
   label: string;
 }
 

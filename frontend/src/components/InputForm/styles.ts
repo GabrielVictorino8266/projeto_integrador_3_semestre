@@ -13,7 +13,6 @@ const StyledInput = styled.fieldset<StyledInputContainerProps>`
 
   label {
     font-weight: var(--font-weight-700);
-    color: var(--color-white);
   }
 
   label,
@@ -28,7 +27,7 @@ const StyledInput = styled.fieldset<StyledInputContainerProps>`
     height: 3rem;
     padding: 8px 20px;
     background-color: ${(props) =>
-      props.error ? "var(--color-error-2)" : "var(--color-white)"};
+      props.error ? "var(--color-error-2)" : "var(--color-input-background)"};
   }
 
   .inputErrorMessage {

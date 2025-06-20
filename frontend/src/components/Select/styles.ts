@@ -2,45 +2,44 @@ import styled from "@emotion/styled";
 import type { FieldError } from "react-hook-form";
 
 interface StyledInputContainerProps {
-    error?: FieldError;
+  error?: FieldError;
 }
 const StyledSelectFieldSet = styled.fieldset<StyledInputContainerProps>`
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+
+  label {
+    font-weight: var(--font-weight-700);
+  }
+
+  label,
+  select {
     width: 100%;
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
+    font-family: var(--font-inter);
+    font-size: var(--font-size-20);
+  }
 
-    label {
-        font-weight: var(--font-weight-700);
-        color: var(--color-white);
-    }
+  select {
+    border-radius: var(--border-radius-16);
+    width: 100%;
+    height: 3rem;
+    padding: 8px 20px;
+    padding-right: 24px;
+    background-color: ${(props) =>
+      props.error ? "var(--color-error-2)" : "var(--color-input-background)"};
+  }
 
-    label,
-    select {
-        width: 100%;
-        font-family: var(--font-inter);
-        font-size: var(--font-size-20);
-    }
+  .inputErrorMessage {
+    color: var(--color-error);
+    font-weight: 500;
+    font-size: var(--font-size-12);
+  }
 
-    select {
-        border-radius: var(--border-radius-16);
-        width: 100%;
-        height: 3rem;
-        padding: 8px 20px;
-        padding-right: 24px;
-        background-color: ${(props) =>
-            props.error ? "var(--color-error-2)" : "var(--color-white)"};
-    }
-
-    .inputErrorMessage {
-        color: var(--color-error);
-        font-weight: 500;
-        font-size: var(--font-size-12);
-    }
-
-    p {
-        height: 12px;
-    }
+  p {
+    height: 12px;
+  }
 `;
 
 export { StyledSelectFieldSet };

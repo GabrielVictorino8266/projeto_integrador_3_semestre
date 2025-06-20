@@ -10,6 +10,7 @@ import { StatusIcon } from "@components/Dashboard/Icons/StatusIcon";
 import { DashboardTable } from "@components/Dashboard/Table";
 import { ChartComponent, DoughnutChart } from "@components/Dashboard/Chart";
 import { TbSteeringWheelFilled } from "react-icons/tb";
+import { FaUser } from "react-icons/fa";
 
 const DriverDashboard = () => {
   const { driverActive, driverInactive, driverQuantity, getDriverList } =
@@ -48,7 +49,7 @@ const DriverDashboard = () => {
       <div className="dashboardItems_container">
         <DashboardHeader>
           <p>
-            <TbSteeringWheelFilled />
+            <FaUser />
             LISTAGEM DE MOTORISTAS
           </p>
           <GoToDriverRegister to={"/dashboard/cadastrar-motorista"}>

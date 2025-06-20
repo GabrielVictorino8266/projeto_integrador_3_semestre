@@ -3,7 +3,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { driverRegisterFormSchema } from "@schemas/driverRegisterSchema";
 import { useForm, type FieldError, type SubmitHandler } from "react-hook-form";
 import { RegisterPageGeneric } from "@components/RegisterForm";
-import { Button } from "@styles/Buttons";
+import { DarkBlueButton } from "@styles/Buttons";
 import { SelectInputForm } from "@components/Select";
 import { cnhCategories } from "@utils/Selects/cnhCategories";
 import { ContainerInputs } from "./styles";
@@ -75,14 +75,14 @@ const DriverRegister = () => {
             {...register("licenseNumber")}
             error={errors.licenseNumber}
           />
-          <RegInput
+          {/*           <RegInput
             type={"password"}
             placeholder={"Digite a senha do motorista"}
             id={"password"}
             label={"Senha"}
             {...register("password")}
             error={errors.password}
-          />
+          /> */}
           <RegInput
             type={"number"}
             placeholder={"Ex: 5"}
@@ -117,7 +117,7 @@ const DriverRegister = () => {
           />
         </ContainerInputs>
         <div className="form__sendButton">
-          <Button>ENVIAR</Button>
+          <DarkBlueButton>Confirmar</DarkBlueButton>
         </div>
       </form>
     </RegisterPageGeneric>

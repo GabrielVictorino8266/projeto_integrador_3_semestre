@@ -35,7 +35,7 @@ const StyledRegisterFormContainer = styled.div`
 
   form {
     width: 100%;
-    background-color: var(--color-brand-1);
+    background-color: var(--color-white);
     padding: 32px 16px;
     border-radius: 16px;
     max-width: 900px;

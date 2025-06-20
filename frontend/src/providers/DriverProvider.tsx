@@ -47,7 +47,6 @@ const DriverProvider = ({ children }: IDefaultChildrenProp) => {
 
       if (driverListResponse.status === 200) {
         const driverListApi: Array<IDriver> = driverListResponse.data.items;
-        toast.success("Lista de motoristas carregada!");
         setDriverList(driverListApi);
         const quantity = driverListApi.length;
         const active = driverListApi.filter((driver) => driver.isActive).length;
