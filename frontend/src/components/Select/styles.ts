@@ -1,45 +1,58 @@
 import styled from "@emotion/styled";
-import type { FieldError } from "react-hook-form";
 
-interface StyledInputContainerProps {
-  error?: FieldError;
+interface FieldProps {
+  error?: unknown;
 }
-const StyledSelectFieldSet = styled.fieldset<StyledInputContainerProps>`
-  width: 100%;
+
+export const StyledSelectFieldSet = styled.fieldset<FieldProps>`
+  flex: 1;
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: 5px;
+  width: 100%;
+  margin-bottom: 2%;
+  border: none;
+  padding: 0;
+  position: relative;
 
   label {
+    font-size: 20px;
     font-weight: var(--font-weight-700);
   }
 
-  label,
   select {
     width: 100%;
-    font-family: var(--font-inter);
-    font-size: var(--font-size-20);
+    height: 56px;
+    border: none;
+    border-radius: 32px;
+    background: ${(p) => (p.error ? "var(--color-error-2)" : "#f2f2f2")};
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.25);
+    font-size: 20px;
+    font-weight: 700;
+    padding: 0 50px 0 24px;
+    color: #000;
+    cursor: pointer;
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    position: relative;
   }
 
-  select {
-    border-radius: var(--border-radius-16);
-    width: 100%;
-    height: 3rem;
-    padding: 8px 20px;
-    padding-right: 24px;
-    background-color: ${(props) =>
-      props.error ? "var(--color-error-2)" : "var(--color-input-background)"};
+  &::after {
+    content: "▼";
+    position: absolute;
+    right: 18px;
+    top: calc(50% + 8px);
+    transform: translateY(-50%);
+    pointer-events: none;
+    font-size: 16px;
+    color: #7b7b7b;
   }
 
   .inputErrorMessage {
+    font-size: var(--font-size-12);
     color: var(--color-error);
     font-weight: 500;
-    font-size: var(--font-size-12);
-  }
-
-  p {
-    height: 12px;
+    line-height: 80%;
   }
 `;
-
-export { StyledSelectFieldSet };

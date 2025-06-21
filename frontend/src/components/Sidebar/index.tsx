@@ -1,7 +1,6 @@
 import Logo from "@assets/IconeUniao.png";
 import Sair from "@assets/Sair.png";
 import User from "@assets/User.png";
-import DashboardIcon from "@mui/icons-material/Dashboard";
 import viagem from '@assets/Vector.png'
 import DirectionsBusIcon from "@mui/icons-material/DirectionsBus";
 import PersonIcon from "@mui/icons-material/Person";

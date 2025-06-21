@@ -102,6 +102,7 @@ export function TrisDashboard() {
                                 value={destination}
                                 onChange={(e) => setDestination(e.target.value)}
                                 lupa
+                                backgoround="#ffffff"
                             />
                         </InputWrapper>
 
