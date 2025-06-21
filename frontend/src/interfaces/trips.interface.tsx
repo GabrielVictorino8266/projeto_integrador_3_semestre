@@ -9,12 +9,14 @@ export interface Trip {
     initialKm: number;
     finalKm?: number;
     completed: boolean;
-    status: TripStatus
+    status: TripStatus;
     createdAt: string;
     updatedAt: string;
 }
 
-export type TripStatus =  "active" | "cancelled" | "in_progress";
+export type TripStatus = "active" | "cancelled" | "in_progress";
+
+// Responses '-'
 
 export interface TripsResponse {
     total: number;
@@ -29,4 +31,16 @@ export interface TripsResponse {
     from: number;
     to: number;
     items: Trip[];
+}
+
+export interface TripsIdResponse {
+    id: string;
+    driverName?: string | null;
+    startDateTime: string;
+    origin: string;
+    destination: string;
+    initialKm: number;
+    finalKm?: number | null;
+    completed: boolean;
+    status: "active" | "cancelled" | "in_progress";
 }

@@ -7,8 +7,6 @@ export async function VehiclesRegistration(
     id?: string
 ): Promise<boolean> {
     try {
-        console.log("Data", data);
-
         const newData = {
             ...data,
             manufacturingYear: Number(data.manufacturingYear),
@@ -33,7 +31,6 @@ export async function VehiclesRegistration(
         }
     } catch (error: any) {
         const status = error.resposne?.status;
-        console.log("Erro detalhado", error.response?.data);
 
         switch (status) {
             case 401:

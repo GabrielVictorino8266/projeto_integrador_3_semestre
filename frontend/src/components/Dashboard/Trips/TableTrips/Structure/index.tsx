@@ -34,16 +34,16 @@ export const TripListItem = ({ id,driverName, vehicle, destination, travelDate, 
                 </button>
             </td>
             <td>
-                <GoToDriverEdit to={`/veiculos/${id}`}>
+                <GoToDriverEdit to={""}>
                     <ActionIcon type="edit" />
                 </GoToDriverEdit>
 
                 <IconButton
                     onClick={() =>
                         handleOpenModal({
-                            modalType: "vehicleDeleteConfirmation",
+                            modalType: "tripDeleteConfirmation",
                             id,
-                        })
+                        })                        
                     }
                 >
                     <ActionIcon type="delete" />

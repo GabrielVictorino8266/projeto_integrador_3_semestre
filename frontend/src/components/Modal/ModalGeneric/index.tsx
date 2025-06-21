@@ -5,6 +5,7 @@ import type { IGenericModalProps } from "@interfaces/modal.interface";
 import { ModalHeader } from "../ModalHeader";
 import { DriverDelete } from "../DriverDelete";
 import { VehicleDeleted } from "../VehicleDelete";
+import { TripDeleted } from "../TripDelete";
 
 export const Modal = ({ type }: IGenericModalProps) => {
   const { modalRef } = useModal();
@@ -28,6 +29,13 @@ export const Modal = ({ type }: IGenericModalProps) => {
                   <VehicleDeleted />
                 </>
               );
+            case "tripDeleteConfirmation":
+              return(
+                <>
+                  <ModalHeader modalTitle="CONFIRMAR EXLUSÃO:"/>
+                  <TripDeleted />
+                </>
+              )
             default:
               return <></>;
           }

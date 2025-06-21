@@ -15,7 +15,6 @@ export async function logoutUser() {
         });
 
         if (response.status === 200) {
-            toast.success("Logout realizado com sucesso.");
             localStorage.clear()
         }
     } catch (error: any) {

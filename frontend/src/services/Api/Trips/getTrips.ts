@@ -13,7 +13,6 @@ export async function getTrips({ limit, page, status }: GetVehicleParams = {}): 
         const params: GetVehicleParams = { limit, page, status };
 
         const { data } = await api.get<TripsResponse>("/trips/list", { params });
-        console.log(data);
         return data;
     } catch (error: any) {
         const statusCode = error.response?.status;
