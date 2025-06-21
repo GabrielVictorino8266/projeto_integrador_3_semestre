@@ -9,8 +9,7 @@ interface Props {
 }
 
 export const VehicleList = ({ data }: Props) => {
-
-    const plateMask = new MaskLicensePlate()
+    const plateMask = new MaskLicensePlate();
 
     return (
         <StyledDriverList>

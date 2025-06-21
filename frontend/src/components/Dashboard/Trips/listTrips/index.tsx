@@ -1,105 +1,124 @@
-import { ContainerInputs } from "@components/Dashboard/Driver/CreateDriver/styles";
-import { RegInput } from "@components/InputForm";
-import { RegisterPageGeneric } from "@components/RegisterForm";
-import { SelectInputForm } from "@components/Select";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { tripCreateFormSchema } from "@schemas/tripCreateSchema";
+import { Container, ContainerFilter, ContainerList, InputWrapper } from "./styles";
+import { DashboardHeader } from "@components/Dashboard/Title";
+import { GoToDriverRegister } from "@styles/Buttons";
+import { CardWithRightBorder } from "@components/Dashboard/Cards";
+import { StatusIcon } from "@components/Dashboard/Icons/StatusIcon";
+import { DashboardTable } from "@components/Dashboard/Table";
+import { ChartComponent, DoughnutChart } from "@components/Dashboard/Chart";
+import { useVehicleStats } from "@hooks/Vehicle/useVehocleStats";
+import { Pagination } from "@components/Pagination";
+import { InputComponent } from "@components/Input";
+import { SelectStatus } from "@components/SelectFilter";
+import { FaBus } from "react-icons/fa";
+import { useTripList } from "@hooks/Trip/useTripsList";
+import { TripList } from "../TableTrips/Items";
+import { StatusTripsDash } from "@utils/Selects/SelectTripsStatusDash";
 
-const TripRegister = () => {
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm({
-    resolver: zodResolver(tripCreateFormSchema),
-  });
+export function TrisDashboard() {
+    const { total, active, inactive, maintenance } = useVehicleStats();
+    const {data, page, status, totalPages, setPage, setStatus } = useTripList()
 
-  // CRIAR OS TIPOS DO FORMULÁRIO E FUNCAO DE CADASTRO.
+    const datatochart = [
+        { value: active, label: "Concuiídas" },
+        { value: maintenance, label: "Programadas" },
+        { value: inactive, label: "Em andamento" },
+    ];
 
-  const submitDriver: SubmitHandler<ICreateDriverData> = async (
-    registerForm: ICreateDriverData
-  ) => {
-    // handleCreateDriver(registerForm);
-    console.log(registerForm);
-  };
+    const doughnutChartDriverData = {
+        labels: datatochart.map((item) => item.label),
+        datasets: [
+            {
+                label: "",
+                data: datatochart.map((item) => item.value),
+                backgroundColor: ["#28a745", "#ca8a29", "#17a2b8"],
+                borderWidth: 2,
+                borderRadius: 8,
+                borderSkipped: false,
+                cutout: "50%",
+                radius: "100%",
+            },
+        ],
+    };
 
-  return (
-    <RegisterPageGeneric title={"CADASTRO DE VIAGEM"}>
-      <form onSubmit={handleSubmit(submitDriver)}>
-        <ContainerInputs>
-          {/* <SelectInputForm
-            optionsArray={[]}
-            label={"Motorista"}
-            // {...register("licenseType")}
-            // error={errors.licenseType}
-          />
-          <RegInput
-            type={"text"}
-            placeholder={"123.456.789-00"}
-            id={"cpf"}
-            label={"CPF"}
-            {...register("cpf")}
-            error={errors.cpf}
-            value={cpfValue}
-            onChange={(event) => {
-              setcpfValue(cpfMask(event.target.value));
-            }}
-          />
-          <RegInput
-            type={"number"}
-            placeholder={"Numero da habilitação"}
-            id={"licenceNumber"}
-            label={"Número CNH"}
-            {...register("licenseNumber")}
-            error={errors.licenseNumber}
-          />
-          <RegInput
-            type={"password"}
-            placeholder={"Digite a senha do motorista"}
-            id={"password"}
-            label={"Senha"}
-            {...register("password")}
-            error={errors.password}
-          />
-          <RegInput
-            type={"number"}
-            placeholder={"Ex: 5"}
-            id={"performance"}
-            label={"Aproveitamento"}
-            {...register("performance", { valueAsNumber: true })}
-            error={errors.performance as FieldError}
-          />
-          <RegInput
-            type={"text"}
-            placeholder={"(XX) XXXXX-XXXX"}
-            id={"phone"}
-            label={"Telefone"}
-            {...register("phone")}
-            error={errors.phone}
-            value={phoneValue}
-            onChange={(event) => {
-              setPhoneValue(phoneMask(event.target.value));
-            }}
-          />
-          <RegInput
-            type={"text"}
-            placeholder={"Data de nascimento"}
-            id={"birthYear"}
-            label={"Data de nascimento"}
-            {...register("birthYear")}
-            error={errors.birthYear}
-            value={dateValue}
-            onChange={(event) => {
-              setdateValue(dateMask(event.target.value));
-            }}
-          /> */}
-        </ContainerInputs>
-        <div className="form__sendButton">
-          <Button>ENVIAR</Button>
+    return (
+        <div className="dashboardItems_container">
+            <DashboardHeader>
+                <p>
+                    <FaBus />
+                    LISTAGEM DE VEÍCULOS
+                </p>
+
+                <GoToDriverRegister to={"/veiculos"}>CADASTRAR</GoToDriverRegister>
+            </DashboardHeader>
+
+            <Container>
+                <section className="dashboard__details">
+                    <div className="cards__container">
+                        <CardWithRightBorder>
+                            <div className="card__values">
+                                <p className="card__text">Viagens agendadas</p>
+                                <p className="card__number">{total}</p>
+                            </div>
+                        </CardWithRightBorder>
+
+                        <CardWithRightBorder>
+                            <div className="card__values">
+                                <p className="card__text">
+                                    <StatusIcon option="green" />
+                                    <span className="card__number">{active}</span>
+                                    Viagens concluídas
+                                </p>
+                            </div>
+
+                            <div className="card__values">
+                                <p className="card__text">
+                                    <StatusIcon option="orange" />
+                                    <span className="card__number">{maintenance}</span>
+                                    Viagens programadas
+                                </p>
+                            </div>
+
+                            <div className="card__values">
+                                <p className="card__text">
+                                    <StatusIcon option="blue" />
+                                    <span className="card__number">{inactive}</span>
+                                    Viagens em andamento
+                                </p>
+                            </div>
+                        </CardWithRightBorder>
+
+                        <CardWithRightBorder>
+                            <p className="card__text">DISPONIBILIDADE</p>
+                            <ChartComponent>
+                                <DoughnutChart chartData={doughnutChartDriverData} />
+                            </ChartComponent>
+                        </CardWithRightBorder>
+                    </div>
+
+                    <ContainerFilter>
+                        <InputWrapper>
+                            <InputComponent placeholder="PESQUISAR POR PLACA.." lupa />
+                        </InputWrapper>
+
+                        <SelectStatus
+                            onChange={(select) => setStatus(select)}
+                            value={status}
+                            options={StatusTripsDash}
+                        />
+                    </ContainerFilter>
+
+                    <ContainerList>
+                        <DashboardTable
+                            title="LISTA DE VEÍCULOS"
+                            thTitles={["MOTORISTA", "VEÍCULO", "DESTINO", "DATA VIAGEM", "HORÁRIO SAÍDA","STATUS", "AÇÕES"]}
+                        >
+                            <TripList data={data} />
+                        </DashboardTable>
+                    </ContainerList>
+
+                    <Pagination totalPages={totalPages} current={page} onChange={(p: number) => setPage(p)} />
+                </section>
+            </Container>
         </div>
-      </form>
-    </RegisterPageGeneric>
-  );
-};
-
-export { TripRegister };
+    );
+}
