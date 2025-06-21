@@ -9,7 +9,7 @@ import { useVehicleStats } from "@hooks/Vehicle/useVehocleStats";
 import { Pagination } from "@components/Pagination";
 import { InputComponent } from "@components/Input";
 import { SelectStatus } from "@components/SelectFilter";
-import { FaBus } from "react-icons/fa";
+import  vivi  from '@assets/Viagem.png'
 import { useTripList } from "@hooks/Trip/useTripsList";
 import { TripList } from "../TableTrips/Items";
 import { StatusTripsDash } from "@utils/Selects/SelectTripsStatusDash";
@@ -44,8 +44,8 @@ export function TrisDashboard() {
         <div className="dashboardItems_container">
             <DashboardHeader>
                 <p>
-                    <FaBus />
-                    LISTAGEM DE VEÍCULOS
+                    <img src={vivi} alt="" />
+                    LISTAGEM DE VIAGENS
                 </p>
 
                 <GoToDriverRegister to={"/veiculos"}>CADASTRAR</GoToDriverRegister>
