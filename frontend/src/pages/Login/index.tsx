@@ -28,7 +28,7 @@ export function Login() {
         const response = await LoginRequest(data);
         if (response) {
             setTimeout(() => {
-                navigate("/dashboard");
+                navigate("/dashboard/veiculos");
             }, 2000);
         }
     };

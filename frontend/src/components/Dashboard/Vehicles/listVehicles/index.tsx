@@ -49,7 +49,7 @@ const VehicleDashboard = () => {
                     LISTAGEM DE VEÍCULOS
                 </p>
 
-                <GoToDriverRegister to={"/veiculos"}>CADASTRAR</GoToDriverRegister>
+                <GoToDriverRegister to={"/cadastrar-veiculo"}>CADASTRAR</GoToDriverRegister>
             </DashboardHeader>
 
             <Container>

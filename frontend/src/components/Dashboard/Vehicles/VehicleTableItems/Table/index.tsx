@@ -39,7 +39,7 @@ export const VehicleListItem = ({
                 </button>
             </td>
             <td>
-                <GoToDriverEdit to={`/veiculos/${id}`}>
+                <GoToDriverEdit to={`/atualizar-veiculo/${id}`}>
                     <ActionIcon type="edit" />
                 </GoToDriverEdit>
 
@@ -48,7 +48,6 @@ export const VehicleListItem = ({
                         handleOpenModal({
                             modalType: "vehicleDeleteConfirmation",
                             id,
-                            
                         })
                     }
                 >

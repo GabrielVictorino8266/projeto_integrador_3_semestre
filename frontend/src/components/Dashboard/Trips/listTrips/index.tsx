@@ -9,14 +9,14 @@ import { useVehicleStats } from "@hooks/Vehicle/useVehocleStats";
 import { Pagination } from "@components/Pagination";
 import { InputComponent } from "@components/Input";
 import { SelectStatus } from "@components/SelectFilter";
-import  vivi  from '@assets/Viagem.png'
+import vivi from "@assets/Viagem.png";
 import { useTripList } from "@hooks/Trip/useTripsList";
 import { TripList } from "../TableTrips/Items";
 import { StatusTripsDash } from "@utils/Selects/SelectTripsStatusDash";
 
 export function TrisDashboard() {
     const { total, active, inactive, maintenance } = useVehicleStats();
-    const { data, page, status, totalPages, destination , setPage, setStatus, setDestination } = useTripList();
+    const { data, page, status, totalPages, destination, setPage, setStatus, setDestination } = useTripList();
 
     const datatochart = [
         { value: active, label: "Concuiídas" },
@@ -48,7 +48,7 @@ export function TrisDashboard() {
                     LISTAGEM DE VIAGENS
                 </p>
 
-                <GoToDriverRegister to={"/veiculos"}>CADASTRAR</GoToDriverRegister>
+                <GoToDriverRegister to={""}>CADASTRAR</GoToDriverRegister>
             </DashboardHeader>
 
             <Container>
@@ -106,17 +106,21 @@ export function TrisDashboard() {
                             />
                         </InputWrapper>
 
-                        <SelectStatus
-                            onChange={(select) => setStatus("")}
-                            value={status}
-                            options={StatusTripsDash}
-                        />
+                        <SelectStatus onChange={(select) => setStatus("")} value={status} options={StatusTripsDash} />
                     </ContainerFilter>
 
                     <ContainerList>
                         <DashboardTable
                             title="LISTA DE VEÍCULOS"
-                            thTitles={["MOTORISTA","VEÍCULO","DESTINO", "DATA VIAGEM","HORÁRIO SAÍDA","STATUS", "AÇÕES" ]}
+                            thTitles={[
+                                "MOTORISTA",
+                                "VEÍCULO",
+                                "DESTINO",
+                                "DATA VIAGEM",
+                                "HORÁRIO SAÍDA",
+                                "STATUS",
+                                "AÇÕES",
+                            ]}
                         >
                             <TripList data={data} />
                         </DashboardTable>
