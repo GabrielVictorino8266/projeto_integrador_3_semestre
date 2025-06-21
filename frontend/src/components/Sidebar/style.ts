@@ -69,7 +69,7 @@ export const MenuItem = styled.li`
     transition: background 0.2s;
 
     &:hover {
-        background-color: #0d1d35;
+        background-color: #024c7c;
     }
 
     @media (max-width: 768px) {
