@@ -11,15 +11,7 @@ import type { DataProps } from "@schemas/LoginSchema";
 // Services
 import { LoginRequest } from "@services/Api/LoginRequest";
 // Estilos
-import {
-    Container,
-    LeftContainer,
-    RightContainer,
-    TitleDiv,
-    Links,
-    BotaoEntrar,
-    ConainerLift,
-} from "./Styles";
+import { Container, LeftContainer, RightContainer, TitleDiv, Links, BotaoEntrar, ConainerLift } from "./Styles";
 
 export function Login() {
     const navigate = useNavigate();
@@ -32,11 +24,11 @@ export function Login() {
         resolver: zodResolver(LoginSchema),
     });
 
-    const Submit = async (data: DataProps) => { 
-        const response = await LoginRequest(data)
-        if(response){
+    const Submit = async (data: DataProps) => {
+        const response = await LoginRequest(data);
+        if (response) {
             setTimeout(() => {
-                navigate("/dashboard")
+                navigate("/dashboard");
             }, 2000);
         }
     };
@@ -61,6 +53,7 @@ export function Login() {
                             placeholder="Digite seu CPF"
                             maxLength={14}
                             mask="cpf"
+                            colorLabel="white"
                             pessoa={true}
                             errorMessage={errors.cpf?.message}
                         />
@@ -73,6 +66,7 @@ export function Login() {
                             label="Senha"
                             placeholder="Digite sua senha"
                             cadeado={true}
+                            colorLabel="white"
                             errorMessage={errors.password?.message}
                         />
 

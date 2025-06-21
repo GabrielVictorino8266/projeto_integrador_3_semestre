@@ -10,16 +10,17 @@ type InputProps = InputHTMLAttributes<HTMLInputElement> & {
     cadeado?: boolean;
     pessoa?: boolean;
     lupa?: boolean;
+    colorLabel?: string,
     backgoround?: string,
 };
 
 export const InputComponent = forwardRef<HTMLInputElement, InputProps>(
-    ({ type = "text", name = "", label = "", errorMessage = "", mask, lupa, pessoa, cadeado, backgoround ,...props }, ref) => {
+    ({ type = "text", name = "", label = "", errorMessage = "", mask, lupa, pessoa, cadeado, backgoround, colorLabel ,...props }, ref) => {
         const InputId = useId();
 
         return (
             <div>
-                <ContainerInput cadeado={cadeado} pessoa={pessoa} lupa={lupa} error={errorMessage} backgroundColor={backgoround}>
+                <ContainerInput cadeado={cadeado} pessoa={pessoa} lupa={lupa} error={errorMessage} backgroundColor={backgoround} colorLabel={colorLabel}>
                     {label && <label htmlFor={InputId}>{label}</label>}
 
                     <input

@@ -9,6 +9,7 @@ interface ImageProps {
     lupa?: boolean;
     error?: string;
     backgroundColor?: string;
+    colorLabel?: string;
 }
 
 export const ContainerInput = styled.div<ImageProps>`
@@ -20,6 +21,7 @@ export const ContainerInput = styled.div<ImageProps>`
     margin-bottom: 2%;
 
     label {
+        color: ${(color) => (color.colorLabel ? color.colorLabel : "")};
         font-size: 20px;
         font-weight: var(--font-weight-700);
     }
