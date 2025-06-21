@@ -16,7 +16,7 @@ import { StatusTripsDash } from "@utils/Selects/SelectTripsStatusDash";
 
 export function TrisDashboard() {
     const { total, active, inactive, maintenance } = useVehicleStats();
-    const {data, page, status, totalPages, setPage, setStatus } = useTripList()
+    const { data, page, status, totalPages, destination , setPage, setStatus, setDestination } = useTripList();
 
     const datatochart = [
         { value: active, label: "Concuiídas" },
@@ -97,11 +97,16 @@ export function TrisDashboard() {
 
                     <ContainerFilter>
                         <InputWrapper>
-                            <InputComponent placeholder="PESQUISAR POR PLACA.." lupa />
+                            <InputComponent
+                                placeholder="FILTRAR POR DESTINO…"
+                                value={destination}
+                                onChange={(e) => setDestination(e.target.value)}
+                                lupa
+                            />
                         </InputWrapper>
 
                         <SelectStatus
-                            onChange={(select) => setStatus(select)}
+                            onChange={(select) => setStatus("")}
                             value={status}
                             options={StatusTripsDash}
                         />
@@ -110,7 +115,7 @@ export function TrisDashboard() {
                     <ContainerList>
                         <DashboardTable
                             title="LISTA DE VEÍCULOS"
-                            thTitles={["MOTORISTA", "VEÍCULO", "DESTINO", "DATA VIAGEM", "HORÁRIO SAÍDA","STATUS", "AÇÕES"]}
+                            thTitles={["MOTORISTA","VEÍCULO","DESTINO", "DATA VIAGEM","HORÁRIO SAÍDA","STATUS", "AÇÕES" ]}
                         >
                             <TripList data={data} />
                         </DashboardTable>

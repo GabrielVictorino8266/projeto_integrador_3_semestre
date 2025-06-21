@@ -6,11 +6,12 @@ export interface GetVehicleParams {
     page?: number;
     limit?: number;
     status?: number;
+    destination?: string
 }
 
-export async function getTrips({ limit, page, status }: GetVehicleParams = {}): Promise<TripsResponse | null> {
+export async function getTrips({ limit, page, status, destination}: GetVehicleParams = {}): Promise<TripsResponse | null> {
     try {
-        const params: GetVehicleParams = { limit, page, status };
+        const params: GetVehicleParams = { limit, page, status, destination };
 
         const { data } = await api.get<TripsResponse>("/trips/list", { params });
         return data;

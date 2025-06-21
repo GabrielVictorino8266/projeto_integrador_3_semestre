@@ -4,7 +4,6 @@ import { toast } from "react-toastify";
 export async function deleteTrip(id: string) {
     try {
         await api.delete(`/trips/delete/${id}`);
-        console.log(id)
         return true;
     } catch (error: any) {
         const statusCode = error?.response?.status;
