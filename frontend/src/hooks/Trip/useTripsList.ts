@@ -10,7 +10,7 @@ export function useTripList() {
     const [destination, setDestination] = useState("");
 
     async function fetchTrips() {
-        const res = await getTrips({ page, limit: 6, destination });
+        const res = await getTrips({ page, limit: 6, destination, status:status });
         setData(res?.items ?? []);
         setTotalPage(res?.last_page ?? 1);
     }
@@ -19,5 +19,5 @@ export function useTripList() {
         fetchTrips();
     }, [page, status, destination]);
 
-    return {data, page, status,destination,totalPages,setPage, setStatus, setDestination, refetchTrip: fetchTrips};
+    return { data, page, status, destination, totalPages, setPage, setStatus, setDestination, refetchTrip: fetchTrips };
 }

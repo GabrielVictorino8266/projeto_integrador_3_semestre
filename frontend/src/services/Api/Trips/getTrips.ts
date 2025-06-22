@@ -5,7 +5,7 @@ import { toast } from "react-toastify";
 export interface GetVehicleParams {
     page?: number;
     limit?: number;
-    status?: number;
+    status?: string;
     destination?: string
 }
 
