@@ -99,22 +99,30 @@ def list_trips(request):
 def get_trip(request, trip_id):
     """Get trip by id."""
     try:
+        # Validate trip_id format
+        try:
+            obj_id = ObjectId(trip_id)
+        except Exception:
+            raise ParseError('ID de viagem inválido')
+            
         # Busca o veículo que contém a viagem
-        vehicle = Vehicle.objects(trips__id=ObjectId(trip_id)).first()
+        vehicle = Vehicle.objects(trips__id=obj_id, **{'trips__deleted': False}).first()
+        
         if not vehicle:
             raise NotFound('Viagem não encontrada')
             
         # Encontra a viagem específica dentro do veículo
-        trip = next((t for t in vehicle.trips if not t.deleted and str(t.id) == trip_id), None)
-        if not trip:
+        trip = next((t for t in vehicle.trips if str(t.id) == trip_id), None)
+        
+        if not trip or trip.deleted:
             raise NotFound('Viagem não encontrada')
                 
-        if not trip:
-            raise NotFound('Viagem não encontrada')
-            
         return Response(TripListSerializerById(trip).data)
+    except NotFound as e:
+        raise
     except Exception as e:
-        raise NotFound('Erro ao buscar viagem')
+        print(f"Error getting trip {trip_id}: {str(e)}")
+        raise ParseError('Ocorreu um erro ao buscar a viagem')
 
 @api_view(['DELETE'])
 @authentication_classes([MongoJWTAuthentication])
