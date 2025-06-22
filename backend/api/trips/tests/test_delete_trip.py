@@ -21,7 +21,7 @@ class DeleteTripTest(TripsTestCase):
             initialKm=1000,
             finalKm=1100,
             completed=True,
-            status=TripStatus.ACTIVE
+            status=TripStatus.SCHEDULED
         )
         self.test_vehicle.trips.append(self.trip)
         self.test_vehicle.save()

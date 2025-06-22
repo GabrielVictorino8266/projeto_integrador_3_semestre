@@ -22,7 +22,7 @@ class ListTripsTest(TripsTestCase):
                 initialKm=1000 * (i + 1),
                 finalKm=1100 * (i + 1),
                 completed=True,
-                status=TripStatus.ACTIVE
+                status=TripStatus.SCHEDULED
             )
             self.test_vehicle.trips.append(trip)
             self.trips.append(trip)

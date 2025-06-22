@@ -1,6 +1,7 @@
 from django.db.models import TextChoices
 
 class TripStatus(TextChoices):
-    ACTIVE = "active", "Ativo"
+    SCHEDULED = "scheduled", "Programado"
     CANCELLED = "cancelled", "Cancelado"
-    IN_PROGRESS = "in_progress", "Em andamento"
+    IN_PROGRESS = "in_progress", "Em Andamento"
+    COMPLETED = "completed", "Concluído"

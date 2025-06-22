@@ -51,7 +51,7 @@ class TripsTestCase(MongoTestCase):
             'initialKm': 50000,
             'finalKm': 60000,
             'completed': True,
-            'status': TripStatus.ACTIVE
+            'status': TripStatus.SCHEDULED
         }
 
     def tearDown(self) -> None:
