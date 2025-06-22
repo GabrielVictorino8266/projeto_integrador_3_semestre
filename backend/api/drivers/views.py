@@ -27,6 +27,7 @@ class PaginationParamsSerializer(serializers.Serializer):
     page = serializers.IntegerField(min_value=1, required=False)
     limit = serializers.IntegerField(min_value=1, max_value=100, required=False, default=50)
     name = serializers.CharField(required=False)
+    isActive = serializers.BooleanField(required=False)
 
 
 @api_view(['GET'])
@@ -39,10 +40,14 @@ def list_drivers(request):
     page = serializer.validated_data.get('page')
     limit = serializer.validated_data.get('limit')
     name = serializer.validated_data.get('name')
+    isActive = serializer.validated_data.get('isActive')
+    print(isActive)
 
     filters = {'deleted': False}
     if name:
         filters['name__icontains'] = name
+    if isActive is not None:
+        filters['isActive'] = isActive
 
     pagination = Paginator(
         queryset=Driver.objects.filter(**filters),
