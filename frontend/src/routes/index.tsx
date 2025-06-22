@@ -8,34 +8,39 @@ import { DriverUpdate } from "@components/Dashboard/Driver/UpdateDriver";
 import DashboardLayout from "@pages/Dashboard/Layout";
 import { VehicleDashboard } from "@components/Dashboard/Vehicles/listVehicles";
 import { ProtectedRoutes } from "./protectedRoutes";
-import { TrisDashboard } from "@components/Dashboard/Trips/ListTrips";
+import { TrisDashboard } from "@components/Dashboard/Trips/listTrips";
+import { TripRegister } from "@components/Dashboard/Trips/RegisterTrip";
 
 const RoutesMain = () => (
-    <Routes>
-        <Route path="/login" element={<Login />} />
+  <Routes>
+    <Route path="/login" element={<Login />} />
 
-        <Route element={<ProtectedRoutes />}>
-            <Route path="/dashboard" element={<DashboardLayout />}>
-                <Route index element={<HomePage />} />
+    <Route element={<ProtectedRoutes />}>
+      <Route path="/dashboard" element={<DashboardLayout />}>
+        <Route index element={<HomePage />} />
 
-                {/* motoristas */}
-                <Route path="/dashboard/motoristas" element={<DriverDashboard />} />
-                <Route path="/dashboard/cadastrar-motorista" element={<DriverRegister />} />
-                <Route path="/dashboard/motorista/:id" element={<DriverUpdate />} />
+        {/* motoristas */}
+        <Route path="/dashboard/motoristas" element={<DriverDashboard />} />
+        <Route
+          path="/dashboard/cadastrar-motorista"
+          element={<DriverRegister />}
+        />
+        <Route path="/dashboard/motorista/:id" element={<DriverUpdate />} />
 
-                {/* veículos */}
-                <Route path="/dashboard/veiculos" element={<VehicleDashboard />} />
+        {/* veículos */}
+        <Route path="/dashboard/veiculos" element={<VehicleDashboard />} />
 
-                {/* viagens */}
-                <Route path="/dashboard/viagens" element={<TrisDashboard />} />
-            </Route>
+        {/* viagens */}
+        <Route path="/dashboard/viagens" element={<TrisDashboard />} />
+        <Route path="/dashboard/cadastrar-viagem" element={<TripRegister />} />
+      </Route>
 
-            {/* cadastro / atualizar */}
+      {/* cadastro / atualizar */}
 
-            <Route path="/cadastrar-veiculo" element={<CadastroVeiculo />} />
-            <Route path="/atualizar-veiculo/:id" element={<CadastroVeiculo />} />
-        </Route>
-    </Routes>
+      <Route path="/cadastrar-veiculo" element={<CadastroVeiculo />} />
+      <Route path="/atualizar-veiculo/:id" element={<CadastroVeiculo />} />
+    </Route>
+  </Routes>
 );
 
 export default RoutesMain;

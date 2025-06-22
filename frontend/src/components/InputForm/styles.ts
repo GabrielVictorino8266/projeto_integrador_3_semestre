@@ -22,9 +22,10 @@ const StyledInput = styled.fieldset<StyledInputContainerProps>`
   }
 
   input {
-    border-radius: var(--border-radius-16);
+    border-radius: var(--border-radius-32);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.25);
     width: 100%;
-    height: 3rem;
+    height: 52px; // mudar para rem.
     padding: 8px 20px;
     background-color: ${(props) =>
       props.error ? "var(--color-error-2)" : "var(--color-input-background)"};

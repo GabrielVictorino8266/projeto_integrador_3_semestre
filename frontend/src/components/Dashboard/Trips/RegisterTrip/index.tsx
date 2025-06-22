@@ -1,105 +1,129 @@
-// import { ContainerInputs } from "@components/Dashboard/Driver/CreateDriver/styles";
-// import { RegInput } from "@components/InputForm";
-// import { RegisterPageGeneric } from "@components/RegisterForm";
-// import { SelectInputForm } from "@components/Select";
-// import { zodResolver } from "@hookform/resolvers/zod";
-// import { tripCreateFormSchema } from "@schemas/tripCreateSchema";
+import { ContainerInputs } from "@components/Dashboard/Driver/CreateDriver/styles";
+import { RegInput } from "@components/InputForm";
+import { RegisterPageGeneric } from "@components/RegisterForm";
+import { SelectInputForm } from "@components/Select";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useDriver } from "@hooks/useDriver";
+import { useTrip } from "@hooks/useTrip";
+import type { ICreateTripData } from "@interfaces/trips.interface";
+import { type IVehicle } from "@interfaces/vehicles.interface";
+import { tripCreateFormSchema } from "@schemas/tripCreateSchema";
+import { api } from "@services/api";
+import { DarkBlueButton } from "@styles/Buttons";
+import { dateMask } from "@utils/reserve";
+import { TripStatus } from "@utils/Selects/tripStatus";
+import { useEffect, useState } from "react";
+import { useForm, type FieldError, type SubmitHandler } from "react-hook-form";
+import { GrMapLocation } from "react-icons/gr";
 
-// const TripRegister = () => {
-//   const {
-//     register,
-//     handleSubmit,
-//     formState: { errors },
-//   } = useForm({
-//     resolver: zodResolver(tripCreateFormSchema),
-//   });
+const TripRegister = () => {
+  const { getDriverList, driverList } = useDriver();
+  const { createTrip } = useTrip();
 
-//   // CRIAR OS TIPOS DO FORMULÁRIO E FUNCAO DE CADASTRO.
+  const vehiclesList = async () => {
+    const res = await api.get("/vehicles/");
 
-//   const submitDriver: SubmitHandler<ICreateDriverData> = async (
-//     registerForm: ICreateDriverData
-//   ) => {
-//     // handleCreateDriver(registerForm);
-//     console.log(registerForm);
-//   };
+    if (res.status === 200) {
+      setVehicleListData(res.data.items);
+    }
+  };
 
-//   return (
-//     <RegisterPageGeneric title={"CADASTRO DE VIAGEM"}>
-//       <form onSubmit={handleSubmit(submitDriver)}>
-//         <ContainerInputs>
-//           {/* <SelectInputForm
-//             optionsArray={[]}
-//             label={"Motorista"}
-//             // {...register("licenseType")}
-//             // error={errors.licenseType}
-//           />
-//           <RegInput
-//             type={"text"}
-//             placeholder={"123.456.789-00"}
-//             id={"cpf"}
-//             label={"CPF"}
-//             {...register("cpf")}
-//             error={errors.cpf}
-//             value={cpfValue}
-//             onChange={(event) => {
-//               setcpfValue(cpfMask(event.target.value));
-//             }}
-//           />
-//           <RegInput
-//             type={"number"}
-//             placeholder={"Numero da habilitação"}
-//             id={"licenceNumber"}
-//             label={"Número CNH"}
-//             {...register("licenseNumber")}
-//             error={errors.licenseNumber}
-//           />
-//           <RegInput
-//             type={"password"}
-//             placeholder={"Digite a senha do motorista"}
-//             id={"password"}
-//             label={"Senha"}
-//             {...register("password")}
-//             error={errors.password}
-//           />
-//           <RegInput
-//             type={"number"}
-//             placeholder={"Ex: 5"}
-//             id={"performance"}
-//             label={"Aproveitamento"}
-//             {...register("performance", { valueAsNumber: true })}
-//             error={errors.performance as FieldError}
-//           />
-//           <RegInput
-//             type={"text"}
-//             placeholder={"(XX) XXXXX-XXXX"}
-//             id={"phone"}
-//             label={"Telefone"}
-//             {...register("phone")}
-//             error={errors.phone}
-//             value={phoneValue}
-//             onChange={(event) => {
-//               setPhoneValue(phoneMask(event.target.value));
-//             }}
-//           />
-//           <RegInput
-//             type={"text"}
-//             placeholder={"Data de nascimento"}
-//             id={"birthYear"}
-//             label={"Data de nascimento"}
-//             {...register("birthYear")}
-//             error={errors.birthYear}
-//             value={dateValue}
-//             onChange={(event) => {
-//               setdateValue(dateMask(event.target.value));
-//             }}
-//           /> */}
-//         </ContainerInputs>
-//         <div className="form__sendButton">
-//           <Button>ENVIAR</Button>
-//         </div>
-//       </form>
-//     </RegisterPageGeneric>
-//   );
-// };
+  const [vehicleListData, setVehicleListData] = useState<Array<IVehicle>>([]);
 
-// export { TripRegister };
+  const [tripDateValue, setTripDateValue] = useState("");
+
+  const driverListSelect = driverList.map((driver) => ({
+    value: driver.id,
+    label: driver.name,
+  }));
+
+  const vehivleListSelect = vehicleListData.map((vehicle) => ({
+    value: vehicle.id,
+    label: vehicle.licensePlate,
+  }));
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({
+    resolver: zodResolver(tripCreateFormSchema),
+  });
+
+  const submitDriver: SubmitHandler<ICreateTripData> = async (
+    registerForm: ICreateTripData
+  ) => {
+    createTrip();
+    console.log(registerForm);
+  };
+
+  useEffect(() => {
+    if (driverList.length === 0) {
+      getDriverList();
+      vehiclesList();
+    }
+  });
+
+  return (
+    <RegisterPageGeneric icon={<GrMapLocation />} title={"CADASTRO DE VIAGEM"}>
+      <form onSubmit={handleSubmit(submitDriver)}>
+        <ContainerInputs>
+          <SelectInputForm
+            optionsArray={driverListSelect}
+            label={"Motorista"}
+            {...register("driverId")}
+            error={errors.driverId}
+          />
+          <RegInput
+            type={"text"}
+            placeholder={"DD/MM/AAAA"}
+            id={"tripDate"}
+            label={"Data da viagem"}
+            {...register("tripDate")}
+            error={errors.tripDate}
+            value={tripDateValue}
+            onChange={(event) => {
+              setTripDateValue(dateMask(event.target.value));
+            }}
+          />
+          <SelectInputForm
+            optionsArray={vehivleListSelect}
+            id={"vehicle"}
+            label={"Veículo"}
+            {...register("vehicleId")}
+            error={errors.vehicleId}
+          />
+          <RegInput
+            type={"time"}
+            step={60}
+            placeholder={"Digite a senha do motorista"}
+            id={"tripHour"}
+            label={"Senha"}
+            {...register("tripDate")}
+            error={errors.startDateTime}
+          />
+          <RegInput
+            type={"text"}
+            placeholder={"São Paulo"}
+            id={"destination"}
+            label={"Destino"}
+            {...register("destination")}
+            error={errors.destination as FieldError}
+          />
+          <SelectInputForm
+            optionsArray={TripStatus}
+            id={"tripStatus"}
+            label={"Status"}
+            {...register("status")}
+            error={errors.status}
+          />
+        </ContainerInputs>
+        <div className="form__sendButton">
+          <DarkBlueButton>ENVIAR</DarkBlueButton>
+        </div>
+      </form>
+    </RegisterPageGeneric>
+  );
+};
+
+export { TripRegister };

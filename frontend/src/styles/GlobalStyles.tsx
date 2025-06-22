@@ -35,6 +35,7 @@ export const GlobalStyles = () => (
         --border-radius-16: 16px;
         --border-radius-20: 20px;
         --border-radius-24: 24px;
+        --border-radius-32: 32px;
 
         --font-weight-400: 400;
         --font-weight-500: 500;

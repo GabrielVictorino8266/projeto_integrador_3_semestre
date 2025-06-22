@@ -1,4 +1,9 @@
-import { Container, ContainerFilter, ContainerList, InputWrapper } from "./styles";
+import {
+  Container,
+  ContainerFilter,
+  ContainerList,
+  InputWrapper,
+} from "./styles";
 import { DashboardHeader } from "@components/Dashboard/Title";
 import { GoToDriverRegister } from "@styles/Buttons";
 import { CardWithRightBorder } from "@components/Dashboard/Cards";
@@ -15,120 +20,139 @@ import { StatusTripsDash } from "@utils/Selects/SelectTripsStatusDash";
 import { useTripsStats } from "@hooks/Trip/useTripsStats";
 
 export function TrisDashboard() {
-    const { total, completed, inProgress, scheduled } = useTripsStats();
-    const { data, page, status, totalPages, destination, setPage, setStatus, setDestination } = useTripList();
+  const { total, completed, inProgress, scheduled } = useTripsStats();
+  const {
+    data,
+    page,
+    status,
+    totalPages,
+    destination,
+    setPage,
+    setStatus,
+    setDestination,
+  } = useTripList();
 
-    const datatochart = [
-        { value: completed, label: "Concuiídas" },
-        { value: scheduled, label: "Programadas" },
-        { value: inProgress, label: "Em andamento" },
-    ];
+  const datatochart = [
+    { value: completed, label: "Concuiídas" },
+    { value: scheduled, label: "Programadas" },
+    { value: inProgress, label: "Em andamento" },
+  ];
 
-    const doughnutChartDriverData = {
-        labels: datatochart.map((item) => item.label),
-        datasets: [
-            {
-                label: "",
-                data: datatochart.map((item) => item.value),
-                backgroundColor: ["#15670a", "#0073e6", "#b31010"],
-                borderWidth: 2,
-                borderRadius: 8,
-                borderSkipped: false,
-                cutout: "50%",
-                radius: "100%",
-            },
-        ],
-    };
+  const doughnutChartDriverData = {
+    labels: datatochart.map((item) => item.label),
+    datasets: [
+      {
+        label: "",
+        data: datatochart.map((item) => item.value),
+        backgroundColor: ["#15670a", "#0073e6", "#b31010"],
+        borderWidth: 2,
+        borderRadius: 8,
+        borderSkipped: false,
+        cutout: "50%",
+        radius: "100%",
+      },
+    ],
+  };
 
-    return (
-        <div className="dashboardItems_container">
-            <DashboardHeader>
-                <p>
-                    <img src={vivi} alt="" />
-                    LISTAGEM DE VIAGENS
+  return (
+    <div className="dashboardItems_container">
+      <DashboardHeader>
+        <p>
+          <img src={vivi} alt="" />
+          LISTAGEM DE VIAGENS
+        </p>
+
+        <GoToDriverRegister to={"/dashboard/cadastrar-viagem"}>
+          CADASTRAR
+        </GoToDriverRegister>
+      </DashboardHeader>
+
+      <Container>
+        <section className="dashboard__details">
+          <div className="cards__container">
+            <CardWithRightBorder>
+              <div className="card__values">
+                <p className="card__text">Viagens agendadas</p>
+                <p className="card__number">{total}</p>
+              </div>
+            </CardWithRightBorder>
+
+            <CardWithRightBorder>
+              <div className="card__values">
+                <p className="card__text">
+                  <StatusIcon option="green" />
+                  <span className="card__number">{completed}</span>
+                  Viagens concluídas
                 </p>
+              </div>
 
-                <GoToDriverRegister to={""}>CADASTRAR</GoToDriverRegister>
-            </DashboardHeader>
+              <div className="card__values">
+                <p className="card__text">
+                  <StatusIcon option="blue" />
+                  <span className="card__number">{scheduled}</span>
+                  Viagens programadas
+                </p>
+              </div>
 
-            <Container>
-                <section className="dashboard__details">
-                    <div className="cards__container">
-                        <CardWithRightBorder>
-                            <div className="card__values">
-                                <p className="card__text">Viagens agendadas</p>
-                                <p className="card__number">{total}</p>
-                            </div>
-                        </CardWithRightBorder>
+              <div className="card__values">
+                <p className="card__text">
+                  <StatusIcon option="red" />
+                  <span className="card__number">{inProgress}</span>
+                  Viagens em andamento
+                </p>
+              </div>
+            </CardWithRightBorder>
 
-                        <CardWithRightBorder>
-                            <div className="card__values">
-                                <p className="card__text">
-                                    <StatusIcon option="green" />
-                                    <span className="card__number">{completed}</span>
-                                    Viagens concluídas
-                                </p>
-                            </div>
+            <CardWithRightBorder>
+              <p className="card__text">DISPONIBILIDADE</p>
+              <ChartComponent>
+                <DoughnutChart chartData={doughnutChartDriverData} />
+              </ChartComponent>
+            </CardWithRightBorder>
+          </div>
 
-                            <div className="card__values">
-                                <p className="card__text">
-                                    <StatusIcon option="blue" />
-                                    <span className="card__number">{scheduled}</span>
-                                    Viagens programadas
-                                </p>
-                            </div>
+          <ContainerFilter>
+            <InputWrapper>
+              <InputComponent
+                placeholder="FILTRAR POR DESTINO…"
+                value={destination}
+                onChange={(e) => setDestination(e.target.value)}
+                lupa
+                backgoround="#ffffff"
+              />
+            </InputWrapper>
 
-                            <div className="card__values">
-                                <p className="card__text">
-                                    <StatusIcon option="red" />
-                                    <span className="card__number">{inProgress}</span>
-                                    Viagens em andamento
-                                </p>
-                            </div>
-                        </CardWithRightBorder>
+            <SelectStatus
+              onChange={(select) => setStatus(select ?? "")}
+              value={status}
+              options={StatusTripsDash}
+            />
+          </ContainerFilter>
 
-                        <CardWithRightBorder>
-                            <p className="card__text">DISPONIBILIDADE</p>
-                            <ChartComponent>
-                                <DoughnutChart chartData={doughnutChartDriverData} />
-                            </ChartComponent>
-                        </CardWithRightBorder>
-                    </div>
+          <ContainerList>
+            <DashboardTable
+              title="LISTA DE VEÍCULOS"
+              thTitles={[
+                "MOTORISTA",
+                "VEÍCULO",
+                "DESTINO",
+                "DATA VIAGEM",
+                "HORÁRIO SAÍDA",
+                "STATUS",
+                "AÇÕES",
+              ]}
+            >
+              <TripList data={data} />
+            </DashboardTable>
+          </ContainerList>
 
-                    <ContainerFilter>
-                        <InputWrapper>
-                            <InputComponent
-                                placeholder="FILTRAR POR DESTINO…"
-                                value={destination}
-                                onChange={(e) => setDestination(e.target.value) }
-                                lupa
-                                backgoround="#ffffff"
-                            />
-                        </InputWrapper>
-
-                        <SelectStatus onChange={(select) => setStatus(select ?? "")} value={status} options={StatusTripsDash} />
-                    </ContainerFilter>
-
-                    <ContainerList>
-                        <DashboardTable
-                            title="LISTA DE VEÍCULOS"
-                            thTitles={[
-                                "MOTORISTA",
-                                "VEÍCULO",
-                                "DESTINO",
-                                "DATA VIAGEM",
-                                "HORÁRIO SAÍDA",
-                                "STATUS",
-                                "AÇÕES",
-                            ]}
-                        >
-                            <TripList data={data} />
-                        </DashboardTable>
-                    </ContainerList>
-
-                    <Pagination totalPages={totalPages} current={page} onChange={(p: number) => setPage(p)} />
-                </section>
-            </Container>
-        </div>
-    );
+          <Pagination
+            totalPages={totalPages}
+            current={page}
+            onChange={(p: number) => setPage(p)}
+          />
+        </section>
+      </Container>
+    </div>
+  );
 }
