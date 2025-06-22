@@ -15,7 +15,7 @@ class Trip(EmbeddedDocument):
     destination = StringField(required=True)
     initialKm = FloatField(min_value=0, required=True)
     finalKm = FloatField(min_value=0, default=None)
-    completed = BooleanField(required=True, default=False)
+    completed = BooleanField(default=False)
     deleted = BooleanField(default=False)
     status = StringField(choices=TripStatus.values, required=True, default=TripStatus.ACTIVE)
     createdAt = DateTimeField(required=True, default=datetime.now(timezone.utc))
