@@ -41,6 +41,8 @@ def list_vehicles(request):
     filters = {}
     if status:
         filters['status__in'] = status
+    else:
+        filters['status__nin'] = [VehicleStatus.INACTIVE]
     if licensePlate:
         filters['licensePlate__icontains'] = licensePlate
 
