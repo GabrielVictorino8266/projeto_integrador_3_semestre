@@ -13,5 +13,5 @@ class Vehicle(Document):
     warningKmLimit = IntField(min_value=0, required=True)
     deletedAt = DateTimeField(null=True)
     status = StringField(choices=VehicleStatus.values, default=VehicleStatus.ACTIVE)
-    trips = EmbeddedDocumentListField(Trip)
+    trips = EmbeddedDocumentListField(Trip,default=[])
 
