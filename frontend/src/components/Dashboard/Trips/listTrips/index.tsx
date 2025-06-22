@@ -5,7 +5,6 @@ import { CardWithRightBorder } from "@components/Dashboard/Cards";
 import { StatusIcon } from "@components/Dashboard/Icons/StatusIcon";
 import { DashboardTable } from "@components/Dashboard/Table";
 import { ChartComponent, DoughnutChart } from "@components/Dashboard/Chart";
-import { useVehicleStats } from "@hooks/Vehicle/useVehocleStats";
 import { Pagination } from "@components/Pagination";
 import { InputComponent } from "@components/Input";
 import { SelectStatus } from "@components/SelectFilter";
@@ -13,15 +12,16 @@ import vivi from "@assets/Viagem.png";
 import { useTripList } from "@hooks/Trip/useTripsList";
 import { TripList } from "../TableTrips/Items";
 import { StatusTripsDash } from "@utils/Selects/SelectTripsStatusDash";
+import { useTripsStats } from "@hooks/Trip/useTripsStats";
 
 export function TrisDashboard() {
-    const { total, active, inactive, maintenance } = useVehicleStats();
+    const { total, completed, inProgress, scheduled } = useTripsStats();
     const { data, page, status, totalPages, destination, setPage, setStatus, setDestination } = useTripList();
 
     const datatochart = [
-        { value: active, label: "Concuiídas" },
-        { value: maintenance, label: "Programadas" },
-        { value: inactive, label: "Em andamento" },
+        { value: completed, label: "Concuiídas" },
+        { value: scheduled, label: "Programadas" },
+        { value: inProgress, label: "Em andamento" },
     ];
 
     const doughnutChartDriverData = {
@@ -30,7 +30,7 @@ export function TrisDashboard() {
             {
                 label: "",
                 data: datatochart.map((item) => item.value),
-                backgroundColor: ["#28a745", "#ca8a29", "#17a2b8"],
+                backgroundColor: ["#15670a", "#0073e6", "#b31010"],
                 borderWidth: 2,
                 borderRadius: 8,
                 borderSkipped: false,
@@ -65,23 +65,23 @@ export function TrisDashboard() {
                             <div className="card__values">
                                 <p className="card__text">
                                     <StatusIcon option="green" />
-                                    <span className="card__number">{active}</span>
+                                    <span className="card__number">{completed}</span>
                                     Viagens concluídas
                                 </p>
                             </div>
 
                             <div className="card__values">
                                 <p className="card__text">
-                                    <StatusIcon option="orange" />
-                                    <span className="card__number">{maintenance}</span>
+                                    <StatusIcon option="blue" />
+                                    <span className="card__number">{scheduled}</span>
                                     Viagens programadas
                                 </p>
                             </div>
 
                             <div className="card__values">
                                 <p className="card__text">
-                                    <StatusIcon option="blue" />
-                                    <span className="card__number">{inactive}</span>
+                                    <StatusIcon option="red" />
+                                    <span className="card__number">{inProgress}</span>
                                     Viagens em andamento
                                 </p>
                             </div>
@@ -100,13 +100,13 @@ export function TrisDashboard() {
                             <InputComponent
                                 placeholder="FILTRAR POR DESTINO…"
                                 value={destination}
-                                onChange={(e) => setDestination(e.target.value)}
+                                onChange={(e) => setDestination(e.target.value) }
                                 lupa
                                 backgoround="#ffffff"
                             />
                         </InputWrapper>
 
-                        <SelectStatus onChange={(select) => setStatus("")} value={status} options={StatusTripsDash} />
+                        <SelectStatus onChange={(select) => setStatus(select ?? "")} value={status} options={StatusTripsDash} />
                     </ContainerFilter>
 
                     <ContainerList>

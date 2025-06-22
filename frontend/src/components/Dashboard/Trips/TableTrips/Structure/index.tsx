@@ -19,7 +19,7 @@ interface TripsItems {
 export const TripListItem = ({ id,driverName, vehicle, destination, travelDate, departureTime, status }: TripsItems) => {
     const { handleOpenModal } = useModal();
 
-    const iconOption = status === "in_progress" ? "blueTrip" : status === "active" ? "blueTrip" : "yallow";
+    const iconOption = status === "in_progress" ? "red" : status === "completed" ? "green" : "blue";
 
     return (
         <StyledTableRow>

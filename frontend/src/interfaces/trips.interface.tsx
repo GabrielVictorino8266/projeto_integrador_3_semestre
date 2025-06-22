@@ -3,6 +3,7 @@ export interface Trip {
     driverId: string;
     driverName?: string;
     startDateTime: string;
+    vehicleLicensePlate: string;
     endDateTime?: string;
     origin: string;
     destination: string;
@@ -14,7 +15,7 @@ export interface Trip {
     updatedAt: string;
 }
 
-export type TripStatus = "active" | "cancelled" | "in_progress";
+export type TripStatus = "completed" | "in_progress" | "scheduled";
 
 // Responses '-'
 
@@ -36,11 +37,12 @@ export interface TripsResponse {
 export interface TripsIdResponse {
     id: string;
     driverName?: string | null;
+    vehicleLicensePlate: string;
     startDateTime: string;
     origin: string;
     destination: string;
     initialKm: number;
     finalKm?: number | null;
     completed: boolean;
-    status: "active" | "cancelled" | "in_progress";
+    status: TripStatus;
 }
