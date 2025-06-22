@@ -6,7 +6,7 @@ export async function deleteTrip(id: string) {
         await api.delete(`/trips/delete/${id}`);
         return true;
     } catch (error: any) {
-        const statusCode = error?.response?.status;
+        const statusCode = error?.response?.status; 
 
         switch (statusCode) {
             case 400:

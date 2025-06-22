@@ -11,8 +11,8 @@ export function useTripsStats() {
         const [all, conc, sched, prog] = await Promise.all([
             getTrips({ limit: 1 }),
             getTrips({ status: "completed", limit: 1 }),
-            getTrips({ status: "in_progress", limit: 1 }),
             getTrips({ status: "scheduled", limit: 1 }),
+            getTrips({ status: "in_progress", limit: 1 }),
         ]);
         setTotal(all?.total ?? 0);
         setCompleted(conc?.total ?? 0);

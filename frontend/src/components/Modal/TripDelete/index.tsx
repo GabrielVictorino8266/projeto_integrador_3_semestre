@@ -1,12 +1,12 @@
 import { useEffect, useState } from "react";
 import { useModal } from "@hooks/useModal";
-import { DarkBlueButton, DeleteButton } from "@styles/Buttons";
+import { BorderedButton, DeleteButton } from "@styles/Buttons";
 import { useNavigate } from "react-router-dom";
 import { deleteTrip } from "@services/Api/Trips/deleteTrip";
-import { getTripForID } from "@services/Api/Trips/getTripForId";
 import type { TripsIdResponse } from "@interfaces/trips.interface";
+import { getTripForID } from "@services/Api/Trips/getTripForId";
 
-export const TripDeleted = () => {
+export function TripDeleted() {
     const { modalContentID, handleCloseModal } = useModal();
     const [trip, setTrip] = useState<TripsIdResponse | null>(null);
     const navigate = useNavigate();
@@ -18,14 +18,23 @@ export const TripDeleted = () => {
     return (
         <>
             <p>
-                <strong>Viagem: {trip?.destination ?? "Carregando..."}</strong>
+                <strong>Excluir a viagem para: <span style={{color: "#0057D9"}}>{trip?.destination}</span> ?</strong>
             </p>
-            <p className="warningMessage">Esta ação não pode ser desfeita!</p>
+            <p className="warningMessage">
+                <strong>Esta ação não pode ser desfeita!</strong>
+            </p>
             <div className="modal_buttonsContainer">
+                <BorderedButton
+                    onClick={() => {
+                        handleCloseModal();
+                    }}
+                >
+                    Cancelar
+                </BorderedButton>
                 <DeleteButton
-                    onClick={async () => {
+                    onClick={() => {
                         if (modalContentID) {
-                            await deleteTrip(modalContentID!);
+                            deleteTrip(modalContentID!);
                             navigate(0);
                             handleCloseModal();
                         }
@@ -33,8 +42,7 @@ export const TripDeleted = () => {
                 >
                     DELETAR
                 </DeleteButton>
-                <DarkBlueButton onClick={handleCloseModal}>Cancelar</DarkBlueButton>
             </div>
         </>
     );
-};
+}

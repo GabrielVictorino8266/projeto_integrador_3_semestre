@@ -14,7 +14,7 @@ export function useTripList() {
         setData(res?.items ?? []);
         setTotalPage(res?.last_page ?? 1);
     }
-
+    
     useEffect(() => {
         fetchTrips();
     }, [page, status, destination]);
