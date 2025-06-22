@@ -9,7 +9,7 @@ export interface GetVehiclesParams {
     licensePlate?: string;
 }
 
-export async function getVehicles({limit = 6,page,licensePlate,status,}: GetVehiclesParams = {}): Promise<IGetVehiclesResponse | null> {
+export async function getVehicles({limit = 6,page, licensePlate, status,}: GetVehiclesParams = {}): Promise<IGetVehiclesResponse | null> {
 
     try {
         const params: any = { limit, page, licensePlate };

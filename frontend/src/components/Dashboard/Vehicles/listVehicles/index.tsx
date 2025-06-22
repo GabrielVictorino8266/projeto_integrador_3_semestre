@@ -17,7 +17,7 @@ import { FaBus } from "react-icons/fa";
 
 const VehicleDashboard = () => {
     const { total, active, inactive, maintenance } = useVehicleStats();
-    const { data, page, setPage, setStatus, status, totalPages } = useVehicleList();
+    const { data, page, plate, setPlate, setPage, setStatus, status, totalPages } = useVehicleList();
 
     const datatochart = [
         { value: active, label: "Disponível" },
@@ -98,7 +98,13 @@ const VehicleDashboard = () => {
 
                     <ContainerFilter>
                         <InputWrapper>
-                            <InputComponent placeholder="PESQUISAR POR PLACA.." lupa backgoround="#ffffff" />
+                            <InputComponent
+                                placeholder="PESQUISAR POR PLACA.."
+                                lupa
+                                onChange={(e) => setPlate(e.target.value)}
+                                backgoround="#ffffff"
+                                value={plate}
+                            />
                         </InputWrapper>
 
                         <SelectStatus
