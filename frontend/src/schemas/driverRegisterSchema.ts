@@ -9,7 +9,7 @@ const driverRegisterFormSchema = z.object({
     .transform((cpf) => {
       return normalizeFormString(cpf);
     }),
-  password: z.string().nonempty("Senha deve ser preenchida"),
+  // password: z.string().nonempty("Senha deve ser preenchida"),
   licenseType: z.string().nonempty("Tipo de CNH é obrigatório"),
   licenseNumber: z
     .string()

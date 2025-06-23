@@ -17,29 +17,42 @@ import { useForm, type FieldError, type SubmitHandler } from "react-hook-form";
 import { GrMapLocation } from "react-icons/gr";
 
 const TripRegister = () => {
+  interface ISelectOptions {
+    value: string;
+    label: string;
+  }
+
   const { getDriverList, driverList } = useDriver();
   const { createTrip } = useTrip();
+  const [vehicleListData, setVehicleListData] = useState<Array<ISelectOptions>>(
+    []
+  );
+  const [tripDateValue, setTripDateValue] = useState("");
+  const [isLoading, setIsloading] = useState(true);
 
   const vehiclesList = async () => {
-    const res = await api.get("/vehicles/");
+    try {
+      const res = await api.get("/vehicles/");
 
-    if (res.status === 200) {
-      setVehicleListData(res.data.items);
+      if (res.status === 200) {
+        const vehicleListSelect: Array<ISelectOptions> = res.data.items.map(
+          (vehicle: IVehicle) => ({
+            value: vehicle.id,
+            label: vehicle.licensePlate,
+          })
+        );
+        setVehicleListData(vehicleListSelect);
+      }
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setIsloading(false);
     }
   };
 
-  const [vehicleListData, setVehicleListData] = useState<Array<IVehicle>>([]);
-
-  const [tripDateValue, setTripDateValue] = useState("");
-
-  const driverListSelect = driverList.map((driver) => ({
+  const driverListSelect: Array<ISelectOptions> = driverList.map((driver) => ({
     value: driver.id,
     label: driver.name,
-  }));
-
-  const vehivleListSelect = vehicleListData.map((vehicle) => ({
-    value: vehicle.id,
-    label: vehicle.licensePlate,
   }));
 
   const {
@@ -50,7 +63,7 @@ const TripRegister = () => {
     resolver: zodResolver(tripCreateFormSchema),
   });
 
-  const submitDriver: SubmitHandler<ICreateTripData> = async (
+  const submitTrip: SubmitHandler<ICreateTripData> = async (
     registerForm: ICreateTripData
   ) => {
     createTrip();
@@ -58,15 +71,16 @@ const TripRegister = () => {
   };
 
   useEffect(() => {
-    if (driverList.length === 0) {
+    if (isLoading === true) {
       getDriverList();
+      console.log("ok");
       vehiclesList();
     }
-  });
+  }, [vehicleListData, driverList]);
 
   return (
     <RegisterPageGeneric icon={<GrMapLocation />} title={"CADASTRO DE VIAGEM"}>
-      <form onSubmit={handleSubmit(submitDriver)}>
+      <form onSubmit={handleSubmit(submitTrip)}>
         <ContainerInputs>
           <SelectInputForm
             optionsArray={driverListSelect}
@@ -87,7 +101,7 @@ const TripRegister = () => {
             }}
           />
           <SelectInputForm
-            optionsArray={vehivleListSelect}
+            optionsArray={vehicleListData}
             id={"vehicle"}
             label={"Veículo"}
             {...register("vehicleId")}
@@ -98,7 +112,7 @@ const TripRegister = () => {
             step={60}
             placeholder={"Digite a senha do motorista"}
             id={"tripHour"}
-            label={"Senha"}
+            label={"Horário"}
             {...register("tripDate")}
             error={errors.startDateTime}
           />

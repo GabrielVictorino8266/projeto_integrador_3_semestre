@@ -30,7 +30,8 @@ const DriverRegister = () => {
   const submitDriver: SubmitHandler<ICreateDriverData> = async (
     registerForm: ICreateDriverData
   ) => {
-    handleCreateDriver(registerForm);
+    await handleCreateDriver(registerForm);
+    console.log(registerForm);
   };
 
   return (

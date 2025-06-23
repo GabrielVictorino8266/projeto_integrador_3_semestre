@@ -43,7 +43,7 @@ const DriverProvider = ({ children }: IDefaultChildrenProp) => {
   const getDriverList = async () => {
     try {
       const driverListResponse: AxiosResponse<IGetDriversResponse> =
-        await api.get("/drivers/list");
+        await api.get("/drivers/list?limit=&page=&name=&isActive=true");
 
       if (driverListResponse.status === 200) {
         const driverListApi: Array<IDriver> = driverListResponse.data.items;

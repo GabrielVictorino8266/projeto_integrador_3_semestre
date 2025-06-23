@@ -2,13 +2,13 @@ import type { SelectHTMLAttributes } from "react";
 import type { FieldError } from "react-hook-form";
 import { StyledSelectFieldSet } from "./styles";
 
-interface ICNHCategories {
+interface ISelectOptions {
   value: string;
   label: string;
 }
 
 interface IFormSelectSet extends SelectHTMLAttributes<HTMLSelectElement> {
-  optionsArray: Array<ICNHCategories>;
+  optionsArray: Array<ISelectOptions>;
   label?: string;
   error: FieldError | undefined;
 }
@@ -19,7 +19,7 @@ const SelectInputForm = ({
   error,
   ...rest
 }: IFormSelectSet) => {
-  const selectOptions = optionsArray.map((element: ICNHCategories) => {
+  const selectOptions = optionsArray.map((element: ISelectOptions) => {
     return (
       <option key={element.value} value={element.value}>
         {element.label}
