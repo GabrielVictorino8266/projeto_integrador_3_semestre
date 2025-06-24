@@ -31,7 +31,6 @@ const DriverRegister = () => {
     registerForm: ICreateDriverData
   ) => {
     await handleCreateDriver(registerForm);
-    console.log(registerForm);
   };
 
   return (

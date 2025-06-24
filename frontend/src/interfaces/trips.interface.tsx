@@ -79,6 +79,26 @@ export interface ICreateTripResponse {
   deletedAt: string | null;
 }
 
+export interface IGetTripResponse {
+  id: string;
+  driverName: string;
+  startDateTime: string;
+  origin: string;
+  destination: string;
+  initialKm: number;
+  finalKm: number | null;
+  completed: boolean;
+  status: "pending" | "in_progress" | "completed" | "cancelled" | string;
+  vehicleId: string;
+  vehicleLicensePlate: string;
+}
+
 export interface ITripContextProps {
   createTrip: (createTripData: ICreateTripRequest) => Promise<void>;
+  getTripByID: (id: string) => Promise<void>;
+  tripUnderEdition: IGetTripResponse | null;
+  setTripUnderEdition: React.Dispatch<
+    React.SetStateAction<IGetTripResponse | null>
+  >;
+  updateTrip: (id: string, updateTripData: ICreateTripRequest) => Promise<void>;
 }

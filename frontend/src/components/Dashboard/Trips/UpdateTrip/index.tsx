@@ -1,39 +1,48 @@
-import { ContainerInputs } from "@components/Dashboard/Driver/CreateDriver/styles";
 import { RegInput } from "@components/InputForm";
-import { RegisterPageGeneric } from "@components/RegisterForm";
-import { SelectInputForm } from "@components/Select";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm, type SubmitHandler } from "react-hook-form";
+import { RegisterPageGeneric } from "@components/RegisterForm";
+import { DarkBlueButton } from "@styles/Buttons";
+import { SelectInputForm } from "@components/Select";
 import { useDriver } from "@hooks/useDriver";
+import { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
+import { dateMask, hourMask } from "@utils/reserve";
+import { ContainerInputs } from "@pages/Cadastro/Veiculos/styles";
+import { GrMapLocation } from "react-icons/gr";
 import { useTrip } from "@hooks/useTrip";
+import { tripCreateFormSchema } from "@schemas/tripCreateSchema";
+import { TripStatus } from "@utils/Selects/tripStatus";
+import type { IVehicle } from "@interfaces/vehicles.interface";
+import { api } from "@services/api";
 import type {
   ICreateTripRequest,
   ITripFormData,
 } from "@interfaces/trips.interface";
-import { type IVehicle } from "@interfaces/vehicles.interface";
-import { tripCreateFormSchema } from "@schemas/tripCreateSchema";
-import { api } from "@services/api";
-import { DarkBlueButton } from "@styles/Buttons";
-import { dateMask, hourMask } from "@utils/reserve";
-import { TripStatus } from "@utils/Selects/tripStatus";
-import { useEffect, useState } from "react";
-import { useForm, type SubmitHandler } from "react-hook-form";
-import { GrMapLocation } from "react-icons/gr";
 
-const TripRegister = () => {
+const TripUpdate = () => {
   interface ISelectOptions {
     value: string;
     label: string;
   }
 
-  const { getDriverList, driverList } = useDriver();
-  const { createTrip } = useTrip();
+  const [tripDateValue, setTripDateValue] = useState("");
+  const [tripHourValue, setTripHourValue] = useState("");
   const [vehicleListData, setVehicleListData] = useState<Array<ISelectOptions>>(
     []
   );
-  const [tripDateValue, setTripDateValue] = useState("");
-  const [tripHourValue, setTripHourValue] = useState("");
-
   const [isLoading, setIsloading] = useState(true);
+
+  const { getTripByID, tripUnderEdition, setTripUnderEdition, updateTrip } =
+    useTrip();
+  const { getDriverList, driverList } = useDriver();
+
+  const { id } = useParams();
+
+  const driverListSelect: Array<ISelectOptions> = driverList.map((driver) => ({
+    value: driver.id,
+    label: driver.name,
+  }));
 
   const vehiclesList = async () => {
     try {
@@ -55,27 +64,43 @@ const TripRegister = () => {
     }
   };
 
-  const driverListSelect: Array<ISelectOptions> = driverList.map((driver) => ({
-    value: driver.id,
-    label: driver.name,
-  }));
-
   const {
     register,
     handleSubmit,
+    setValue,
     formState: { errors },
   } = useForm({
     resolver: zodResolver(tripCreateFormSchema),
   });
 
   useEffect(() => {
-    if (isLoading === true) {
-      getDriverList();
-      vehiclesList();
+    if (id) {
+      getTripByID(id);
     }
-  }, [isLoading]);
+    getDriverList();
+    return () => setTripUnderEdition(null);
+  }, [id]);
 
-  const submitTrip: SubmitHandler<ITripFormData> = (
+  useEffect(() => {
+    if (tripUnderEdition) {
+      setValue("destination", tripUnderEdition.destination);
+      setValue("origin", tripUnderEdition.origin);
+      setValue("initialKm", tripUnderEdition.initialKm);
+      setValue("vehicleId", tripUnderEdition.vehicleId);
+      setValue("status", tripUnderEdition.status);
+
+      const splittedField = tripUnderEdition?.startDateTime
+        .replace(/Z/g, "")
+        .split("T");
+
+      const dateReversed = splittedField[0].split("-").reverse().join();
+
+      setValue("tripDate", dateMask(dateReversed));
+      setValue("tripHour", hourMask(splittedField![1]));
+    }
+  }, [tripUnderEdition, setValue]);
+
+  const submitTrip: SubmitHandler<ITripFormData> = async (
     registerForm: ITripFormData
   ) => {
     const { tripDate, tripHour, ...rest } = registerForm;
@@ -84,11 +109,18 @@ const TripRegister = () => {
       ...rest,
       startDateTime: `${tripDate}T${tripHour}`,
     };
-    createTrip(newTripTreatedData);
+    updateTrip(id!, newTripTreatedData);
   };
 
+  useEffect(() => {
+    if (isLoading === true) {
+      getDriverList();
+      vehiclesList();
+    }
+  }, [isLoading]);
+
   return (
-    <RegisterPageGeneric icon={<GrMapLocation />} title={"CADASTRO DE VIAGEM"}>
+    <RegisterPageGeneric icon={<GrMapLocation />} title={"EDITAR VIAGEM"}>
       <form onSubmit={handleSubmit(submitTrip)}>
         <ContainerInputs>
           <SelectInputForm
@@ -168,4 +200,4 @@ const TripRegister = () => {
   );
 };
 
-export { TripRegister };
+export { TripUpdate };

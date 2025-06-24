@@ -10,6 +10,7 @@ import { VehicleDashboard } from "@components/Dashboard/Vehicles/listVehicles";
 import { ProtectedRoutes } from "./protectedRoutes";
 import { TrisDashboard } from "@components/Dashboard/Trips/listTrips";
 import { TripRegister } from "@components/Dashboard/Trips/RegisterTrip";
+import { TripUpdate } from "@components/Dashboard/Trips/UpdateTrip";
 
 const RoutesMain = () => (
   <Routes>
@@ -33,6 +34,7 @@ const RoutesMain = () => (
         {/* viagens */}
         <Route path="/dashboard/viagens" element={<TrisDashboard />} />
         <Route path="/dashboard/cadastrar-viagem" element={<TripRegister />} />
+        <Route path="/dashboard/viagem/:id" element={<TripUpdate />} />
       </Route>
 
       {/* cadastro / atualizar */}

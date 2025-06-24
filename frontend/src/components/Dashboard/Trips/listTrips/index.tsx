@@ -33,7 +33,7 @@ export function TrisDashboard() {
   } = useTripList();
 
   const datatochart = [
-    { value: completed, label: "Concuiídas" },
+    { value: completed, label: "Concluídas" },
     { value: scheduled, label: "Programadas" },
     { value: inProgress, label: "Em andamento" },
   ];
