@@ -2,7 +2,7 @@ import { RegInput } from "@components/InputForm";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm, type FieldError, type SubmitHandler } from "react-hook-form";
 import { RegisterPageGeneric } from "@components/RegisterForm";
-import { Button } from "@styles/Buttons";
+import { DarkBlueButton } from "@styles/Buttons";
 import { SelectInputForm } from "@components/Select";
 import { cnhCategories } from "@utils/Selects/cnhCategories";
 import { ContainerInputs } from "./styles";
@@ -53,7 +53,7 @@ const DriverUpdate = () => {
       setValue("licenseType", driverUnderEdition.licenseType);
       setValue("licenseNumber", driverUnderEdition.licenseNumber);
       setValue("phone", phoneMask(driverUnderEdition.phone));
-      setValue("birthYear", driverUnderEdition.birthYear);
+      setValue("birthYear", dateMask(driverUnderEdition.birthYear));
       setValue("performance", driverUnderEdition.performance);
       setValue("isActive", driverUnderEdition.isActive);
     }
@@ -162,7 +162,7 @@ const DriverUpdate = () => {
           />
         </ContainerInputs>
         <div className="form__sendButton">
-          <Button>ATUALIZAR</Button>
+          <DarkBlueButton>ATUALIZAR</DarkBlueButton>
         </div>
       </form>
     </RegisterPageGeneric>

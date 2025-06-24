@@ -50,7 +50,17 @@ export interface TripsIdResponse {
   status: TripStatus;
 }
 
-export type ICreateTripData = z.output<typeof tripCreateFormSchema>;
+export type ITripFormData = z.output<typeof tripCreateFormSchema>;
+
+export interface ICreateTripRequest {
+  startDateTime: string;
+  driverId: string;
+  vehicleId: string;
+  initialKm: number;
+  status: string;
+  origin: string;
+  destination: string;
+}
 
 export interface ICreateTripResponse {
   id: string;
@@ -70,5 +80,5 @@ export interface ICreateTripResponse {
 }
 
 export interface ITripContextProps {
-  createTrip: () => Promise<void>;
+  createTrip: (createTripData: ICreateTripRequest) => Promise<void>;
 }

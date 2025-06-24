@@ -69,7 +69,7 @@ const DriverProvider = ({ children }: IDefaultChildrenProp) => {
 
       if (driverResponse.status === 200) {
         const driverFound: IDriver = driverResponse.data;
-        toast.success("Motorista encontrado");
+        // toast.success("Motorista encontrado");
         setDriverUnderEdition(driverFound);
       }
     } catch (error) {

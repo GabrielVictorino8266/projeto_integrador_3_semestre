@@ -5,15 +5,18 @@ import { SelectInputForm } from "@components/Select";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useDriver } from "@hooks/useDriver";
 import { useTrip } from "@hooks/useTrip";
-import type { ICreateTripData } from "@interfaces/trips.interface";
+import type {
+  ICreateTripRequest,
+  ITripFormData,
+} from "@interfaces/trips.interface";
 import { type IVehicle } from "@interfaces/vehicles.interface";
 import { tripCreateFormSchema } from "@schemas/tripCreateSchema";
 import { api } from "@services/api";
 import { DarkBlueButton } from "@styles/Buttons";
-import { dateMask } from "@utils/reserve";
+import { dateMask, hourMask } from "@utils/reserve";
 import { TripStatus } from "@utils/Selects/tripStatus";
 import { useEffect, useState } from "react";
-import { useForm, type FieldError, type SubmitHandler } from "react-hook-form";
+import { useForm, type SubmitHandler } from "react-hook-form";
 import { GrMapLocation } from "react-icons/gr";
 
 const TripRegister = () => {
@@ -28,6 +31,8 @@ const TripRegister = () => {
     []
   );
   const [tripDateValue, setTripDateValue] = useState("");
+  const [tripHourValue, setTripHourValue] = useState("");
+
   const [isLoading, setIsloading] = useState(true);
 
   const vehiclesList = async () => {
@@ -63,20 +68,26 @@ const TripRegister = () => {
     resolver: zodResolver(tripCreateFormSchema),
   });
 
-  const submitTrip: SubmitHandler<ICreateTripData> = async (
-    registerForm: ICreateTripData
-  ) => {
-    createTrip();
-    console.log(registerForm);
-  };
-
   useEffect(() => {
     if (isLoading === true) {
       getDriverList();
-      console.log("ok");
       vehiclesList();
     }
-  }, [vehicleListData, driverList]);
+    console.log("ok");
+  }, [isLoading]);
+
+  const submitTrip: SubmitHandler<ITripFormData> = (
+    registerForm: ITripFormData
+  ) => {
+    const { tripDate, tripHour, ...rest } = registerForm;
+
+    const newTripTreatedData: ICreateTripRequest = {
+      ...rest,
+      startDateTime: `${tripDate}T${tripHour}`,
+    };
+    console.log(newTripTreatedData);
+    createTrip(newTripTreatedData);
+  };
 
   return (
     <RegisterPageGeneric icon={<GrMapLocation />} title={"CADASTRO DE VIAGEM"}>
@@ -87,6 +98,21 @@ const TripRegister = () => {
             label={"Motorista"}
             {...register("driverId")}
             error={errors.driverId}
+          />
+          <SelectInputForm
+            optionsArray={vehicleListData}
+            id={"vehicle"}
+            label={"Veículo"}
+            {...register("vehicleId")}
+            error={errors.vehicleId}
+          />
+          <RegInput
+            type={"number"}
+            placeholder={"ex: 10000"}
+            id={"initialKM"}
+            label={"Km do veículo"}
+            {...register("initialKm", { valueAsNumber: true })}
+            error={errors.initialKm}
           />
           <RegInput
             type={"text"}
@@ -100,29 +126,33 @@ const TripRegister = () => {
               setTripDateValue(dateMask(event.target.value));
             }}
           />
-          <SelectInputForm
-            optionsArray={vehicleListData}
-            id={"vehicle"}
-            label={"Veículo"}
-            {...register("vehicleId")}
-            error={errors.vehicleId}
-          />
           <RegInput
-            type={"time"}
-            step={60}
-            placeholder={"Digite a senha do motorista"}
+            type={"text"}
+            placeholder={"HH:MM"}
             id={"tripHour"}
             label={"Horário"}
-            {...register("tripDate")}
-            error={errors.startDateTime}
+            {...register("tripHour")}
+            error={errors.tripHour}
+            value={tripHourValue}
+            onChange={(event) => {
+              setTripHourValue(hourMask(event.target.value));
+            }}
           />
           <RegInput
             type={"text"}
-            placeholder={"São Paulo"}
+            placeholder={"Ex: Leme"}
+            id={"origin"}
+            label={"Origem"}
+            {...register("origin")}
+            error={errors.origin}
+          />
+          <RegInput
+            type={"text"}
+            placeholder={"Ex: São Paulo"}
             id={"destination"}
             label={"Destino"}
             {...register("destination")}
-            error={errors.destination as FieldError}
+            error={errors.destination}
           />
           <SelectInputForm
             optionsArray={TripStatus}
