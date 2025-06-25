@@ -66,7 +66,7 @@ class TripListSerializerById(EmbeddedDocumentSerializer):
 
     class Meta:
         model = Trip
-        fields = ['id', 'driverName', 'startDateTime', 'origin', 'destination', 'initialKm', 'finalKm', 'completed', 'status', 'vehicleId', 'vehicleLicensePlate']
+        fields = ['id', 'driverId','driverName', 'startDateTime', 'origin', 'destination', 'initialKm', 'finalKm', 'completed', 'status', 'vehicleId', 'vehicleLicensePlate']
         extra_kwargs = {
             'driverId': {'required': False},
             'startDateTime': {'required': False},
