@@ -1,4 +1,4 @@
-import { Route, Routes } from "react-router-dom";
+import { Route, Routes, Navigate } from "react-router-dom";
 import HomePage from "../pages/HomePage";
 import { CadastroVeiculo } from "../pages/Cadastro/Veiculos";
 import { Login } from "../pages/Login";
@@ -15,6 +15,7 @@ import { TripUpdate } from "@components/Dashboard/Trips/UpdateTrip";
 const RoutesMain = () => (
   <Routes>
     <Route path="/login" element={<Login />} />
+    <Route path="/" element={<Navigate to="/dashboard/cadastrar-motorista" replace />} />
 
     <Route element={<ProtectedRoutes />}>
       <Route path="/dashboard" element={<DashboardLayout />}>
