@@ -1,7 +1,4 @@
 # Projeto Integrador - 3º Semestre
-
-Uma aplicação Django desenvolvida como parte do Projeto Integrador do 3º semestre. Este projeto visa [descreva brevemente o propósito ou objetivo principal da aplicação, por exemplo: "gerenciar tarefas acadêmicas", "automatizar processos de matrícula", etc.].
-
 ---
 
 ## 🚀 Começando
