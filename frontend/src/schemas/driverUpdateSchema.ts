@@ -39,4 +39,13 @@ const driverUpdateFormSchema = z.object({
     invalid_type_error: "Valor Inválido!",
   }),
 });
-export { driverUpdateFormSchema };
+
+const driverUpdateSchema = driverUpdateFormSchema
+  .omit({ isActive: true })
+  .extend({
+    isActive: z.string().nonempty("Status é obrigatório"),
+  });
+
+export type IUpdateDriver = z.output<typeof driverUpdateSchema>;
+
+export { driverUpdateFormSchema, driverUpdateSchema };

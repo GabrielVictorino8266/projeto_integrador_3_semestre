@@ -9,8 +9,10 @@ import { ContainerInputs } from "./styles";
 import { useDriver } from "@hooks/useDriver";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { driverUpdateFormSchema } from "@schemas/driverUpdateSchema";
-import type { IUpdateDriverData } from "@interfaces/driver.interface";
+import {
+  driverUpdateSchema,
+  type IUpdateDriver,
+} from "@schemas/driverUpdateSchema";
 import { cpfMask, dateMask, phoneMask } from "@utils/reserve";
 import { userStatus } from "@utils/Selects/userStatus";
 import { TbEdit } from "react-icons/tb";
@@ -36,7 +38,7 @@ const DriverUpdate = () => {
     setValue,
     formState: { errors },
   } = useForm({
-    resolver: zodResolver(driverUpdateFormSchema),
+    resolver: zodResolver(driverUpdateSchema),
   });
 
   useEffect(() => {
@@ -53,16 +55,28 @@ const DriverUpdate = () => {
       setValue("licenseType", driverUnderEdition.licenseType);
       setValue("licenseNumber", driverUnderEdition.licenseNumber);
       setValue("phone", phoneMask(driverUnderEdition.phone));
-      setValue("birthYear", dateMask(driverUnderEdition.birthYear));
+      setValue(
+        "birthYear",
+        dateMask(driverUnderEdition.birthYear.split("-").reverse().join(""))
+      );
       setValue("performance", driverUnderEdition.performance);
-      setValue("isActive", driverUnderEdition.isActive);
+
+      setValue("isActive", driverUnderEdition.isActive.toString());
     }
   }, [driverUnderEdition, setValue]);
 
-  const submitDriver: SubmitHandler<IUpdateDriverData> = async (
-    registerForm: IUpdateDriverData
+  const submitDriver: SubmitHandler<IUpdateDriver> = async (
+    registerForm: IUpdateDriver
   ) => {
-    updateDriver(id!, registerForm);
+    const { isActive, ...rest } = registerForm;
+    const validForm = {
+      ...rest,
+      isActive: isActive === "true" ? true : false,
+    };
+
+    console.log(validForm);
+
+    updateDriver(id!, validForm);
   };
 
   return (
@@ -154,11 +168,8 @@ const DriverUpdate = () => {
           <SelectInputForm
             optionsArray={userStatus}
             label={"Status"}
-            {...register("isActive", {
-              setValueAs: (v) => (v === "" ? undefined : v === "true"),
-            })}
+            {...register("isActive")}
             error={errors.isActive}
-            defaultValue={driverUnderEdition?.isActive?.toString() ?? ""}
           />
         </ContainerInputs>
         <div className="form__sendButton">
