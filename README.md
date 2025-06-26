@@ -19,8 +19,8 @@ Uma aplicação Django desenvolvida como parte do Projeto Integrador do 3º seme
 Clone o repositório:
 
 ```bash
-git clone https://github.com/seu-usuario/seu-projeto.git
-cd seu-projeto
+git clone git@github.com:GabrielVictorino8266/projeto_integrador_3_semestre.git
+cd projeto_integrador_3_semestre
 ```
 
 ---
