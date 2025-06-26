@@ -91,6 +91,7 @@ export interface IGetTripResponse {
   status: "pending" | "in_progress" | "completed" | "cancelled" | string;
   vehicleId: string;
   vehicleLicensePlate: string;
+  driverId: string;
 }
 
 export interface ITripContextProps {

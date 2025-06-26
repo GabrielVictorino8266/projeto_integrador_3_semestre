@@ -81,6 +81,8 @@ const TripUpdate = () => {
     return () => setTripUnderEdition(null);
   }, [id]);
 
+  console.log(tripDateValue);
+
   useEffect(() => {
     if (tripUnderEdition) {
       setValue("destination", tripUnderEdition.destination);
@@ -93,10 +95,12 @@ const TripUpdate = () => {
         .replace(/Z/g, "")
         .split("T");
 
-      const dateReversed = splittedField[0].split("-").reverse().join();
+      const dateReversed = splittedField[0].split("-").reverse().join("");
+      setTripDateValue(dateReversed);
 
-      setValue("tripDate", dateMask(dateReversed));
+      setValue("tripDate", dateMask(tripDateValue));
       setValue("tripHour", hourMask(splittedField![1]));
+      setValue("driverId", tripUnderEdition.driverId);
     }
   }, [tripUnderEdition, setValue]);
 

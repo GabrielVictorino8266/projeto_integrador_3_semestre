@@ -1,82 +1,82 @@
-import Logo from "@assets/IconeUniao.png";
+import Logo from "@assets/Group 1.svg";
 import Sair from "@assets/Sair.png";
 import User from "@assets/User.png";
-import viagem from '@assets/Vector.png'
+import viagem from "@assets/Vector.png";
 import DirectionsBusIcon from "@mui/icons-material/DirectionsBus";
 import PersonIcon from "@mui/icons-material/Person";
 import { useUsuario } from "@hooks/useUser/index";
 
 import {
-    Baseboard,
-    Container,
-    ItemContainer,
-    Main,
-    TitleContainer,
-    UserContainer,
-    MenuItem,
-    IconText,
+  Baseboard,
+  Container,
+  ItemContainer,
+  Main,
+  TitleContainer,
+  UserContainer,
+  MenuItem,
+  IconText,
 } from "./style";
 import { useNavigate } from "react-router-dom";
 import { logoutUser } from "@services/Api/LogoutUser";
 
 export function Sidebar() {
-    const { user } = useUsuario();
-    const navigate = useNavigate();
+  const { user } = useUsuario();
+  const navigate = useNavigate();
 
-    return (
-        <Container>
-            <TitleContainer onClick={() => navigate("/dashboard/motoristas")}>
-                <img src={Logo} alt="Logo" />
-                <p>
-                    VIAÇÃO <br /> <span>UNIÃO</span>
-                </p>
-            </TitleContainer>
+  return (
+    <Container>
+      <TitleContainer onClick={() => navigate("/dashboard/motoristas")}>
+        <img src={Logo} alt="Logo" />
+        <p>
+          VIAÇÃO <br /> <span>UNIÃO</span>
+        </p>
+      </TitleContainer>
 
-            <Main>
-                <ItemContainer>
-                    <ul>
-                        <MenuItem onClick={() => navigate("/dashboard/veiculos")}>
-                            <IconText onClick={() => navigate('dash')}>
-                                <DirectionsBusIcon fontSize="small" />
-                                VEÍCULOS 
-                            </IconText>
-                        </MenuItem>
+      <Main>
+        <ItemContainer>
+          <ul>
+            <MenuItem onClick={() => navigate("/dashboard/veiculos")}>
+              <IconText onClick={() => navigate("dash")}>
+                <DirectionsBusIcon fontSize="small" />
+                VEÍCULOS
+              </IconText>
+            </MenuItem>
 
-                        <MenuItem onClick={() => navigate("/dashboard/viagens")}>
-                            <IconText>
-                                <img src={viagem} alt="" style={{width: "22px"}}/>
-                                VIAGENS
-                            </IconText>
-                        </MenuItem>
+            <MenuItem onClick={() => navigate("/dashboard/viagens")}>
+              <IconText>
+                <img src={viagem} alt="" style={{ width: "22px" }} />
+                VIAGENS
+              </IconText>
+            </MenuItem>
 
-                        <MenuItem onClick={() => navigate("/dashboard/motoristas")}>
-                            <IconText>
-                                <PersonIcon fontSize="small" />
-                                USUÁRIOS
-                            </IconText>
-                        </MenuItem>
-                    </ul>
-                </ItemContainer>
-            </Main>
+            <MenuItem onClick={() => navigate("/dashboard/motoristas")}>
+              <IconText>
+                <PersonIcon fontSize="small" />
+                USUÁRIOS
+              </IconText>
+            </MenuItem>
+          </ul>
+        </ItemContainer>
+      </Main>
 
-            <Baseboard>
-                <img src={User} alt="imagem-do-usuario" />
-                <UserContainer>
-                    <p>
-                        <strong>{user ? user.nome : "Carregando..."}</strong>
-                        <br />
-                        <small>{user ? user.cargo : ""}</small>
-                    </p>
-                </UserContainer>
-                <button
-                    onClick={async () =>{
-                        await logoutUser()
-                        navigate("/login")
-                    }}
-                >
-                    <img src={Sair} alt="Botão-sair" className="botao" />
-                </button>
-            </Baseboard>
-        </Container>
-    );
+      <Baseboard>
+        <img src={User} alt="imagem-do-usuario" />
+        <UserContainer>
+          <p>
+            <strong>{user ? user.nome : "Carregando..."}</strong>
+            <br />
+            <small>{user ? user.cargo : ""}</small>
+          </p>
+        </UserContainer>
+        <button
+          onClick={async () => {
+            await logoutUser();
+            navigate("/login");
+          }}
+        >
+          <img src={Sair} alt="Botão-sair" className="botao" />
+        </button>
+      </Baseboard>
+    </Container>
+  );
 }
