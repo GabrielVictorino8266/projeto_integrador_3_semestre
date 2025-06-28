@@ -120,20 +120,24 @@ export function TrisDashboard() {
                     </ContainerFilter>
 
                     <ContainerList>
-                        <DashboardTable
-                            title="LISTA DE VEÍCULOS"
-                            thTitles={[
-                                "MOTORISTA",
-                                "VEÍCULO",
-                                "DESTINO",
-                                "DATA VIAGEM",
-                                "HORÁRIO SAÍDA",
-                                "STATUS",
-                                "AÇÕES",
-                            ]}
-                        >
-                            {LoadingVehiclList ? <Spinner /> : <TripList data={data} />}
-                        </DashboardTable>
+                        {LoadingVehiclList ? (
+                            <Spinner />
+                        ) : (
+                            <DashboardTable
+                                title="LISTA DE VEÍCULOS"
+                                thTitles={[
+                                    "MOTORISTA",
+                                    "VEÍCULO",
+                                    "DESTINO",
+                                    "DATA VIAGEM",
+                                    "HORÁRIO SAÍDA",
+                                    "STATUS",
+                                    "AÇÕES",
+                                ]}
+                            >
+                                <TripList data={data} />
+                            </DashboardTable>
+                        )}
                     </ContainerList>
 
                     <Pagination totalPages={totalPages} current={page} onChange={(p: number) => setPage(p)} />

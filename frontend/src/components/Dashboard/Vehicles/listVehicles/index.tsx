@@ -121,12 +121,16 @@ const VehicleDashboard = () => {
                     </ContainerFilter>
 
                     <ContainerList>
-                        <DashboardTable
-                            title="LISTA DE VEÍCULOS"
-                            thTitles={["PLACA", "TIPO", "ANO", "MARCA", "STATUS", "AÇÕES"]}
-                        >
-                            {LoadingList ? <Spinner /> : <VehicleList data={data} />}
-                        </DashboardTable>
+                        {LoadingList ? (
+                            <Spinner />
+                        ) : (
+                            <DashboardTable
+                                title="LISTA DE VEÍCULOS"
+                                thTitles={["PLACA", "TIPO", "ANO", "MARCA", "STATUS", "AÇÕES"]}
+                            >
+                                <VehicleList data={data} />
+                            </DashboardTable>
+                        )}
                     </ContainerList>
 
                     <Pagination totalPages={totalPages} current={page} onChange={(p: number) => setPage(p)} />
