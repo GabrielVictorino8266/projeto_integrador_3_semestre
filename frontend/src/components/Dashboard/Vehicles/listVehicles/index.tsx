@@ -14,10 +14,11 @@ import { SelectStatus } from "@components/SelectFilter";
 import { StatusOptions } from "@utils/Selects/SelectVehicleStatus";
 import type { VehicleStatus } from "@interfaces/vehicles.interface";
 import { FaBus } from "react-icons/fa";
+import { Spinner } from "@components/Spinner";
 
 const VehicleDashboard = () => {
-    const { total, active, inactive, maintenance } = useVehicleStats();
-    const { data, page, plate, setPlate, setPage, setStatus, status, totalPages } = useVehicleList();
+    const { total, active, inactive, maintenance, LoadingStatus } = useVehicleStats();
+    const { data, page, plate, LoadingList, setPlate, setPage, setStatus, status, totalPages } = useVehicleList();
 
     const datatochart = [
         { value: active, label: "Disponível" },
@@ -54,47 +55,51 @@ const VehicleDashboard = () => {
 
             <Container>
                 <section className="dashboard__details">
-                    <div className="cards__container">
-                        <CardWithRightBorder>
-                            <div className="card__values">
-                                <p className="card__text">Total de veículos</p>
-                                <p className="card__number">{total}</p>
-                            </div>
-                        </CardWithRightBorder>
+                    {LoadingStatus ? (
+                        <Spinner />
+                    ) : (
+                        <div className="cards__container">
+                            <CardWithRightBorder>
+                                <div className="card__values">
+                                    <p className="card__text">Total de veículos</p>
+                                    <p className="card__number">{total}</p>
+                                </div>
+                            </CardWithRightBorder>
 
-                        <CardWithRightBorder>
-                            <div className="card__values">
-                                <p className="card__text">
-                                    <StatusIcon option="blue" />
-                                    <span className="card__number">{active}</span>
-                                    Veículos Ativos
-                                </p>
-                            </div>
+                            <CardWithRightBorder>
+                                <div className="card__values">
+                                    <p className="card__text">
+                                        <StatusIcon option="blue" />
+                                        <span className="card__number">{active}</span>
+                                        Veículos Ativos
+                                    </p>
+                                </div>
 
-                            <div className="card__values">
-                                <p className="card__text">
-                                    <StatusIcon option="orange" />
-                                    <span className="card__number">{maintenance}</span>
-                                    Em manutenção
-                                </p>
-                            </div>
+                                <div className="card__values">
+                                    <p className="card__text">
+                                        <StatusIcon option="orange" />
+                                        <span className="card__number">{maintenance}</span>
+                                        Em manutenção
+                                    </p>
+                                </div>
 
-                            <div className="card__values">
-                                <p className="card__text">
-                                    <StatusIcon option="red" />
-                                    <span className="card__number">{inactive}</span>
-                                    Veículos Inativos
-                                </p>
-                            </div>
-                        </CardWithRightBorder>
+                                <div className="card__values">
+                                    <p className="card__text">
+                                        <StatusIcon option="red" />
+                                        <span className="card__number">{inactive}</span>
+                                        Veículos Inativos
+                                    </p>
+                                </div>
+                            </CardWithRightBorder>
 
-                        <CardWithRightBorder>
-                            <p className="card__text">DISPONIBILIDADE</p>
-                            <ChartComponent>
-                                <DoughnutChart chartData={doughnutChartDriverData} />
-                            </ChartComponent>
-                        </CardWithRightBorder>
-                    </div>
+                            <CardWithRightBorder>
+                                <p className="card__text">DISPONIBILIDADE</p>
+                                <ChartComponent>
+                                    <DoughnutChart chartData={doughnutChartDriverData} />
+                                </ChartComponent>
+                            </CardWithRightBorder>
+                        </div>
+                    )}
 
                     <ContainerFilter>
                         <InputWrapper>
@@ -104,6 +109,7 @@ const VehicleDashboard = () => {
                                 onChange={(e) => setPlate(e.target.value)}
                                 backgoround="#ffffff"
                                 value={plate}
+                                autoComplete="off"
                             />
                         </InputWrapper>
 
@@ -119,7 +125,7 @@ const VehicleDashboard = () => {
                             title="LISTA DE VEÍCULOS"
                             thTitles={["PLACA", "TIPO", "ANO", "MARCA", "STATUS", "AÇÕES"]}
                         >
-                            <VehicleList data={data} />
+                            {LoadingList ? <Spinner /> : <VehicleList data={data} />}
                         </DashboardTable>
                     </ContainerList>
 
