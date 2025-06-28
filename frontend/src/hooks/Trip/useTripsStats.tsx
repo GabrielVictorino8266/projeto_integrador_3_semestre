@@ -1,3 +1,4 @@
+import { useDelayedSpinner } from "@hooks/useDelaydSpinner";
 import { getTrips } from "@services/Api/Trips/getTrips";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
@@ -7,10 +8,11 @@ export function useTripsStats() {
     const [inProgress, setInProgress] = useState(0);
     const [scheduled, setScheduled] = useState(0);
     const [total, setTotal] = useState(0);
-    const [LoadingVehiclStatus, setLoadingVehiclStatus ] = useState(true);
+    const { showSpinner, startSpinner, stopSpinner } = useDelayedSpinner();
 
     async function fetchStats() {
         try {
+            startSpinner();
             const [all, conc, sched, prog] = await Promise.all([
                 getTrips({ limit: 1 }),
                 getTrips({ status: "completed", limit: 1 }),
@@ -22,9 +24,9 @@ export function useTripsStats() {
             setScheduled(sched?.total ?? 0);
             setInProgress(prog?.total ?? 0);
         } catch {
-            toast.error("Erro ao carregar os status")
+            toast.error("Erro ao carregar os status");
         } finally {
-            setLoadingVehiclStatus(false)
+            stopSpinner();     
         }
     }
 
@@ -32,5 +34,5 @@ export function useTripsStats() {
         fetchStats();
     }, []);
 
-    return { total, completed, inProgress, scheduled, LoadingVehiclStatus , refetchTripsStatus: fetchStats };
+    return { total, completed, inProgress, scheduled, LoadingVehiclStatus: showSpinner, refetchTripsStatus: fetchStats };
 }

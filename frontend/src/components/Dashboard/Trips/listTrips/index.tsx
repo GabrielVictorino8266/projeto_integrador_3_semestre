@@ -55,7 +55,7 @@ export function TrisDashboard() {
 
             <Container>
                 <section className="dashboard__details">
-                    {LoadingVehiclList ? (
+                    {LoadingVehiclStatus ? (
                         <Spinner />
                     ) : (
                         <div className="cards__container">
