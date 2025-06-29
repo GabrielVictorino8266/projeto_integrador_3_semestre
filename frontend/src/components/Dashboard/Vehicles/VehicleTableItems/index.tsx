@@ -18,7 +18,7 @@ export const VehicleList = ({ data }: Props) => {
                     key={v.id}
                     id={v.id}
                     licensePlate={plateMask.mask(v.licensePlate)}
-                    vehicleType={v.vehicleType}
+                    vehicleType={v.vehicleType.replace("onibus", "ônibus").replace("caminhao", "caminhão").toUpperCase()}
                     manufacturingYear={v.manufacturingYear}
                     brand={v.brand}
                     status={v.status}

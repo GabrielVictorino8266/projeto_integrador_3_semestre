@@ -72,6 +72,7 @@ export function CadastroVeiculo() {
                             label="Número"
                             {...register("vehicleNumber")}
                             placeholder="Número do veículo"
+                            mask="km"
                             errorMessage={errors.vehicleNumber?.message}
                         />
                         <InputComponent

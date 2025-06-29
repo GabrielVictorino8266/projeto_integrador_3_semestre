@@ -12,7 +12,6 @@ interface IVehicleListItemProps {
     manufacturingYear: number;
     brand: string;
     status: VehicleStatus;
-    onDeleted: () => void;
 }
 
 export const VehicleListItem = ({
