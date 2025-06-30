@@ -1,10 +1,10 @@
-import Logo from "@assets/Group 1.svg";
-import Sair from "@assets/Sair.png";
-import User from "@assets/User.png";
-import viagem from "@assets/Vector.png";
-import DirectionsBusIcon from "@mui/icons-material/DirectionsBus";
-import PersonIcon from "@mui/icons-material/Person";
-import { useUsuario } from "@hooks/useUser/index";
+import Logo from '@assets/Group 1.svg';
+import Sair from '@assets/Sair.png';
+import User from '@assets/User.png';
+import viagem from '@assets/Vector.png';
+import DirectionsBusIcon from '@mui/icons-material/DirectionsBus';
+import PersonIcon from '@mui/icons-material/Person';
+import { useUsuario } from '@hooks/useUser/index';
 
 import {
   Baseboard,
@@ -14,10 +14,10 @@ import {
   TitleContainer,
   UserContainer,
   MenuItem,
-  IconText,
-} from "./style";
-import { useNavigate } from "react-router-dom";
-import { logoutUser } from "@services/Api/LogoutUser";
+  IconText
+} from './style';
+import { useNavigate } from 'react-router-dom';
+import { logoutUser } from '@services/Api/LogoutUser';
 
 export function Sidebar() {
   const { user } = useUsuario();
@@ -25,8 +25,8 @@ export function Sidebar() {
 
   return (
     <Container>
-      <TitleContainer onClick={() => navigate("/dashboard/motoristas")}>
-        <img src={Logo} alt="Logo" />
+      <TitleContainer onClick={() => navigate('/dashboard/motoristas')}>
+        <img src={Logo} alt='Logo' />
         <p>
           VIAÇÃO <br /> <span>UNIÃO</span>
         </p>
@@ -35,23 +35,23 @@ export function Sidebar() {
       <Main>
         <ItemContainer>
           <ul>
-            <MenuItem onClick={() => navigate("/dashboard/veiculos")}>
-              <IconText onClick={() => navigate("dash")}>
-                <DirectionsBusIcon fontSize="small" />
+            <MenuItem onClick={() => navigate('/dashboard/veiculos')}>
+              <IconText onClick={() => navigate('dash')}>
+                <DirectionsBusIcon fontSize='small' />
                 VEÍCULOS
               </IconText>
             </MenuItem>
 
-            <MenuItem onClick={() => navigate("/dashboard/viagens")}>
+            <MenuItem onClick={() => navigate('/dashboard/viagens')}>
               <IconText>
-                <img src={viagem} alt="" style={{ width: "22px" }} />
+                <img src={viagem} alt='' style={{ width: '22px' }} />
                 VIAGENS
               </IconText>
             </MenuItem>
 
-            <MenuItem onClick={() => navigate("/dashboard/motoristas")}>
+            <MenuItem onClick={() => navigate('/dashboard/motoristas')}>
               <IconText>
-                <PersonIcon fontSize="small" />
+                <PersonIcon fontSize='small' />
                 USUÁRIOS
               </IconText>
             </MenuItem>
@@ -60,21 +60,21 @@ export function Sidebar() {
       </Main>
 
       <Baseboard>
-        <img src={User} alt="imagem-do-usuario" />
+        <img src={User} alt='imagem-do-usuario' />
         <UserContainer>
           <p>
-            <strong>{user ? user.nome : "Carregando..."}</strong>
+            <strong>{user ? user.nome : 'Carregando...'}</strong>
             <br />
-            <small>{user ? user.cargo : ""}</small>
+            <small>{user ? user.cargo : ''}</small>
           </p>
         </UserContainer>
         <button
           onClick={async () => {
             await logoutUser();
-            navigate("/login");
+            navigate('/login');
           }}
         >
-          <img src={Sair} alt="Botão-sair" className="botao" />
+          <img src={Sair} alt='Botão-sair' className='botao' />
         </button>
       </Baseboard>
     </Container>

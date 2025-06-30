@@ -1,4 +1,4 @@
 export const userType = [
-  { value: "Motorista", label: "Motorista" },
-  { value: "Administrador", label: "Administador" },
+  { value: 'Motorista', label: 'Motorista' },
+  { value: 'Administrador', label: 'Administador' }
 ];

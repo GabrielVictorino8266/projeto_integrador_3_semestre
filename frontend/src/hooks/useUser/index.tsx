@@ -1,28 +1,26 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState } from 'react';
 type Usuario = {
-    nome: string | null;
-    cargo: string | null;
-}
+  nome: string | null;
+  cargo: string | null;
+};
 
-export function useUsuario(){
-    const [user, setUser] = useState<Usuario | null>(null)
-    
-    useEffect( () => {
+export function useUsuario() {
+  const [user, setUser] = useState<Usuario | null>(null);
 
-        const requisicao = async () => {
-            const nomeCompleto = localStorage.getItem("nome")
-            const primeiroNome = nomeCompleto ? nomeCompleto.split(" ")[0] : ""
+  useEffect(() => {
+    const requisicao = async () => {
+      const nomeCompleto = localStorage.getItem('nome');
+      const primeiroNome = nomeCompleto ? nomeCompleto.split(' ')[0] : '';
 
-            const teste: Usuario = {
-                nome: primeiroNome,
-                cargo: localStorage.getItem("cargo") 
-            }
-            setUser(teste)
-        }
+      const teste: Usuario = {
+        nome: primeiroNome,
+        cargo: localStorage.getItem('cargo')
+      };
+      setUser(teste);
+    };
 
-        requisicao();
+    requisicao();
+  }, []);
 
-    },[])
-
-    return { user }
+  return { user };
 }

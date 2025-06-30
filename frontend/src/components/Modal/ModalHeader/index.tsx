@@ -1,5 +1,5 @@
-import { ModalHeaderStyled } from "./style";
-import { useModal } from "@hooks/useModal";
+import { ModalHeaderStyled } from './style';
+import { useModal } from '@hooks/useModal';
 
 interface IModalTitle {
   modalTitle: string;
@@ -10,9 +10,9 @@ const ModalHeader = ({ modalTitle }: IModalTitle) => {
 
   return (
     <ModalHeaderStyled>
-      <p className="modal__title">{modalTitle}</p>
+      <p className='modal__title'>{modalTitle}</p>
       <button
-        className="closeButton"
+        className='closeButton'
         onClick={() => {
           handleCloseModal();
         }}

@@ -1,9 +1,9 @@
-import { StyledTableRow } from "./styles";
-import { useModal } from "@hooks/useModal";
-import { StatusIcon } from "@components/Dashboard/Icons/StatusIcon";
-import { GoToDriverEdit, IconButton } from "@styles/Buttons";
-import { ActionIcon } from "@components/Dashboard/Icons/ActionIcon";
-import type { TripStatus } from "@interfaces/trips.interface";
+import { StyledTableRow } from './styles';
+import { useModal } from '@hooks/useModal';
+import { StatusIcon } from '@components/Dashboard/Icons/StatusIcon';
+import { GoToDriverEdit, IconButton } from '@styles/Buttons';
+import { ActionIcon } from '@components/Dashboard/Icons/ActionIcon';
+import type { TripStatus } from '@interfaces/trips.interface';
 
 interface TripsItems {
   id: string;
@@ -23,20 +23,20 @@ export const TripListItem = ({
   destination,
   travelDate,
   departureTime,
-  status,
+  status
 }: TripsItems) => {
   const { handleOpenModal } = useModal();
 
   const iconOption =
-    status === "in_progress"
-      ? "red"
-      : status === "completed"
-      ? "green"
-      : "blue";
+    status === 'in_progress'
+      ? 'red'
+      : status === 'completed'
+        ? 'green'
+        : 'blue';
 
   return (
     <StyledTableRow>
-      <td scope="row">{driverName}</td>
+      <td scope='row'>{driverName}</td>
       <td>{vehicle}</td>
       <td>{destination}</td>
       <td>{travelDate}</td>
@@ -48,18 +48,18 @@ export const TripListItem = ({
       </td>
       <td>
         <GoToDriverEdit to={`/dashboard/viagem/${id}`}>
-          <ActionIcon type="edit" />
+          <ActionIcon type='edit' />
         </GoToDriverEdit>
 
         <IconButton
           onClick={() =>
             handleOpenModal({
-              modalType: "tripDeleteConfirmation",
-              id,
+              modalType: 'tripDeleteConfirmation',
+              id
             })
           }
         >
-          <ActionIcon type="delete" />
+          <ActionIcon type='delete' />
         </IconButton>
       </td>
     </StyledTableRow>

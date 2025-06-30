@@ -3,15 +3,15 @@ export interface IModalChildrenProps {
 }
 
 export type TModalTypes =
-  | "driverDetails"
-  | "driverEdit"
-  | "driverDeleteConfirmation"
-  | "tripDetails"
-  | "tripEdit"
-  | "tripDeleteConfirmation"
-  | "vehicleDetails"
-  | "vehicleEdit"
-  | "vehicleDeleteConfirmation"
+  | 'driverDetails'
+  | 'driverEdit'
+  | 'driverDeleteConfirmation'
+  | 'tripDetails'
+  | 'tripEdit'
+  | 'tripDeleteConfirmation'
+  | 'vehicleDetails'
+  | 'vehicleEdit'
+  | 'vehicleDeleteConfirmation'
   | null;
 
 export interface IGenericModalProps {

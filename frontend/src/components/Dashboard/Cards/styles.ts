@@ -1,4 +1,4 @@
-import styled from "@emotion/styled";
+import styled from '@emotion/styled';
 
 const StyledCardWithRightBorder = styled.div`
   background-color: var(--color-white);

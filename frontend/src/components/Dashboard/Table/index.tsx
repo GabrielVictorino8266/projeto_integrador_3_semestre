@@ -1,4 +1,4 @@
-import type React from "react";
+import type React from 'react';
 
 interface IDashboardTableProps {
   children: React.ReactNode;
@@ -9,7 +9,7 @@ interface IDashboardTableProps {
 const DashboardTable = ({
   children,
   title,
-  thTitles,
+  thTitles
 }: IDashboardTableProps) => {
   const thElements = thTitles.map((title) => {
     return <th key={title}>{title}</th>;
@@ -18,7 +18,7 @@ const DashboardTable = ({
   return (
     <div>
       <div>
-        <h2 className="list__title">{title}</h2>
+        <h2 className='list__title'>{title}</h2>
       </div>
       <table>
         <thead>

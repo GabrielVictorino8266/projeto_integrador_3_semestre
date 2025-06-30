@@ -1,11 +1,11 @@
-import { ModalStyledContainer } from "./style";
-import { ModalBody } from "../ModalBody";
-import { useModal } from "@hooks/useModal";
-import type { IGenericModalProps } from "@interfaces/modal.interface";
-import { ModalHeader } from "../ModalHeader";
-import { DriverDelete } from "../DriverDelete";
-import { VehicleDeleted } from "../VehicleDelete";
-import { TripDeleted } from "../TripDelete";
+import { ModalStyledContainer } from './style';
+import { ModalBody } from '../ModalBody';
+import { useModal } from '@hooks/useModal';
+import type { IGenericModalProps } from '@interfaces/modal.interface';
+import { ModalHeader } from '../ModalHeader';
+import { DriverDelete } from '../DriverDelete';
+import { VehicleDeleted } from '../VehicleDelete';
+import { TripDeleted } from '../TripDelete';
 
 export const Modal = ({ type }: IGenericModalProps) => {
   const { modalRef } = useModal();
@@ -15,27 +15,27 @@ export const Modal = ({ type }: IGenericModalProps) => {
       <ModalBody>
         {(() => {
           switch (type) {
-            case "driverDeleteConfirmation":
+            case 'driverDeleteConfirmation':
               return (
                 <>
-                  <ModalHeader modalTitle="CONFIRMAR EXCLUSÃO:" />
+                  <ModalHeader modalTitle='CONFIRMAR EXCLUSÃO:' />
                   <DriverDelete />
                 </>
               );
-            case "vehicleDeleteConfirmation":
+            case 'vehicleDeleteConfirmation':
               return (
                 <>
-                  <ModalHeader modalTitle="CONFIRMAR EXCLUSÃO:" />
+                  <ModalHeader modalTitle='CONFIRMAR EXCLUSÃO:' />
                   <VehicleDeleted />
                 </>
               );
-            case "tripDeleteConfirmation":
-              return(
+            case 'tripDeleteConfirmation':
+              return (
                 <>
-                  <ModalHeader modalTitle="CONFIRMAR EXLUSÃO:"/>
+                  <ModalHeader modalTitle='CONFIRMAR EXLUSÃO:' />
                   <TripDeleted />
                 </>
-              )
+              );
             default:
               return <></>;
           }

@@ -1,4 +1,4 @@
-import styled from "@emotion/styled";
+import styled from '@emotion/styled';
 
 interface FieldProps {
   error?: unknown;
@@ -25,7 +25,7 @@ export const StyledSelectFieldSet = styled.fieldset<FieldProps>`
     height: 56px;
     border: none;
     border-radius: 32px;
-    background: ${(p) => (p.error ? "var(--color-error-2)" : "#f2f2f2")};
+    background: ${(p) => (p.error ? 'var(--color-error-2)' : '#f2f2f2')};
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.25);
     font-size: 20px;
     font-weight: 700;
@@ -39,7 +39,7 @@ export const StyledSelectFieldSet = styled.fieldset<FieldProps>`
   }
 
   &::after {
-    content: "▼";
+    content: '▼';
     position: absolute;
     right: 18px;
     top: calc(50% + 8px);

@@ -1,9 +1,9 @@
-import { Loader, LoaderWrapper } from "./styles";
+import { Loader, LoaderWrapper } from './styles';
 
 export function Spinner() {
-    return (
-        <LoaderWrapper>
-            <Loader />
-        </LoaderWrapper>
-    );
+  return (
+    <LoaderWrapper>
+      <Loader />
+    </LoaderWrapper>
+  );
 }

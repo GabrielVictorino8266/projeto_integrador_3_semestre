@@ -1,16 +1,16 @@
-import { api } from "@services/api";
-import type { AxiosResponse } from "axios";
-import { useEffect, useState } from "react";
-import { Outlet, Navigate } from "react-router-dom";
-import { toast } from "react-toastify";
+import { api } from '@services/api';
+import type { AxiosResponse } from 'axios';
+import { useEffect, useState } from 'react';
+import { Outlet, Navigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
 interface IRefreshToken {
   access_token: string;
 }
 
 const ProtectedRoutes = () => {
-  const token = localStorage.getItem("token");
-  const refreshToken = localStorage.getItem("refresh_token");
+  const token = localStorage.getItem('token');
+  const refreshToken = localStorage.getItem('refresh_token');
   const refreshTokenBody = { refresh_token: refreshToken };
   const [isAuthorized, setIsAuthorized] = useState<boolean | null>(null);
 
@@ -30,17 +30,17 @@ const ProtectedRoutes = () => {
   const userAuthToken = async () => {
     try {
       const refreshTokenResponse: AxiosResponse<IRefreshToken> = await api.post(
-        "/users/refresh-token/",
+        '/users/refresh-token/',
         refreshTokenBody
       );
 
       if (refreshTokenResponse.status === 200) {
-        localStorage.setItem("token", refreshTokenResponse.data.access_token);
+        localStorage.setItem('token', refreshTokenResponse.data.access_token);
         setIsAuthorized(true);
       }
     } catch (error) {
       console.log(error);
-      toast.error("Acesso não autorizado. Por favor, faça login.");
+      toast.error('Acesso não autorizado. Por favor, faça login.');
       setIsAuthorized(false);
     }
   };
@@ -49,7 +49,7 @@ const ProtectedRoutes = () => {
     return null;
   }
 
-  return isAuthorized ? <Outlet /> : <Navigate to="/login" />;
+  return isAuthorized ? <Outlet /> : <Navigate to='/login' />;
 };
 
 export { ProtectedRoutes };

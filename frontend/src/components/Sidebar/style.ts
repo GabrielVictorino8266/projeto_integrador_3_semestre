@@ -1,8 +1,8 @@
-import styled from "@emotion/styled";
+import styled from '@emotion/styled';
 
 export const Container = styled.div`
   width: 220px;
-  min-height: 100vh;
+  height: 100vh;
   background-color: #071425;
   display: flex;
   flex-direction: column;

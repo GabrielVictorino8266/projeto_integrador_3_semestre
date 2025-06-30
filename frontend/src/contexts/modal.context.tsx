@@ -1,7 +1,7 @@
 /* eslint-disable no-empty-pattern */
-import { createContext } from "react";
-import type { IModalContextProps } from "../interfaces";
-import type { IHandleOpenModalProps } from "@interfaces/modal.interface";
+import { createContext } from 'react';
+import type { IModalContextProps } from '../interfaces';
+import type { IHandleOpenModalProps } from '@interfaces/modal.interface';
 
 const ModalContext = createContext<IModalContextProps>({
   modalType: null,
@@ -9,7 +9,7 @@ const ModalContext = createContext<IModalContextProps>({
   handleCloseModal: function (): void {},
   modalRef: { current: null },
   handleOpenModal: function ({}: IHandleOpenModalProps): void {},
-  modalContentID: undefined,
+  modalContentID: undefined
 });
 
 export { ModalContext };
