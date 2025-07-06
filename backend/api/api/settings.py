@@ -19,7 +19,7 @@ import os
 
 load_dotenv(override=True)
 
-
+DEBUG_ENV = os.environ.get('DEBUG', 'False').lower() in ('true', '1', 't')
 MONGO_URI = os.environ.get('MONGO_URI')
 if not MONGO_URI:
     raise Exception("MONGO_URI não configurada nas variáveis de ambiente")
@@ -47,7 +47,7 @@ if not os.path.isdir(MIGRATIONS_DIR):
 SECRET_KEY = 'django-insecure-f5o#ebnrpse8%ylekv7n7&mo*6j*8e3$3u9s(8@1@t*&0kki+('
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = DEBUG_ENV
 
 ALLOWED_HOSTS = ['localhost', '127.0.0.1', '0.0.0.0', '*'] # Development
 # ALLOWED_HOSTS = []
