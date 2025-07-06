@@ -1,33 +1,154 @@
 from mongodb_migrations.base import BaseMigration
-from pymongo import MongoClient
+from pymongo import MongoClient, errors
 import os
+import sys
 from datetime import datetime
+import logging
+
+# Configuração de logging
+logging.basicConfig(
+    level=logging.INFO,
+    format='%(asctime)s - %(levelname)s - %(message)s',
+    handlers=[
+        logging.StreamHandler(sys.stdout)
+    ]
+)
+logger = logging.getLogger(__name__)
 
 class Migration(BaseMigration):
-    def upgrade(self):
+    def _get_db_connection(self):
+        """Estabelece conexão com o banco de dados com tratamento de erros."""
         mongo_uri = os.getenv('MONGO_URI')
         db_name = os.getenv('MONGO_DB_NAME')
         
-        if not mongo_uri or not db_name:
-            raise ValueError("MONGO_URI e MONGO_DB_NAME devem estar configurados")
+        if not mongo_uri:
+            logger.error("❌ Erro: MONGO_URI não está configurada")
+            raise ValueError("MONGO_URI deve estar configurada")
             
-        client = MongoClient(mongo_uri)
-        db = client[db_name]
+        if not db_name:
+            logger.warning("⚠️  MONGO_DB_NAME não configurado, usando 'Test' como padrão")
+            db_name = 'Test'
         
-        if 'users' not in db.list_collection_names():
-            print("Criando coleção users...")
-            db.create_collection('users')
-            db.users.create_index([('email', 1)], unique=False, sparse=True)
-            db.users.create_index([('cpf', 1)], unique=True)
-            print("Coleção users criada com sucesso")
-        
-        import hashlib
-        
-        def get_hash_password(password):
-            return hashlib.sha256(password.encode()).hexdigest()
-        
-        drivers = [
-            {
+        try:
+            logger.info(f"🔌 Conectando ao MongoDB: {mongo_uri}")
+            logger.info(f"📂 Banco de dados: {db_name}")
+            
+            # Conecta com timeout reduzido para falhar rápido em caso de erro
+            client = MongoClient(
+                mongo_uri,
+                serverSelectionTimeoutMS=5000,  # 5 segundos
+                socketTimeoutMS=30000,         # 30 segundos
+                connectTimeoutMS=10000,        # 10 segundos
+                retryWrites=True,
+                w='majority'
+            )
+            
+            # Testa a conexão
+            client.server_info()
+            logger.info("✅ Conexão com o MongoDB estabelecida com sucesso!")
+            
+            return client[db_name]
+            
+        except errors.ServerSelectionTimeoutError as e:
+            logger.error(f"❌ Falha ao conectar ao servidor MongoDB: {e}")
+            logger.error("Verifique se o servidor está acessível e as credenciais estão corretas")
+            raise
+            
+        except errors.OperationFailure as e:
+            logger.error(f"❌ Falha de autenticação: {e}")
+            logger.error("Verifique se o usuário e senha estão corretos e têm as permissões necessárias")
+            raise
+            
+        except Exception as e:
+            logger.error(f"❌ Erro inesperado ao conectar ao MongoDB: {e}")
+            raise
+
+    def _create_collection_with_retry(self, db, collection_name, indexes=None):
+        """Tenta criar uma coleção com tratamento de erros."""
+        try:
+            if collection_name not in db.list_collection_names():
+                logger.info(f"🔄 Criando coleção '{collection_name}'...")
+                db.create_collection(collection_name)
+                
+                if indexes:
+                    for index in indexes:
+                        db[collection_name].create_index(
+                            index['fields'],
+                            unique=index.get('unique', False),
+                            sparse=index.get('sparse', False)
+                        )
+                logger.info(f"✅ Coleção '{collection_name}' criada com sucesso")
+                return True
+            return False
+            
+        except errors.OperationFailure as e:
+            if 'already exists' in str(e):
+                logger.warning(f"⚠️  A coleção '{collection_name}' já existe")
+                return False
+            logger.error(f"❌ Erro ao criar coleção '{collection_name}': {e}")
+            raise
+            
+        except Exception as e:
+            logger.error(f"❌ Erro inesperado ao criar coleção '{collection_name}': {e}")
+            raise
+
+    def _insert_drivers(self, db, drivers):
+        """Insere os motoristas na coleção com tratamento de erros."""
+        try:
+            # Verifica se já existem motoristas com os mesmos CPFs
+            existing_cpfs = {d['cpf'] for d in db.users.find(
+                {'cpf': {'$in': [d['cpf'] for d in drivers]}},
+                {'cpf': 1}
+            )}
+            
+            new_drivers = [d for d in drivers if d['cpf'] not in existing_cpfs]
+            
+            if not new_drivers:
+                logger.info("ℹ️  Nenhum novo motorista para inserir")
+                return 0
+                
+            result = db.users.insert_many(new_drivers)
+            logger.info(f"✅ Inseridos {len(result.inserted_ids)} motoristas na coleção 'users'")
+            return len(result.inserted_ids)
+            
+        except errors.DuplicateKeyError as e:
+            logger.error(f"❌ Erro de chave duplicada ao inserir motoristas: {e}")
+            raise
+            
+        except errors.OperationFailure as e:
+            logger.error(f"❌ Erro de operação ao inserir motoristas: {e}")
+            logger.error("Verifique as permissões de escrita no banco de dados")
+            raise
+            
+        except Exception as e:
+            logger.error(f"❌ Erro inesperado ao inserir motoristas: {e}")
+            raise
+
+    def upgrade(self):
+        try:
+            logger.info("🚀 Iniciando migração de motoristas...")
+            
+            # Conecta ao banco de dados
+            db = self._get_db_connection()
+            
+            # Cria a coleção de usuários se não existir
+            self._create_collection_with_retry(
+                db,
+                'users',
+                indexes=[
+                    {'fields': [('email', 1)], 'unique': False, 'sparse': True},
+                    {'fields': [('cpf', 1)], 'unique': True}
+                ]
+            )
+            
+                # Gera a lista de motoristas
+            import hashlib
+            
+            def get_hash_password(password):
+                return hashlib.sha256(password.encode()).hexdigest()
+            
+            drivers = [
+                {
                 "cpf": "11111111112",
                 "name": "Juliano Aparecido",
                 "birthYear": "1980-01-01",
@@ -445,55 +566,62 @@ class Migration(BaseMigration):
             }
         ]
         
-        result = db.users.insert_many(drivers)
-        print(f"Inseridos {len(result.inserted_ids)} drivers na coleção users")
-        
-        if len(result.inserted_ids) != len(drivers):
-            raise ValueError("Falha ao inserir todos os drivers na coleção users")
+            # Insere os motoristas
+            inserted_count = self._insert_drivers(db, drivers)
+            logger.info(f"🚀 Migração concluída com sucesso! {inserted_count} motoristas processados.")
+            
+        except errors.OperationFailure as e:
+            if 'not authorized' in str(e):
+                logger.error("❌ Erro de permissão no MongoDB")
+                logger.error("Verifique se o usuário tem as seguintes permissões no MongoDB Atlas:")
+                logger.error("1. Acesso de leitura/escrita ao banco de dados")
+                logger.error("2. Permissão para criar coleções e índices")
+                logger.error(f"Erro detalhado: {e}")
+            else:
+                logger.error(f"❌ Erro de operação no MongoDB: {e}")
+            raise
+            
+        except Exception as e:
+            logger.error(f"❌ Erro inesperado durante a migração: {e}")
+            logger.error("Por favor, verifique os logs para mais detalhes.")
+            raise
 
     def downgrade(self):
-        mongo_uri = os.getenv('MONGO_URI')
-        db_name = os.getenv('MONGO_DB_NAME')
-        
-        if not mongo_uri or not db_name:
-            raise ValueError("MONGO_URI e MONGO_DB_NAME devem estar configurados")
+        try:
+            logger.info("🔄 Iniciando rollback da migração de motoristas...")
             
-        client = MongoClient(mongo_uri)
-        db = client[db_name]
-        
-        db.users.delete_many({
-            "cpf": {
-                "$in": [
-                    "11111111112",
-                    "22222222223",
-                    "33333333334",
-                    "44444444445",
-                    "55555555556",
-                    "66666666667",
-                    "77777777778",
-                    "88888888889",
-                    "99999999990",
-                    "12345678901",
-                    "23456789012",
-                    "34567890123",
-                    "45678901234",
-                    "56789012345",
-                    "67890123456",
-                    "78901234567",
-                    "89012345678",
-                    "90123456789",
-                    "11223344556",
-                    "22334455667",
-                    "33445566778",
-                    "44556677889",
-                    "55667788990",
-                    "66778899001",
-                    "77889900112",
-                    "88990011223"
-                ]
-            }
-        })
-        print("Drivers removidos com sucesso")
-        db.drop_collection('users')
-        print("Coleção users removida com sucesso")
-
+            db = self._get_db_connection()
+            
+            cpfs_to_remove = [
+                "11111111112", "22222222223", "33333333334", "44444444445", 
+                "55555555556", "66666666667", "77777777778", "88888888889", 
+                "99999999990", "12345678901", "23456789012", "34567890123", 
+                "45678901234", "56789012345", "67890123456", "78901234567", 
+                "89012345678", "90123456789", "11223344556", "22334455667", 
+                "33445566778", "44556677889", "55667788990", "66778899001", 
+                "77889900112", "88990011223"
+            ]
+            
+            # Remove os motoristas específicos
+            result = db.users.delete_many({"cpf": {"$in": cpfs_to_remove}})
+            logger.info(f"✅ {result.deleted_count} motoristas removidos")
+            
+            # Verifica se a coleção está vazia para removê-la
+            if db.users.count_documents({}) == 0:
+                db.drop_collection('users')
+                logger.info("✅ Coleção 'users' removida com sucesso")
+            else:
+                logger.info("ℹ️  A coleção 'users' contém outros registros e não foi removida")
+                
+        except errors.OperationFailure as e:
+            if 'not authorized' in str(e):
+                logger.error("❌ Erro de permissão no MongoDB")
+                logger.error("Verifique se o usuário tem permissão para excluir documentos")
+            else:
+                logger.error(f"❌ Erro de operação no MongoDB: {e}")
+            raise
+            
+        except Exception as e:
+            logger.error(f"❌ Erro inesperado durante o rollback: {e}")
+            logger.error("Por favor, verifique os logs para mais detalhes.")
+            raise

@@ -14,24 +14,62 @@ from pathlib import Path
 from pymongo import MongoClient
 from dotenv import load_dotenv
 from datetime import timedelta
-from mongoengine import connect
+from mongoengine import connect, disconnect
 import os
+from datetime import datetime
+from urllib.parse import urlparse
 
 load_dotenv(override=True)
 
 DEBUG_ENV = os.environ.get('DEBUG', 'False').lower() in ('true', '1', 't')
+
+# Configurações do MongoDB
 MONGO_URI = os.environ.get('MONGO_URI')
 if not MONGO_URI:
     raise Exception("MONGO_URI não configurada nas variáveis de ambiente")
 
-MONGO_DB_NAME = os.environ.get('MONGO_DB_NAME', 'projeto_teste')
-if not MONGO_DB_NAME:
-    raise Exception("MONGO_DB_NAME não configurada nas variáveis de ambiente")
+# Extrai o nome do banco de dados da URI ou usa 'Test' como padrão
+parsed_uri = urlparse(MONGO_URI)
+MONGO_DB_NAME = parsed_uri.path.strip('/') or 'Test'
 
 # Conexão MongoDB
-mongo_client = MongoClient(MONGO_URI)
-mongodb = mongo_client[MONGO_DB_NAME]
-connect(db=MONGO_DB_NAME, host=MONGO_URI)
+try:
+    print(f"Conectando ao MongoDB: {MONGO_URI}")
+    print(f"Banco de dados: {MONGO_DB_NAME}")
+    
+    # Conecta ao MongoDB usando a URI diretamente
+    mongo_client = MongoClient(MONGO_URI, serverSelectionTimeoutMS=5000)
+    
+    # Testa a conexão
+    mongo_client.server_info()
+    print("✅ Conexão com o servidor bem-sucedida!")
+    
+    # Obtém o banco de dados
+    mongodb = mongo_client[MONGO_DB_NAME]
+    
+    # Garante que a coleção de migrações existe
+    try:
+        if 'database_migrations' not in mongodb.list_collection_names():
+            mongodb.create_collection('database_migrations')
+            print("✅ Coleção 'database_migrations' criada com sucesso.")
+        
+        # Testa as permissões com um documento temporário
+        test_doc = {'_id': 'test_permission', 'timestamp': datetime.utcnow()}
+        mongodb.database_migrations.insert_one(test_doc)
+        mongodb.database_migrations.delete_one({'_id': 'test_permission'})
+        print("✅ Permissões de leitura/escrita verificadas com sucesso!")
+        
+    except Exception as e:
+        print(f"⚠️  Aviso: Não foi possível verificar/criar a coleção 'database_migrations': {str(e)}")
+        print("   Por favor, verifique as permissões do usuário no MongoDB Atlas.")
+    
+    # Conecta o MongoEngine
+    connect(host=MONGO_URI, alias='default')
+    print(f"✅ MongoEngine conectado com sucesso!")
+    
+except Exception as e:
+    print(f"❌ Erro ao conectar ao MongoDB: {str(e)}")
+    raise
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -44,7 +82,9 @@ if not os.path.isdir(MIGRATIONS_DIR):
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-f5o#ebnrpse8%ylekv7n7&mo*6j*8e3$3u9s(8@1@t*&0kki+('
+SECRET_KEY = os.environ.get('SECRET_KEY')
+if not SECRET_KEY:
+    raise ValueError("SECRET_KEY não configurada nas variáveis de ambiente")
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = DEBUG_ENV
@@ -92,8 +132,8 @@ REST_FRAMEWORK = {
 
 
 SIMPLE_JWT = {
-    'ACCESS_TOKEN_LIFETIME': timedelta(hours=1),
-    'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
+    'ACCESS_TOKEN_LIFETIME': timedelta(hours=48),
+    'REFRESH_TOKEN_LIFETIME': timedelta(weeks=1),
     'ROTATE_REFRESH_TOKENS': False,
     'BLACKLIST_AFTER_ROTATION': False,
     'ALGORITHM': 'HS256',  # Algoritmo de assinatura
@@ -103,17 +143,21 @@ SIMPLE_JWT = {
     'USER_ID_CLAIM': 'user_id',  # Nome da claim no token JWT
 }
 
-CORS_ALLOWED_ORIGINS = [
-    "http://localhost:5174",
-    "http://localhost:5173",
-]
+CORS_ALLOWED_ORIGINS = os.environ.get('CORS_ALLOWED_ORIGINS', '').split(',')
+if not CORS_ALLOWED_ORIGINS[0]:
+    CORS_ALLOWED_ORIGINS = []
 
 CORS_ALLOW_CREDENTIALS = True  # Permite cookies e cabeçalhos de autenticação
 
 # Configurações de sessão
-SESSION_COOKIE_HTTPONLY = True  # Previne acesso via JavaScript
-SESSION_COOKIE_SECURE = False   # Definir como True em produção (requer HTTPS)
-SESSION_COOKIE_SAMESITE = 'Lax'  # Previne CSRF em navegadores modernos
+SESSION_COOKIE_SECURE = True  # Apenas HTTPS
+CSRF_COOKIE_SECURE = True
+SECURE_SSL_REDIRECT = True
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+
+#STATIC FILES
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -124,6 +168,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'corsheaders.middleware.CorsMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware'
 ]
 
 ROOT_URLCONF = 'api.urls'
@@ -149,10 +194,10 @@ WSGI_APPLICATION = 'api.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
+# Removendo a configuração padrão do SQLite
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.dummy'
     }
 }
 
