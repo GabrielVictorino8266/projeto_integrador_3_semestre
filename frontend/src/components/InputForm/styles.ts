@@ -1,5 +1,5 @@
-import styled from "@emotion/styled";
-import type { FieldError } from "react-hook-form";
+import styled from '@emotion/styled';
+import type { FieldError } from 'react-hook-form';
 
 interface StyledInputContainerProps {
   error?: FieldError;
@@ -25,10 +25,15 @@ const StyledInput = styled.fieldset<StyledInputContainerProps>`
     border-radius: var(--border-radius-32);
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.25);
     width: 100%;
-    height: 52px; // mudar para rem.
+    border: none;
+    height: 56px;
     padding: 8px 20px;
+    background-size: 24px 24px;
+    font-size: 20px;
+    font-weight: 700;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.25);
     background-color: ${(props) =>
-      props.error ? "var(--color-error-2)" : "var(--color-input-background)"};
+      props.error ? 'var(--color-error-2)' : 'var(--color-input-background)'};
   }
 
   .inputErrorMessage {

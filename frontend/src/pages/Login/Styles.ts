@@ -1,5 +1,5 @@
-import styled from "@emotion/styled";
-import VanFundo from "@assets/vu_login.png";
+import styled from '@emotion/styled';
+import VanFundo from '@assets/vu_login.png';
 
 export const Container = styled.div`
   display: flex;

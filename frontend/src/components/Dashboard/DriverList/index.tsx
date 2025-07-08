@@ -1,6 +1,6 @@
-import { useDriver } from "@hooks/useDriver";
-import { DriverListItem } from "./DriverListItem";
-import { StyledDriverList } from "./styles";
+import { useDriver } from '@hooks/useDriver';
+import { DriverListItem } from './DriverListItem';
+import { StyledDriverList } from './styles';
 
 const DriverList = () => {
   const { driverList } = useDriver();

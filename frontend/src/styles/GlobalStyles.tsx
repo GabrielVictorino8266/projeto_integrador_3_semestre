@@ -1,5 +1,5 @@
-import { Global, css } from "@emotion/react";
-import "react-toastify/dist/ReactToastify.css";
+import { Global, css } from '@emotion/react';
+import 'react-toastify/dist/ReactToastify.css';
 export const GlobalStyles = () => (
   <Global
     styles={css`
@@ -54,7 +54,7 @@ export const GlobalStyles = () => (
         --font-size-36: 2.25rem; //36px
         --font-size-40: 2.5rem; //40px
 
-        --font-inter: "Inter", sans-serif;
+        --font-inter: 'Inter', sans-serif;
       }
 
       body {
@@ -78,8 +78,8 @@ export const GlobalStyles = () => (
         box-shadow: none;
       }
 
-      input[type="number"]::-webkit-inner-spin-button,
-      input[type="number"]::-webkit-outer-spin-button {
+      input[type='number']::-webkit-inner-spin-button,
+      input[type='number']::-webkit-outer-spin-button {
         -webkit-appearance: none;
         margin: 0;
       }

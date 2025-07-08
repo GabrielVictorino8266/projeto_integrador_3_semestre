@@ -1,4 +1,4 @@
-import styled from "@emotion/styled";
+import styled from '@emotion/styled';
 
 /* ------------------------------------ - ----------------------------------- */
 //  TODOS OS DEMAIS ESTILOS CSS SÃO FEITOS DENTRO DO STYLES.TS DO MODALBODY, NÃO AQUI.

@@ -1,8 +1,8 @@
-import { Chart, type ChartOptions } from "chart.js/auto";
-import { Doughnut } from "react-chartjs-2";
-import { ChartContainer } from "./styles";
-import type { IDefaultChildrenProp } from "@interfaces/default.interface";
-Chart.defaults.font.family = "Inter";
+import { Chart, type ChartOptions } from 'chart.js/auto';
+import { Doughnut } from 'react-chartjs-2';
+import { ChartContainer } from './styles';
+import type { IDefaultChildrenProp } from '@interfaces/default.interface';
+Chart.defaults.font.family = 'Inter';
 
 interface iDoughnutChart {
   chartData: {
@@ -20,22 +20,22 @@ interface iDoughnutChart {
   };
 }
 
-const options: ChartOptions<"doughnut"> = {
+const options: ChartOptions<'doughnut'> = {
   responsive: true,
   maintainAspectRatio: false,
   plugins: {
     legend: {
       display: true,
-      position: "bottom",
+      position: 'bottom',
       labels: {
         font: {
-          size: 16,
+          size: 16
         },
         usePointStyle: true,
-        pointStyle: "circle",
-      },
-    },
-  },
+        pointStyle: 'circle'
+      }
+    }
+  }
 };
 
 const ChartComponent = ({ children }: IDefaultChildrenProp) => {

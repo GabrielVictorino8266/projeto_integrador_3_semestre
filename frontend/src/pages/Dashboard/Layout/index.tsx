@@ -1,8 +1,8 @@
-import { Sidebar } from "@components/Sidebar";
-import { useModal } from "@hooks/useModal";
-import { Modal } from "@components/Modal/ModalGeneric";
-import { Main } from "./styles";
-import { Outlet } from "react-router-dom";
+import { Sidebar } from '@components/Sidebar';
+import { useModal } from '@hooks/useModal';
+import { Modal } from '@components/Modal/ModalGeneric';
+import { Main } from './styles';
+import { Outlet } from 'react-router-dom';
 
 const DashboardLayout = () => {
   const { isOpen, modalType } = useModal();

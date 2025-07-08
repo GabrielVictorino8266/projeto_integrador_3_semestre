@@ -1,11 +1,11 @@
-import { useState, useRef, useEffect } from "react";
-import { ModalContext } from "../contexts/modal.context";
+import { useState, useRef, useEffect } from 'react';
+import { ModalContext } from '../contexts/modal.context';
 import type {
   IHandleOpenModalProps,
   TModalContentID,
-  TModalTypes,
-} from "../interfaces/modal.interface";
-import type { IDefaultChildrenProp } from "@interfaces/default.interface";
+  TModalTypes
+} from '../interfaces/modal.interface';
+import type { IDefaultChildrenProp } from '@interfaces/default.interface';
 
 const ModalProvider = ({ children }: IDefaultChildrenProp) => {
   const [modalType, setModalType] = useState<TModalTypes | null>(null);
@@ -19,10 +19,10 @@ const ModalProvider = ({ children }: IDefaultChildrenProp) => {
         handleCloseModal();
       }
     };
-    window.addEventListener("click", handleModalOutClick);
+    window.addEventListener('click', handleModalOutClick);
 
     return () => {
-      window.removeEventListener("click", handleModalOutClick);
+      window.removeEventListener('click', handleModalOutClick);
     };
   }, []);
 
@@ -46,7 +46,7 @@ const ModalProvider = ({ children }: IDefaultChildrenProp) => {
         isOpen,
         handleOpenModal,
         handleCloseModal,
-        modalContentID,
+        modalContentID
       }}
     >
       {children}

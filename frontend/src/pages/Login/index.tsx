@@ -1,15 +1,15 @@
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useNavigate } from "react-router-dom";
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useNavigate } from 'react-router-dom';
 // Assets
-import Logo from "@assets/Group 1.svg";
+import Logo from '@assets/Group 1.svg';
 // Componentes
-import { InputComponent } from "@components/Input";
+import { InputComponent } from '@components/Input';
 // Schemas
-import { LoginSchema } from "@schemas/LoginSchema";
-import type { DataProps } from "@schemas/LoginSchema";
+import { LoginSchema } from '@schemas/LoginSchema';
+import type { DataProps } from '@schemas/LoginSchema';
 // Services
-import { LoginRequest } from "@services/Api/LoginRequest";
+import { LoginRequest } from '@services/Api/LoginRequest';
 // Estilos
 import {
   Container,
@@ -18,8 +18,8 @@ import {
   TitleDiv,
   Links,
   BotaoEntrar,
-  ConainerLift,
-} from "./Styles";
+  ConainerLift
+} from './Styles';
 
 export function Login() {
   const navigate = useNavigate();
@@ -27,16 +27,16 @@ export function Login() {
   const {
     register,
     handleSubmit,
-    formState: { errors },
+    formState: { errors }
   } = useForm<DataProps>({
-    resolver: zodResolver(LoginSchema),
+    resolver: zodResolver(LoginSchema)
   });
 
   const Submit = async (data: DataProps) => {
     const response = await LoginRequest(data);
     if (response) {
       setTimeout(() => {
-        navigate("/dashboard/veiculos");
+        navigate('/dashboard/veiculos');
       }, 2000);
     }
   };
@@ -46,7 +46,7 @@ export function Login() {
       <LeftContainer>
         <ConainerLift>
           <TitleDiv>
-            <img src={Logo} alt="Logo-Viação-União" />
+            <img src={Logo} alt='Logo-Viação-União' />
             <h1>
               Viação <br />
               <span>UNIÃO</span>
@@ -55,13 +55,13 @@ export function Login() {
 
           <form onSubmit={handleSubmit(Submit)}>
             <InputComponent
-              {...register("cpf")}
-              type="text"
-              label="CPF"
-              placeholder="Digite seu CPF"
+              {...register('cpf')}
+              type='text'
+              label='CPF'
+              placeholder='Digite seu CPF'
               maxLength={14}
-              mask="cpf"
-              colorLabel="white"
+              mask='cpf'
+              colorLabel='white'
               pessoa={true}
               errorMessage={errors.cpf?.message}
             />
@@ -69,21 +69,21 @@ export function Login() {
             <br />
 
             <InputComponent
-              {...register("password")}
-              type="password"
-              label="Senha"
-              placeholder="Digite sua senha"
+              {...register('password')}
+              type='password'
+              label='Senha'
+              placeholder='Digite sua senha'
               cadeado={true}
-              colorLabel="white"
+              colorLabel='white'
               errorMessage={errors.password?.message}
             />
 
             <Links>
-              <a href="">Esqueci minha senha</a>
-              <a href="">Cadastre-se</a>
+              <a href=''>Esqueci minha senha</a>
+              <a href=''>Cadastre-se</a>
             </Links>
 
-            <BotaoEntrar type="submit">ENTRAR</BotaoEntrar>
+            <BotaoEntrar type='submit'>ENTRAR</BotaoEntrar>
           </form>
         </ConainerLift>
       </LeftContainer>

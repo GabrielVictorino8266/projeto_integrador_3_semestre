@@ -1,6 +1,6 @@
-import { css } from "@emotion/react";
-import styled from "@emotion/styled";
-import { Link } from "react-router-dom";
+import { css } from '@emotion/react';
+import styled from '@emotion/styled';
+import { Link } from 'react-router-dom';
 
 const genericButton = css`
   width: 200px;
@@ -71,5 +71,5 @@ export {
   BorderedButton,
   GoToDriverRegister,
   GoToDriverEdit,
-  IconButton,
+  IconButton
 };

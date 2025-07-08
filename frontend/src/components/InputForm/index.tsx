@@ -1,6 +1,6 @@
-import { forwardRef, type InputHTMLAttributes } from "react";
-import { StyledInput } from "./styles";
-import type { FieldError } from "react-hook-form";
+import { forwardRef, type InputHTMLAttributes } from 'react';
+import { StyledInput } from './styles';
+import type { FieldError } from 'react-hook-form';
 
 interface IInput extends InputHTMLAttributes<HTMLInputElement> {
   type: string;
@@ -22,7 +22,7 @@ const RegInput = forwardRef<HTMLInputElement, IInput>(
           ref={ref}
           {...rest}
         />
-        {error ? <p className="inputErrorMessage">{error.message}</p> : <p></p>}
+        {error ? <p className='inputErrorMessage'>{error.message}</p> : <p></p>}
       </StyledInput>
     );
   }

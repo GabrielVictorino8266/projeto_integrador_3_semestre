@@ -1,3 +1,3 @@
-export interface InterfaceMask{
-    mask(value: string): string
+export interface InterfaceMask {
+  mask(value: string): string;
 }

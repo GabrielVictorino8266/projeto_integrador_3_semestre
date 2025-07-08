@@ -1,12 +1,12 @@
-import { ToastContainer } from "react-toastify";
-import RoutesMain from "./routes";
-import { MainProvider } from "./providers/MainProvider";
+import { ToastContainer } from 'react-toastify';
+import RoutesMain from './routes';
+import { MainProvider } from './providers/MainProvider';
 
 const App = () => {
   return (
     <MainProvider>
       <ToastContainer
-        position="top-right"
+        position='top-right'
         autoClose={3000}
         hideProgressBar={false}
         newestOnTop={false}
@@ -15,7 +15,7 @@ const App = () => {
         pauseOnFocusLoss
         draggable
         pauseOnHover
-        theme="light"
+        theme='light'
       />
       <RoutesMain />
     </MainProvider>

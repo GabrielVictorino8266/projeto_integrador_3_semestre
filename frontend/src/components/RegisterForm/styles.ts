@@ -1,4 +1,4 @@
-import styled from "@emotion/styled";
+import styled from '@emotion/styled';
 
 const StyledRegisterContainer = styled.div`
   margin: 0 auto;

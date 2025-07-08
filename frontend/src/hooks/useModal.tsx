@@ -1,5 +1,5 @@
-import { useContext } from "react";
-import { ModalContext } from "../contexts/modal.context";
+import { useContext } from 'react';
+import { ModalContext } from '../contexts/modal.context';
 
 const useModal = () => {
   const modalContext = useContext(ModalContext);

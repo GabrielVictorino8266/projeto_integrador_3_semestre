@@ -1,5 +1,5 @@
-import { tripCreateFormSchema } from "@schemas/tripCreateSchema";
-import { z } from "zod";
+import { tripCreateFormSchema } from '@schemas/tripCreateSchema';
+import { z } from 'zod';
 
 export interface Trip {
   id: string;
@@ -18,7 +18,7 @@ export interface Trip {
   updatedAt: string;
 }
 
-export type TripStatus = "completed" | "in_progress" | "scheduled";
+export type TripStatus = 'completed' | 'in_progress' | 'scheduled';
 
 // Responses '-'
 
@@ -73,7 +73,7 @@ export interface ICreateTripResponse {
   finalKm: number;
   completed: boolean;
   deleted: boolean;
-  status: "pending" | "in_progress" | "completed" | "cancelled" | string;
+  status: 'pending' | 'in_progress' | 'completed' | 'cancelled' | string;
   createdAt: string;
   updatedAt: string;
   deletedAt: string | null;
@@ -88,7 +88,7 @@ export interface IGetTripResponse {
   initialKm: number;
   finalKm: number | null;
   completed: boolean;
-  status: "pending" | "in_progress" | "completed" | "cancelled" | string;
+  status: 'pending' | 'in_progress' | 'completed' | 'cancelled' | string;
   vehicleId: string;
   vehicleLicensePlate: string;
   driverId: string;

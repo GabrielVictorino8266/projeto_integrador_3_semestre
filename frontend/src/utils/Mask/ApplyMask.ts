@@ -1,5 +1,5 @@
-import { FactoryMask } from "./FactoryMask";
-import type { MaskType } from "./TypeMask";
+import { FactoryMask } from './FactoryMask';
+import type { MaskType } from './TypeMask';
 
 export function ApplyMask(
   event: React.ChangeEvent<HTMLInputElement>,

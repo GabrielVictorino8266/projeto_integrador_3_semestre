@@ -1,6 +1,6 @@
-import type { SelectHTMLAttributes } from "react";
-import type { FieldError } from "react-hook-form";
-import { StyledSelectFieldSet } from "./styles";
+import type { SelectHTMLAttributes } from 'react';
+import type { FieldError } from 'react-hook-form';
+import { StyledSelectFieldSet } from './styles';
 
 interface ISelectOptions {
   value: string;
@@ -30,11 +30,11 @@ const SelectInputForm = ({
     <>
       <StyledSelectFieldSet error={error}>
         <label>{label}</label>
-        <select id="" {...rest}>
-          <option value="">Selecione um tipo</option>
+        <select id='' {...rest}>
+          <option value=''>Selecione um tipo</option>
           {selectOptions}
         </select>
-        {error ? <p className="inputErrorMessage">{error.message}</p> : <p></p>}
+        {error ? <p className='inputErrorMessage'>{error.message}</p> : <p></p>}
       </StyledSelectFieldSet>
     </>
   );

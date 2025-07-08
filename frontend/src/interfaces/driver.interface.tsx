@@ -1,6 +1,6 @@
-import type { driverRegisterFormSchema } from "@schemas/driverRegisterSchema";
-import type { driverUpdateFormSchema } from "@schemas/driverUpdateSchema";
-import type { z } from "zod";
+import type { driverRegisterFormSchema } from '@schemas/driverRegisterSchema';
+import type { driverUpdateFormSchema } from '@schemas/driverUpdateSchema';
+import type { z } from 'zod';
 
 export interface IDriver {
   id: string;
@@ -53,7 +53,7 @@ export interface ICreateDriverResponse {
     description: string;
   }[];
   isActive: boolean;
-  type: "Motorista" | "Administrador";
+  type: 'Motorista' | 'Administrador';
 }
 
 export type ICreateDriverData = z.output<typeof driverRegisterFormSchema>;
@@ -62,7 +62,12 @@ export type IUpdateDriverData = z.output<typeof driverUpdateFormSchema>;
 
 export interface IDriverContextProps {
   handleCreateDriver: (newDriverData: ICreateDriverData) => Promise<void>;
-  getDriverList: () => void;
+  getDriverList: ({
+    isActive,
+    limit,
+    driverName,
+    page
+  }: IGetDriveParams) => Promise<void>;
   driverList: Array<IDriver>;
   driverQuantity: number;
   driverActive: number;
@@ -72,6 +77,19 @@ export interface IDriverContextProps {
   setDriverUnderEdition: React.Dispatch<React.SetStateAction<IDriver | null>>;
   updateDriver: (id: string, driverData: IUpdateDriverData) => Promise<void>;
   deleteDriver: (id: string) => Promise<void>;
+  totalPages: number;
+  setTotalPages: React.Dispatch<React.SetStateAction<number>>;
+  apiPage: number;
+  setApiPage: React.Dispatch<React.SetStateAction<number>>;
+  driverName: string;
+  setDriverName: React.Dispatch<React.SetStateAction<string>>;
+}
+
+export interface IGetDriveParams {
+  page?: number;
+  limit?: number;
+  isActive?: string;
+  driverName?: string;
 }
 
 export interface IDriverChildrenProps {
