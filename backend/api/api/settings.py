@@ -143,17 +143,23 @@ SIMPLE_JWT = {
     'USER_ID_CLAIM': 'user_id',  # Nome da claim no token JWT
 }
 
+# Configurações de CORS para desenvolvimento
 CORS_ALLOWED_ORIGINS = os.environ.get('CORS_ALLOWED_ORIGINS', '').split(',')
 if not CORS_ALLOWED_ORIGINS[0]:
-    CORS_ALLOWED_ORIGINS = []
+    CORS_ALLOWED_ORIGINS = [
+        'http://localhost:5173',  # Vite/React
+        'http://127.0.0.1:5173',  # Alternativa para localhost
+    ]
 
 CORS_ALLOW_CREDENTIALS = True  # Permite cookies e cabeçalhos de autenticação
 
-# Configurações de sessão
-SESSION_COOKIE_SECURE = True  # Apenas HTTPS
-CSRF_COOKIE_SECURE = True
-SECURE_SSL_REDIRECT = True
-SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+# Desabilita SSL em desenvolvimento
+SESSION_COOKIE_SECURE = False
+CSRF_COOKIE_SECURE = False
+SECURE_SSL_REDIRECT = False
+
+# Se estiver usando CSRF_TRUSTED_ORIGINS, certifique-se de incluir o esquema HTTP
+CSRF_TRUSTED_ORIGINS = ['http://localhost:5173', 'http://127.0.0.1:5173']
 
 #STATIC FILES
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
@@ -188,7 +194,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'api.wsgi.application'
+# WSGI_APPLICATION = 'api.wsgi.application'
 
 
 # Database
