@@ -70,7 +70,7 @@ const TripRegister = () => {
 
   useEffect(() => {
     if (isLoading === true) {
-      getDriverList();
+      getDriverList({ isActive: 'true' });
       vehiclesList();
     }
   }, [isLoading]);

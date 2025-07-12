@@ -77,7 +77,7 @@ const TripUpdate = () => {
     if (id) {
       getTripByID(id);
     }
-    getDriverList();
+    getDriverList({ isActive: 'true' });
     return () => setTripUnderEdition(null);
   }, [id]);
 
@@ -118,7 +118,7 @@ const TripUpdate = () => {
 
   useEffect(() => {
     if (isLoading === true) {
-      getDriverList();
+      getDriverList({ isActive: 'true' });
       vehiclesList();
     }
   }, [isLoading]);

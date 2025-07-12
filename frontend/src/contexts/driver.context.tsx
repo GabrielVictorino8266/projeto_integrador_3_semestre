@@ -49,7 +49,7 @@ const DriverContext = createContext<IDriverContextProps>({
     throw new Error('Function not implemented.');
   },
   driverName: '',
-  setDriverName: function (value: SetStateAction<string>): void {
+  setDriverName: function (_value: SetStateAction<string>): void {
     throw new Error('Function not implemented.');
   }
 });
