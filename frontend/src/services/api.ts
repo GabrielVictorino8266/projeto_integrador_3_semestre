@@ -5,7 +5,7 @@ import axios from 'axios';
 // });
 
 export const api = axios.create({
-  baseURL: 'https://projeto-integrador-3-semestre.onrender.com'
+  baseURL: 'https://projeto-integrador-3-semestre.onrender.com/api'
 });
 
 api.interceptors.request.use((config) => {
