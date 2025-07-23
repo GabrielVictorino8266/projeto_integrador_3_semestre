@@ -91,7 +91,7 @@ DEBUG = DEBUG_ENV
 
 ALLOWED_HOSTS = [
     'viacaouniao.vercel.app',
-    'api-viacaouniao.onrender.com',  # Se estiver usando Render
+    'projeto-integrador-3-semestre.onrender.com/',  # Se estiver usando Render
     'localhost',
     '127.0.0.1',
 ]
