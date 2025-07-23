@@ -147,11 +147,11 @@ CORS_ALLOWED_ORIGINS = os.environ.get('CORS_ALLOWED_ORIGINS', '').split(',')
 if not CORS_ALLOWED_ORIGINS[0]:
     CORS_ALLOWED_ORIGINS = []
 
-CORS_ALLOW_CREDENTIALS = True  # Permite cookies e cabeçalhos de autenticação
+# CORS_ALLOW_CREDENTIALS = True  # Permite cookies e cabeçalhos de autenticação
 
 # Configurações de sessão
-SESSION_COOKIE_SECURE = True  # Apenas HTTPS
-CSRF_COOKIE_SECURE = True
+# SESSION_COOKIE_SECURE = True  # Apenas HTTPS
+# CSRF_COOKIE_SECURE = True
 SECURE_SSL_REDIRECT = True
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
