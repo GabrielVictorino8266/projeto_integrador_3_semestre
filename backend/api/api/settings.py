@@ -89,12 +89,7 @@ if not SECRET_KEY:
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = DEBUG_ENV
 
-ALLOWED_HOSTS = [
-    'viacaouniao.vercel.app',
-    'projeto-integrador-3-semestre.onrender.com/',  # Se estiver usando Render
-    'localhost',
-    '127.0.0.1',
-]
+ALLOWED_HOSTS = ['viacaouniao.vercel.app', 'projeto-integrador-3-semestre.onrender.com', 'localhost', '127.0.0.1'] # Development
 
 # Swagger
 SWAGGER_SETTINGS = {
@@ -147,16 +142,17 @@ SIMPLE_JWT = {
     'USER_ID_CLAIM': 'user_id',  # Nome da claim no token JWT
 }
 
-# Configurações de CORS
-CORS_ALLOW_ALL_ORIGINS = True
+CORS_ALLOWED_ORIGINS = os.environ.get('CORS_ALLOWED_ORIGINS', '').split(',')
+if not CORS_ALLOWED_ORIGINS[0]:
+    CORS_ALLOWED_ORIGINS = []
 
-CORS_ALLOWED_ORIGINS = [
-    'https://viacaouniao.vercel.app',
-    'http://localhost:3000',
-    'http://127.0.0.1:3000',
-]
+CORS_ALLOW_CREDENTIALS = True  # Permite cookies e cabeçalhos de autenticação
 
-CORS_ALLOW_CREDENTIALS = True
+# Configurações de sessão
+# SESSION_COOKIE_SECURE = True  # Apenas HTTPS
+# CSRF_COOKIE_SECURE = True
+# SECURE_SSL_REDIRECT = True
+# SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
 #STATIC FILES
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
