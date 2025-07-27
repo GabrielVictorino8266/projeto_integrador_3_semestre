@@ -89,7 +89,7 @@ if not SECRET_KEY:
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = DEBUG_ENV
 
-ALLOWED_HOSTS = ['viacaouniao.vercel.app', 'projeto-integrador-3-semestre.onrender.com', 'localhost', '127.0.0.1'] # Development
+ALLOWED_HOSTS = ['*']
 
 # Swagger
 SWAGGER_SETTINGS = {
