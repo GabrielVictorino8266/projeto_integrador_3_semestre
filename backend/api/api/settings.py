@@ -147,6 +147,7 @@ if not CORS_ALLOWED_ORIGINS[0]:
     CORS_ALLOWED_ORIGINS = []
 
 CORS_ALLOW_CREDENTIALS = True  # Permite cookies e cabeçalhos de autenticação
+CORS_ORIGIN_ALLOW_ALL = True
 
 # Configurações de sessão
 # SESSION_COOKIE_SECURE = True  # Apenas HTTPS
