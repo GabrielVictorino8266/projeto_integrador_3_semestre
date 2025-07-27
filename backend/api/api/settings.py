@@ -142,10 +142,6 @@ SIMPLE_JWT = {
     'USER_ID_CLAIM': 'user_id',  # Nome da claim no token JWT
 }
 
-CORS_ALLOWED_ORIGINS = os.environ.get('CORS_ALLOWED_ORIGINS', '').split(',')
-if not CORS_ALLOWED_ORIGINS[0]:
-    CORS_ALLOWED_ORIGINS = []
-
 CORS_ALLOW_CREDENTIALS = True  # Permite cookies e cabeçalhos de autenticação
 CORS_ORIGIN_ALLOW_ALL = True
 
